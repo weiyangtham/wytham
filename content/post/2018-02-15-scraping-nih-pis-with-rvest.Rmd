@@ -1,0 +1,48 @@
+---
+title: Scraping NIH PIs with Rvest
+author: Wei Yang
+date: '2018-02-15'
+draft: true
+slug: scraping-nih-pis-with-rvest
+categories:
+  - R
+tags:
+  - R
+---
+
+This is a basic exercise in scraping the names of Principal Investigators from the NIH intramural program using the `rvest` package. I'll then link the names to data from the Office of Personnel Management (OPM), courtesy of [Buzzfeed](https://www.buzzfeed.com/jsvine/sharing-hundreds-of-millions-of-federal-payroll-records?utm_term=.gwyZO2Aak#.xt8KRex5A). 
+
+Some background: the NIH is usually known for its funding of biomedical research in universities and other research institutions i.e. its *extramural* program. However, the NIH also employs its own scientists - this is its *intramural* research program or IRP. 
+
+You can find the name of all IRP researchers [here](https://irp.nih.gov/our-research/principal-investigators/name), or see a screenshot of the page below. 
+
+![](/img/posts/2018-02-15-scraping-nih-pis-with-rvest/pi_names.png)
+
+I want to collect all these names without having to copy and paste them. This will help make the analysis more reproducible.
+
+First, I'm going to fire up [SelectorGadget](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html). I recommend reading [the vignette](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html). After using SelectorGadget to select the elements I want and don't want, I end up with this: 
+
+![](/img/posts/2018-02-15-scraping-nih-pis-with-rvest/selectorgadget.png)
+
+At the bottom of the screenshot, SelectorGadget has determined the right CSS selector needed to extract the names. Now we can move to doing everything in R. 
+
+```{r, eval = FALSE}
+library(tidyverse)
+library(rvest)
+
+html = read_html("https://irp.nih.gov/our-research/principal-investigators/name")
+
+# based on selectorgadget
+pi_names_html = html_nodes(html, ".pilist-name a")
+
+pi_names = html_text(pi_names_html) 
+
+df = data_frame(fullname = pi_names)
+
+# separate name into first, middle, last
+df %<>%
+  tidyr::extract(fullname, into = c("lastname", "firstname"), 
+                 regex = "(.+?)\\,\\s(.+?)\\,", remove = FALSE)  %>% 
+  separate(firstname, into = c("firstname", "middlename"), sep = "\\s") 
+```
+
