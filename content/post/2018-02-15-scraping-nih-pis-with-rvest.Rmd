@@ -20,14 +20,15 @@ You can find the name of all IRP researchers [here](https://irp.nih.gov/our-rese
 
 I want to collect all these names without having to copy and paste them. This will help make the analysis more reproducible.
 
-First, I'm going to fire up [SelectorGadget](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html). I recommend reading [the vignette](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html). After using SelectorGadget to select the elements I want and don't want, I end up with this: 
+First, I'm going to fire up [SelectorGadget](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html). I recommend reading [the vignette](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html). After using SelectorGadget to select the elements I want (yellow highlight) and don't want (red highlight), I end up with this: 
 
 ![](/img/posts/2018-02-15-scraping-nih-pis-with-rvest/selectorgadget.png)
 
 At the bottom of the screenshot, SelectorGadget has determined the right CSS selector needed to extract the names. Now we can move to doing everything in R. 
 
-```{r, eval = FALSE}
+```{r, eval = TRUE, message = FALSE, warning = FALSE}
 library(tidyverse)
+library(magrittr)
 library(rvest)
 
 html = read_html("https://irp.nih.gov/our-research/principal-investigators/name")
@@ -41,8 +42,125 @@ df = data_frame(fullname = pi_names)
 
 # separate name into first, middle, last
 df %<>%
-  tidyr::extract(fullname, into = c("lastname", "firstname"), 
+  tidyr::extract(fullname, into = c("last_name", "first_name"), 
                  regex = "(.+?)\\,\\s(.+?)\\,", remove = FALSE)  %>% 
-  separate(firstname, into = c("firstname", "middlename"), sep = "\\s") 
+  separate(first_name, into = c("first_name", "middle_name"), sep = "\\s") 
+
+
 ```
+
+```{r, echo = FALSE}
+df
+```
+
+In the code chunk above, I've followed the steps in the vignette to extract the names as a character vector and then put them in a dataframe so I can use `tidyr` functions to get the first and last names.
+
+### Clean names
+
+Below is some code for standardizing the names so that they can better match the OPM data. I do three things:
+
+1. convert to lower case
+2. replace accented characters with plain ones (e.g. é to e)
+3. replace non-letters with spaces
+
+```{r, eval=TRUE}
+
+# Lower case
+df %<>% mutate_at(vars(last_name:middle_name), str_to_lower)
+
+# Replace accents with plain letters
+accent_dictionary = 
+  list('Š'='S', 'š'='s', 'Ž'='Z', 'ž'='z', 'À'='A', 'Á'='A', 'Â'='A', 'Ã'='A', 'Ä'='A', 'Å'='A', 'Æ'='A', 'Ç'='C', 'È'='E', 'É'='E',
+       'Ê'='E', 'Ë'='E', 'Ì'='I', 'Í'='I', 'Î'='I', 'Ï'='I', 'Ñ'='N', 'Ò'='O', 'Ó'='O', 'Ô'='O', 'Õ'='O', 'Ö'='O', 'Ø'='O', 'Ù'='U',
+       'Ú'='U', 'Û'='U', 'Ü'='U', 'Ý'='Y', 'Þ'='B', 'ß'='Ss', 'à'='a', 'á'='a', 'â'='a', 'ã'='a', 'ä'='a', 'å'='a', 'æ'='a', 'ç'='c',
+       'è'='e', 'é'='e', 'ê'='e', 'ë'='e', 'ì'='i', 'í'='i', 'î'='i', 'ï'='i', 'ð'='o', 'ñ'='n', 'ò'='o', 'ó'='o', 'ô'='o', 'õ'='o',
+       'ö'='o', 'ø'='o', 'ù'='u', 'ú'='u', 'û'='u', 'ü'='u', 'ý'='y', 'ý'='y', 'þ'='b', 'ÿ'='y')
+
+df %<>%
+  mutate(first_name = 
+           chartr(paste(names(accent_dictionary), collapse = ''),
+                  paste(accent_dictionary, collapse = ''), first_name), 
+  last_name = chartr(paste(names(accent_dictionary), collapse = ''),
+                     paste(accent_dictionary, collapse = ''), last_name))
+
+# Replace non-letters 
+df %<>% mutate(first_name = str_replace_all(first_name, "[^a-z]", ""), 
+              last_name = str_replace_all(last_name, "[^a-z]", "")) 
+
+```
+
+
+## OPM data
+
+Now that we have the names of the IRP PIs, let's see if we can learn something about them. I'm going to link these names to an awesome dataset that [Buzzfeed put online for public use](https://www.buzzfeed.com/jsvine/sharing-hundreds-of-millions-of-federal-payroll-records?utm_term=.gwyZO2Aak#.xt8KRex5A).
+
+> The dataset contains hundreds of millions of rows and stretches all the way back to 1973. It provides salary, title, and demographic details about millions of U.S. government employees, as well as their migrations into, out of, and through the federal bureaucracy. In many cases, the data also contains employees’ names.
+
+Thank you, Buzzfeed!
+
+I have the data stored on an external hard drive, so for this part of the code you'll have to change the file path to wherever you've downloaded the data. 
+
+```{r, eval = T}
+
+# Where you've stored the Buzzfeed data after downloading it
+your_root = "/Volumes/research_data"
+
+path = file.path(your_root, "opm-federal-employment-data/data", 
+       "2016-12-to-2017-03/non-dod/status", "Non-DoD FOIA 2017-04762 201703.txt")
+
+opm2017 = read_delim(path, col_types = cols(), delim = ";", 
+                     na = c("", "NA", "*", ".", "############"), n_max = Inf) 
+
+# install.packages("janitor")
+opm2017 %<>% janitor::clean_names() # clean column names
+
+opm2017
+```
+
+I perform the same operations for cleaning names. I also `filter` the employees belonging to the NIH using the `subagency` code "HE38". 
+
+```{r, eval = TRUE}
+
+# NIH employees only
+opm2017 %<>% filter(str_detect(subagency, "HE38"))
+
+opm2017 %<>%
+  mutate_at(vars(last_name, first_name), str_to_lower) %>%  # set names to lower case
+  mutate(first_name = str_replace_all(first_name, "[^a-z]", ""),
+       last_name = str_replace_all(last_name, "[^a-z]", "")) %>% # replace non-letters with space
+  mutate(first_name =
+           chartr(paste(names(accent_dictionary), collapse=''),
+                  paste(accent_dictionary, collapse=''), first_name),
+         last_name = 
+           chartr(paste(names(accent_dictionary), collapse=''),
+                  paste(accent_dictionary, collapse=''), last_name))
+
+```
+
+## Linking PI names to OPM payroll data
+
+I'm going to implement a simple matching rule: unique matches on first and last names. 
+
+```{r, eval = TRUE}
+
+# Give IDs to track duplicates
+df %<>% mutate(id = row_number()) %>% select(id, everything())
+opm2017 %<>% mutate(opm_id = row_number()) %>% select(opm_id, everything())
+
+pi_opm = df %>% select(id, last_name, first_name) %>% 
+  inner_join(opm2017, by = c("last_name", "first_name"))
+
+pi_opm %<>% 
+  group_by(id, opm_id) %>% 
+  filter(max(row_number()) == 1) %>% 
+  ungroup()
+
+```
+
+We had `r nrow(df)` names and managed to match `r nrow(pi_opm)` of them. We could do maybe do better (e.g. with [fuzzyjoin](https://github.com/dgrtwo/fuzzyjoin)), but marginal cost > marginal benefit for a blog post and I want to move on to pretty graphs!
+
+# Age of PIs
+
+
+
 
