@@ -90,7 +90,7 @@ df %<>% mutate(first_name = str_replace_all(first_name, "[^a-z]", ""),
 ```
 
 
-## OPM data
+## OPM data 
 
 Now that we have the names of the IRP PIs, let's see if we can learn something about them. I'm going to link these names to an awesome dataset that [Buzzfeed put online for public use](https://www.buzzfeed.com/jsvine/sharing-hundreds-of-millions-of-federal-payroll-records?utm_term=.gwyZO2Aak#.xt8KRex5A).
 
@@ -159,7 +159,29 @@ pi_opm %<>%
 
 We had `r nrow(df)` names and managed to match `r nrow(pi_opm)` of them. We could do maybe do better (e.g. with [fuzzyjoin](https://github.com/dgrtwo/fuzzyjoin)), but marginal cost > marginal benefit for a blog post and I want to move on to pretty graphs!
 
-# Age of PIs
+# What can we learn about the intramural program?
+
+Let's take a peek at the data with the wonderful [`skimr`](https://github.com/ropenscilabs/skimr) package. 
+
+```{r, warning = FALSE}
+
+pi_opm %<>% mutate(age = parse_number(age_range), yrsofservice = parse_number(ysd_range))
+
+skimr::skim(pi_opm %>% select(adjusted_basic_pay, age, yrsofservice))
+
+```
+
+Age and years of service are reported in 5-year bins, so to I've converted them into numeric values based on the lower end of the bin. 
+
+## Aging of the scientifc workforce
+
+A prominent question about the scientific research workforce these days is whether it is aging [(yes)](http://www.pnas.org/content/114/15/3879) and the implications of the aging phenomenon. 
+
+```{r}
+pi_opm %>% 
+  ggplot(aes(age)) + geom_bar()
+```
+
 
 
 
