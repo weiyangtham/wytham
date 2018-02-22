@@ -10,17 +10,28 @@ tags:
   - R
 ---
 
-This is a basic exercise in scraping the names of Principal Investigators from the NIH intramural program using the `rvest` package. I'll then link the names to data from the Office of Personnel Management (OPM), courtesy of [Buzzfeed](https://www.buzzfeed.com/jsvine/sharing-hundreds-of-millions-of-federal-payroll-records?utm_term=.gwyZO2Aak#.xt8KRex5A). 
+Background: I was doing some exploratory work for a potential project looking at intramural investigators at the NIH. Eventually I decided to put it aside for the time being, but here is some cleaned up code from exploratory phase. 
 
-Some background: the NIH is usually known for its funding of biomedical research in universities and other research institutions i.e. its *extramural* program. However, the NIH also employs its own scientists - this is its *intramural* research program or IRP. 
+# The Big Picture
 
-You can find the name of all IRP researchers [here](https://irp.nih.gov/our-research/principal-investigators/name), or see a screenshot of the page below. 
+The NIH is usually known for its funding of biomedical research in universities and other research institutions i.e. its *extramural* program. However, the NIH also employs its own scientists - this is its *intramural* research program or IRP. The goal of this post is to see if we can use [publicly available data](https://www.buzzfeed.com/jsvine/sharing-hundreds-of-millions-of-federal-payroll-records?utm_term=.gwyZO2Aak#.xt8KRex5A) on government employees (more on that in a bit) to learn something about that population. 
+
+I'm going to do this in two broad steps:
+
+1. Get the names of IRP investigators
+2. Use the names to link to federal employee data from the Office of Personnel Management [(courtesty of Buzzfeed)](https://www.buzzfeed.com/jsvine/sharing-hundreds-of-millions-of-federal-payroll-records?utm_term=.gwyZO2Aak#.xt8KRex5A)
+
+# Scraping Investigator Names
+
+You can find the name of all IRP Principal Investigators (PIs) [here](https://irp.nih.gov/our-research/principal-investigators/name), or see a screenshot of the page below. 
 
 ![](/img/posts/2018-02-15-scraping-nih-pis-with-rvest/pi_names.png)
 
-I want to collect all these names without having to copy and paste them. This will help make the analysis more reproducible.
+I want to collect all these names without having to copy and paste them. This will help make the analysis reproducible and less prone to error. I'm going to do this with the `rvest` package, following the steps in [the vignette for SelectorGadget](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html).
 
-First, I'm going to fire up [SelectorGadget](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html). I recommend reading [the vignette](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html). After using SelectorGadget to select the elements I want (yellow highlight) and don't want (red highlight), I end up with this: 
+> Selectorgadget is a javascript bookmarklet that allows you to interactively figure out what css selector you need to extract desired components from a page.
+
+What I need to do is go to [the page I want to scrape data from](https://irp.nih.gov/our-research/principal-investigators/name) and use SelectorGadget to select the elements I want (yellow highlight) and don't want (red highlight). I end up with this: 
 
 ![](/img/posts/2018-02-15-scraping-nih-pis-with-rvest/selectorgadget.png)
 
@@ -38,6 +49,12 @@ pi_names_html = html_nodes(html, ".pilist-name a")
 
 pi_names = html_text(pi_names_html) 
 
+pi_names[1:5]
+```
+
+We now have the PI names as a character vector along with their degrees. To keep things simple, I'm going to extract just their first and last names and ignore the other information. 
+
+```{r}
 df = data_frame(fullname = pi_names)
 
 # separate name into first, middle, last
@@ -46,22 +63,17 @@ df %<>%
                  regex = "(.+?)\\,\\s(.+?)\\,", remove = FALSE)  %>% 
   separate(first_name, into = c("first_name", "middle_name"), sep = "\\s") 
 
-
-```
-
-```{r, echo = FALSE}
 df
+
 ```
 
-In the code chunk above, I've followed the steps in the vignette to extract the names as a character vector and then put them in a dataframe so I can use `tidyr` functions to get the first and last names.
+## Clean names
 
-### Clean names
-
-Below is some code for standardizing the names so that they can better match the OPM data. I do three things:
+Below is some code for standardizing the names. I do three things:
 
 1. convert to lower case
 2. replace accented characters with plain ones (e.g. é to e)
-3. replace non-letters with spaces
+3. replace non-letters with spaces (e.g. O'Neill to oneill)
 
 ```{r, eval=TRUE}
 
@@ -90,9 +102,9 @@ df %<>% mutate(first_name = str_replace_all(first_name, "[^a-z]", ""),
 ```
 
 
-## OPM data 
+# OPM data 
 
-Now that we have the names of the IRP PIs, let's see if we can learn something about them. I'm going to link these names to an awesome dataset that [Buzzfeed put online for public use](https://www.buzzfeed.com/jsvine/sharing-hundreds-of-millions-of-federal-payroll-records?utm_term=.gwyZO2Aak#.xt8KRex5A).
+Now that we have the names of the IRP PIs, let's see if we can identify them in this awesome dataset that [Buzzfeed put online for public use](https://www.buzzfeed.com/jsvine/sharing-hundreds-of-millions-of-federal-payroll-records?utm_term=.gwyZO2Aak#.xt8KRex5A).
 
 > The dataset contains hundreds of millions of rows and stretches all the way back to 1973. It provides salary, title, and demographic details about millions of U.S. government employees, as well as their migrations into, out of, and through the federal bureaucracy. In many cases, the data also contains employees’ names.
 
@@ -101,7 +113,6 @@ Thank you, Buzzfeed!
 I have the data stored on an external hard drive, so for this part of the code you'll have to change the file path to wherever you've downloaded the data. 
 
 ```{r, eval = T}
-
 # Where you've stored the Buzzfeed data after downloading it
 your_root = "/Volumes/research_data"
 
@@ -124,6 +135,7 @@ I perform the same operations for cleaning names. I also `filter` the employees 
 # NIH employees only
 opm2017 %<>% filter(str_detect(subagency, "HE38"))
 
+# clean names
 opm2017 %<>%
   mutate_at(vars(last_name, first_name), str_to_lower) %>%  # set names to lower case
   mutate(first_name = str_replace_all(first_name, "[^a-z]", ""),
@@ -151,37 +163,59 @@ pi_opm = df %>% select(id, last_name, first_name) %>%
   inner_join(opm2017, by = c("last_name", "first_name"))
 
 pi_opm %<>% 
-  group_by(id, opm_id) %>% 
-  filter(max(row_number()) == 1) %>% 
-  ungroup()
+  group_by(id) %>% 
+  mutate(x = max(row_number()) > 1) %>% # duplicate from dataframe of scraped names
+  group_by(opm_id) %>% 
+  mutate(y = max(row_number()) > 1) %>% # duplicate from OPM data
+  ungroup() %>% 
+  filter(!x, !y)
 
 ```
 
-We had `r nrow(df)` names and managed to match `r nrow(pi_opm)` of them. We could do maybe do better (e.g. with [fuzzyjoin](https://github.com/dgrtwo/fuzzyjoin)), but marginal cost > marginal benefit for a blog post and I want to move on to pretty graphs!
+We had `r nrow(df)` names and managed to match `r nrow(pi_opm)` of them. We could maybe do better but for such a simple "algorithm" I'm happy enough. 
 
 # What can we learn about the intramural program?
 
-Let's take a peek at the data with the wonderful [`skimr`](https://github.com/ropenscilabs/skimr) package. 
+It's a good idea to take a peek at the data with the wonderful [`skimr`](https://github.com/ropenscilabs/skimr) package, even if we will plot some of the variables again later. Age and years of service are reported in 5-year bins, so to I've converted them into numeric values based on the lower end of the bin. 
 
 ```{r, warning = FALSE}
 
-pi_opm %<>% mutate(age = parse_number(age_range), yrsofservice = parse_number(ysd_range))
+pi_opm %<>% mutate(age = parse_number(age_range), yrs_since_degree = parse_number(ysd_range))
 
-skimr::skim(pi_opm %>% select(adjusted_basic_pay, age, yrsofservice))
+skimr::skim(pi_opm)
 
 ```
-
-Age and years of service are reported in 5-year bins, so to I've converted them into numeric values based on the lower end of the bin. 
 
 ## Aging of the scientifc workforce
 
-A prominent question about the scientific research workforce these days is whether it is aging [(yes)](http://www.pnas.org/content/114/15/3879) and the implications of the aging phenomenon. 
+A prominent question about the scientific research workforce these days is whether it is aging [(yes)](http://www.pnas.org/content/114/15/3879) and the implications of the aging phenomenon for scientific research. 
+
+```{r}
+library(hrbrthemes)
+theme_set(theme_ipsum(base_size = 18))
+
+pi_opm %>% 
+  ggplot(aes(age)) + geom_bar() + 
+  labs(title = "Intramural investigators seem old")
+```
+
+The distribution of the intramural PIs is older than I'd have guessed. Strikingly, PIs older than 65 make up the largest share of the population. It'd be interesting to see how this distribution has changed over time. While this may be related to the general aging phenomenon, research funding or hiring policies could also have an effect. 
+
+## How much do scientists earn?
+
+```{r, message = FALSE, warning = FALSE}
+pi_opm %>% 
+  ggplot(aes(adjusted_basic_pay)) + 
+  geom_histogram() 
+```
+
+Not a bad living, but there also seems to be a fairly wide range. Some of this might be down to experience, which we can check by comparing salary with years since degree. 
 
 ```{r}
 pi_opm %>% 
-  ggplot(aes(age)) + geom_bar()
+  ggplot(aes(yrs_since_degree, adjusted_basic_pay)) + 
+  geom_jitter()
 ```
-
 
 
 
