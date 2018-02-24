@@ -3,6 +3,7 @@ title: Scraping NIH PIs with Rvest
 author: Wei Yang
 date: '2018-02-15'
 draft: true
+summary: A (shallow) dive into data on NIH scientists
 slug: scraping-nih-pis-with-rvest
 categories:
   - R
@@ -37,7 +38,10 @@ What I need to do is go to [the page I want to scrape data from](https://irp.nih
 
 At the bottom of the screenshot, SelectorGadget has determined the right CSS selector needed to extract the names. Now we can move to doing everything in R. 
 
-```{r, eval = TRUE, message = FALSE, warning = FALSE}
+```{r, eval = TRUE, message = FALSE, warning = TRUE}
+
+# knitr::opts_chunk$set(echo = F, warning = F, message = F)
+
 library(tidyverse)
 library(magrittr)
 library(rvest)
@@ -176,13 +180,13 @@ We had `r nrow(df)` names and managed to match `r nrow(pi_opm)` of them. We coul
 
 # What can we learn about the intramural program?
 
-It's a good idea to take a peek at the data with the wonderful [`skimr`](https://github.com/ropenscilabs/skimr) package, even if we will plot some of the variables again later. Age and years of service are reported in 5-year bins, so to I've converted them into numeric values based on the lower end of the bin. 
+It's a good idea to take a peek at the data with the wonderful [`skimr`](https://github.com/ropenscilabs/skimr) package, even if we will plot some of the variables again later, but this post is getting long so I won't print the results of that. Age and years of service are reported in 5-year bins, so to I've converted them into numeric values based on the lower end of the bin. 
 
-```{r, warning = FALSE}
+```{r, warning = TRUE}
 
 pi_opm %<>% mutate(age = parse_number(age_range), yrs_since_degree = parse_number(ysd_range))
 
-skimr::skim(pi_opm)
+# skimr::skim(pi_opm)
 
 ```
 
@@ -192,31 +196,123 @@ A prominent question about the scientific research workforce these days is wheth
 
 ```{r}
 library(hrbrthemes)
-theme_set(theme_ipsum(base_size = 18))
+theme_set(theme_ipsum(base_size = 18, axis_title_size = 16))
+theme_update(axis.text = element_text(size = 16))
 
 pi_opm %>% 
-  ggplot(aes(age)) + geom_bar() + 
-  labs(title = "Intramural investigators seem old")
+  ggplot(aes(age)) + geom_bar() +
+  theme_ipsum(grid = "Y", base_size = 18, axis_title_size = 16) + 
+  labs(y = "Count", x = "Age (5-year bin)", title = "Intramural investigators seem old")
 ```
 
 The distribution of the intramural PIs is older than I'd have guessed. Strikingly, PIs older than 65 make up the largest share of the population. It'd be interesting to see how this distribution has changed over time. While this may be related to the general aging phenomenon, research funding or hiring policies could also have an effect. 
 
 ## How much do scientists earn?
 
-```{r, message = FALSE, warning = FALSE}
+```{r, message = FALSE, warning = T}
 pi_opm %>% 
   ggplot(aes(adjusted_basic_pay)) + 
   geom_histogram() 
 ```
 
-Not a bad living, but there also seems to be a fairly wide range. Some of this might be down to experience, which we can check by comparing salary with years since degree. 
+Not a bad living, but there also seems to be a fairly wide range. Some of this might be down to experience, which we can check using years since degree as a proxy.  
 
-```{r}
+```{r, warnings = FALSE}
 pi_opm %>% 
   ggplot(aes(yrs_since_degree, adjusted_basic_pay)) + 
-  geom_jitter()
+  geom_boxplot(aes(group = yrs_since_degree), alpha = 1/2, outlier.shape = NA, size = 1.1) + 
+  geom_jitter(alpha = 1/3)
 ```
 
+Salary seems to generally increase with years since degree, but there is a fair amount of spread within each `yrs_since_degree` bin. The median salary also starts to stagnate from the 30-34 bin onwards. 
 
+## Gender representation in the intramural program
 
+The actual demographics of the intramural program are available [online](https://oir.nih.gov/sourcebook/personnel/irp-demographics/intramural-research-program-personnel-demographics-end-fy17). The number of female tenured researchers (Senior Investigators) is low at 23\%, and increases somewhat as you go to more junior appointments.[^1]
 
+[^1]: [Appointment definitions here](https://oir.nih.gov/sourcebook/personnel/ipds-appointment-mechanisms)
+
+Since gender isn't available in the OPM data, I'll use [Genni](http://abel.lis.illinois.edu/cgi-bin/genni/search.cgi) to predict gender based on first name and birth year. 
+
+```{r, warning = TRUE}
+genni = read_tsv(here::here("../Genni/ssnnamesdata.out"), col_types = cols_only(name = "c", `2008` = "c"))
+
+genni %<>% 
+  rename(probs = `2008`) %>% 
+  tidyr::separate(probs, into = c("a", "b", "pfem", "d"), sep = "\\|", convert = TRUE) %>% 
+  select(name, pfem) %>% 
+  mutate(name = str_to_lower(name))
+
+pi_opm %<>% 
+  left_join(genni, by = c("first_name" = "name")) 
+
+nafem = pi_opm %>% filter(is.na(pfem)) %>% nrow() # number names without prediction
+
+# pi_opm %>% 
+#   ggplot(aes(pfem)) + geom_histogram(na.rm =  FALSE) + 
+#   labs(title = "Probability of female based on first name")
+
+```
+
+There are `r nafem` persons whose first names do not appear in Genni. I'll impose an arbitrary threshold that we have to be at least 75\% sure to classify someone as female or male. 
+
+```{r}
+pi_opm_fem = pi_opm %>% 
+  filter(pfem >= 0.75 | pfem <= 0.25) %>% 
+  mutate(female = pfem >= 0.75)
+
+pi_opm_fem %>% count(female) %>% mutate(percent = n/sum(n) * 100) %>% knitr::kable()
+
+```
+
+### Gender salary differences
+
+```{r}
+
+pi_opm_fem %>% 
+  ggplot(aes(adjusted_basic_pay)) + 
+  geom_density(aes(fill = female), position = "identity", alpha = 0.5) + 
+  labs(title = "Men tend to earn more")
+
+```
+
+A direct comparison shows that male PIs tend to earn more than female PIs. This isn't entirely surprising since we know from the IRP website that [there are many more men than women in senior appointments](https://oir.nih.gov/sourcebook/personnel/irp-demographics/intramural-research-program-personnel-demographics-end-fy17), so what happens if we try to "control for" seniority? I'll run a simple linear regression with controls for the `years since degree` bins. 
+
+```{r}
+
+mod = lm(adjusted_basic_pay ~ female + factor(yrs_since_degree), data = pi_opm_fem) 
+
+modgap = mod %>% 
+  broom::tidy(conf.int = TRUE) %>% 
+  filter(term == "femaleTRUE") %>% 
+  mutate(x = "With Controls")
+
+gap = lm(adjusted_basic_pay ~ female, data = pi_opm_fem) %>% 
+  broom::tidy(conf.int = TRUE) %>% 
+  filter(term == "femaleTRUE") %>% 
+  mutate(x = "No Controls") %>% 
+  bind_rows(modgap)
+  
+ggplot(gap, aes(x, abs(estimate))) + 
+  geom_col() + 
+  geom_errorbar(aes(ymin = abs(conf.low), ymax = abs(conf.high)), width = 0.2) + 
+  coord_flip() + 
+  labs(title = "Gender gap remains after accounting for experience")
+
+```
+
+### And for my last act...
+
+```{r}
+pi_opm_fem %>% 
+  modelr::add_residuals(mod) %>% 
+  ggplot(aes(x = resid, fill = female)) + 
+  geom_density(alpha = 0.5) + 
+  # geom_jitter() +
+  # geom_boxplot() + 
+  # coord_flip() + # geom_boxplot() + 
+  labs(title  = "Fatter tails for males")
+
+```
+
+I've plotted the residuals of the simple linear model by gender. The tails of the distribution are fatter for males, indicating that gender pay differences aren't just about mean differences. Of course, a huge caveat in all this is that we're missing a whole lot of useful information (e.g. productivity as measured by publication record) but that's beyond the scope of this blog post.
