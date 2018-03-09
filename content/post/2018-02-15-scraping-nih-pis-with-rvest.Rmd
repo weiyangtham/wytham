@@ -3,15 +3,17 @@ title: Scraping NIH PIs with Rvest
 author: Wei Yang
 date: '2018-02-15'
 draft: true
-summary: A (shallow) dive into data on NIH scientists
+summary: A brief exploration of data on NIH scientists
 slug: scraping-nih-pis-with-rvest
 categories:
   - R
 tags:
   - R
+  - NIH
+  - science
 ---
 
-Background: I was doing some exploratory work for a potential project looking at intramural investigators at the NIH. Eventually I decided to put it aside for the time being, but here is some cleaned up code from exploratory phase. 
+Background: I was doing some exploratory work for a potential project looking at intramural investigators at the NIH. Eventually I decided to put it aside for the time being, but here is some cleaned up code that came out of it, along with some basic descriptives.
 
 # The Big Picture
 
@@ -145,11 +147,11 @@ opm2017 %<>%
   mutate(first_name = str_replace_all(first_name, "[^a-z]", ""),
        last_name = str_replace_all(last_name, "[^a-z]", "")) %>% # replace non-letters with space
   mutate(first_name =
-           chartr(paste(names(accent_dictionary), collapse=''),
-                  paste(accent_dictionary, collapse=''), first_name),
+           chartr(paste(names(accent_dictionary), collapse = ''),
+                  paste(accent_dictionary, collapse = ''), first_name),
          last_name = 
-           chartr(paste(names(accent_dictionary), collapse=''),
-                  paste(accent_dictionary, collapse=''), last_name))
+           chartr(paste(names(accent_dictionary), collapse = ''),
+                  paste(accent_dictionary, collapse = ''), last_name))
 
 ```
 
@@ -280,14 +282,14 @@ A direct comparison shows that male PIs tend to earn more than female PIs. This 
 
 ```{r}
 
-mod = lm(adjusted_basic_pay ~ female + factor(yrs_since_degree), data = pi_opm_fem) 
+mod = lm(log(adjusted_basic_pay) ~ female + factor(yrs_since_degree), data = pi_opm_fem) 
 
 modgap = mod %>% 
   broom::tidy(conf.int = TRUE) %>% 
   filter(term == "femaleTRUE") %>% 
   mutate(x = "With Controls")
 
-gap = lm(adjusted_basic_pay ~ female, data = pi_opm_fem) %>% 
+gap = lm(log(adjusted_basic_pay) ~ female, data = pi_opm_fem) %>% 
   broom::tidy(conf.int = TRUE) %>% 
   filter(term == "femaleTRUE") %>% 
   mutate(x = "No Controls") %>% 
@@ -297,22 +299,18 @@ ggplot(gap, aes(x, abs(estimate))) +
   geom_col() + 
   geom_errorbar(aes(ymin = abs(conf.low), ymax = abs(conf.high)), width = 0.2) + 
   coord_flip() + 
-  labs(title = "Gender gap remains after accounting for experience")
+  labs(title = "Gender gap remains after accounting for experience", 
+       x = "Log points")
 
 ```
 
-### And for my last act...
+The gap has shrunk by more than half but still remains at about 5-6 percentage points. 
 
-```{r}
-pi_opm_fem %>% 
-  modelr::add_residuals(mod) %>% 
-  ggplot(aes(x = resid, fill = female)) + 
-  geom_density(alpha = 0.5) + 
-  # geom_jitter() +
-  # geom_boxplot() + 
-  # coord_flip() + # geom_boxplot() + 
-  labs(title  = "Fatter tails for males")
+Two big caveats here:
 
-```
+1. We're missing a whole lot of useful information (e.g. productivity, perhaps measured by publication record) 
+1. Even if we did have that information, we should be cautious about how we interpret the gender coefficient
 
-I've plotted the residuals of the simple linear model by gender. The tails of the distribution are fatter for males, indicating that gender pay differences aren't just about mean differences. Of course, a huge caveat in all this is that we're missing a whole lot of useful information (e.g. productivity as measured by publication record) but that's beyond the scope of this blog post.
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Google, translated: If you control for all the ways we discriminate against women, there&#39;s no male-female wage gap. <a href="https://t.co/fjVHuJkQDp">https://t.co/fjVHuJkQDp</a> <a href="https://t.co/cew6qpCtUe">pic.twitter.com/cew6qpCtUe</a></p>&mdash; Justin Wolfers (@JustinWolfers) <a href="https://twitter.com/JustinWolfers/status/908453100339580931?ref_src=twsrc%5Etfw">September 14, 2017</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
