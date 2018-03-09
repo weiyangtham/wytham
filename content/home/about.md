@@ -34,4 +34,4 @@ weight = 5
 
 # Biography
 
-I am a Ph.D. Candidate in economics at The Ohio State University. 
+I am a Ph.D. Candidate in economics at The Ohio State University. My interests lie at the intersection of labor economics and innovation. I am also an R enthusiast. 
