@@ -1,14 +1,14 @@
 ---
-title: Scraping NIH PIs with Rvest
+title: Scraping NIH PIs with rvest
 author: Wei Yang
 date: '2018-02-15'
-draft: true
+draft: false
 summary: A brief exploration of data on NIH scientists
 slug: scraping-nih-pis-with-rvest
 categories:
   - R
 tags:
-  - R
+  - rvest
   - NIH
   - science
 ---
@@ -255,28 +255,12 @@ nafem = pi_opm %&gt;% filter(is.na(pfem)) %&gt;% nrow() # number names without p
   filter(pfem &gt;= 0.75 | pfem &lt;= 0.25) %&gt;% 
   mutate(female = pfem &gt;= 0.75)
 
-pi_opm_fem %&gt;% count(female) %&gt;% mutate(percent = n/sum(n) * 100) %&gt;% knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">female</th>
-<th align="right">n</th>
-<th align="right">percent</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">FALSE</td>
-<td align="right">587</td>
-<td align="right">74.87245</td>
-</tr>
-<tr class="even">
-<td align="left">TRUE</td>
-<td align="right">197</td>
-<td align="right">25.12755</td>
-</tr>
-</tbody>
-</table>
+pi_opm_fem %&gt;% count(female) %&gt;% mutate(percent = n/sum(n) * 100) </code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   female     n percent
+##   &lt;lgl&gt;  &lt;int&gt;   &lt;dbl&gt;
+## 1 F        587    74.9
+## 2 T        197    25.1</code></pre>
 <div id="gender-salary-differences" class="section level3">
 <h3>Gender salary differences</h3>
 <pre class="r"><code>pi_opm_fem %&gt;% 
@@ -309,7 +293,7 @@ ggplot(gap, aes(x, abs(estimate))) +
 <p>The gap has shrunk by more than half but still remains at about 5-6 percentage points.</p>
 <p>Two big caveats here:</p>
 <ol style="list-style-type: decimal">
-<li>We’re missing a whole lot of useful information (e.g. productivity, perhaps measured by publication record)</li>
+<li>We’re missing a whole lot of information (e.g. productivity, perhaps measured by publication record)</li>
 <li>Even if we did have that information, we should be cautious about how we interpret the gender coefficient</li>
 </ol>
 <blockquote class="twitter-tweet" data-lang="en">

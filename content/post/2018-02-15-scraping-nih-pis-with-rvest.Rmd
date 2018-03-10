@@ -1,14 +1,14 @@
 ---
-title: Scraping NIH PIs with Rvest
+title: Scraping NIH PIs with rvest
 author: Wei Yang
 date: '2018-02-15'
-draft: true
+draft: false
 summary: A brief exploration of data on NIH scientists
 slug: scraping-nih-pis-with-rvest
 categories:
   - R
 tags:
-  - R
+  - rvest
   - NIH
   - science
 ---
@@ -263,7 +263,7 @@ pi_opm_fem = pi_opm %>%
   filter(pfem >= 0.75 | pfem <= 0.25) %>% 
   mutate(female = pfem >= 0.75)
 
-pi_opm_fem %>% count(female) %>% mutate(percent = n/sum(n) * 100) %>% knitr::kable()
+pi_opm_fem %>% count(female) %>% mutate(percent = n/sum(n) * 100) 
 
 ```
 
@@ -308,7 +308,7 @@ The gap has shrunk by more than half but still remains at about 5-6 percentage p
 
 Two big caveats here:
 
-1. We're missing a whole lot of useful information (e.g. productivity, perhaps measured by publication record) 
+1. We're missing a whole lot of information (e.g. productivity, perhaps measured by publication record) 
 1. Even if we did have that information, we should be cautious about how we interpret the gender coefficient
 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Google, translated: If you control for all the ways we discriminate against women, there&#39;s no male-female wage gap. <a href="https://t.co/fjVHuJkQDp">https://t.co/fjVHuJkQDp</a> <a href="https://t.co/cew6qpCtUe">pic.twitter.com/cew6qpCtUe</a></p>&mdash; Justin Wolfers (@JustinWolfers) <a href="https://twitter.com/JustinWolfers/status/908453100339580931?ref_src=twsrc%5Etfw">September 14, 2017</a></blockquote>
