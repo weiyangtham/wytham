@@ -45,9 +45,9 @@ What I need to do is go to [the page I want to scrape data from](https://irp.nih
 
 At the bottom of the screenshot, SelectorGadget has determined the right CSS selector needed to extract the names. Now we can move to doing everything in R. 
 
-```{r, eval = TRUE, message = FALSE, warning = TRUE}
+```{r, eval = TRUE, message = FALSE}
 
-knitr::opts_chunk$set(echo = F, warning = F, message = F)
+knitr::opts_chunk$set(warning = F, message = F)
 
 library(tidyverse)
 library(magrittr)
@@ -189,7 +189,7 @@ We had `r nrow(df)` names and managed to match `r nrow(pi_opm)` of them. We coul
 
 It's a good idea to take a peek at the data with the wonderful [`skimr`](https://github.com/ropenscilabs/skimr) package, even if we will plot some of the variables again later, but this post is getting long so I won't print the results of that. Age and years of service are reported in 5-year bins, so to I've converted them into numeric values based on the lower end of the bin. 
 
-```{r, warning = TRUE}
+```{r}
 
 pi_opm %<>% mutate(age = parse_number(age_range), yrs_since_degree = parse_number(ysd_range))
 
@@ -216,7 +216,7 @@ The distribution of the intramural PIs is older than I'd have guessed. Strikingl
 
 ## How much do scientists earn?
 
-```{r, message = FALSE, warning = T}
+```{r, message = FALSE}
 pi_opm %>% 
   ggplot(aes(adjusted_basic_pay)) + 
   geom_histogram() 
@@ -224,7 +224,7 @@ pi_opm %>%
 
 Not a bad living, but there also seems to be a fairly wide range. Some of this might be down to experience, which we can check using years since degree as a proxy.  
 
-```{r, warnings = FALSE}
+```{r}
 pi_opm %>% 
   ggplot(aes(yrs_since_degree, adjusted_basic_pay)) + 
   geom_boxplot(aes(group = yrs_since_degree), alpha = 1/2, outlier.shape = NA, size = 1.1) + 
@@ -241,7 +241,7 @@ The actual demographics of the intramural program are available [online](https:/
 
 Since gender isn't available in the OPM data, I'll use [Genni](http://abel.lis.illinois.edu/cgi-bin/genni/search.cgi) to predict gender based on first name and birth year. 
 
-```{r, warning = TRUE}
+```{r}
 genni = read_tsv(here::here("../Genni/ssnnamesdata.out"), col_types = cols_only(name = "c", `2008` = "c"))
 
 genni %<>% 
