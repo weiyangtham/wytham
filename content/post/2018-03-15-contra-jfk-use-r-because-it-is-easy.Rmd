@@ -22,7 +22,7 @@ p.caption {
 
 There's an attitude that I believe is reasonably common among applied economists, that coding is the easy part of what we do and where we add the least value. If we were building a house, coding is like laying bricks - it's the "menial" and "boring" part of the job (no slight meant against actual bricklayers) - and we add the most value as the architect by coming up with an interesting research question, thinking about endogeneity and so on. 
 
-<!--![](https://media.giphy.com/media/7GySaKuIzts9q/giphy.gif) -->
+![](https://media.giphy.com/media/7GySaKuIzts9q/giphy.gif)
 
 ![Except nobody wants to be this kind of architect](/post/2018-03-15-contra-jfk-use-r-because-it-is-easy_files/architect.webp)
 
@@ -48,10 +48,6 @@ I agree with this.
 OK, don't get too excited. Yes, most things an applied economist needs to do, they can do in R, Stata, Matlab, and sometimes (dare I say it) Excel. But in my opinion, comparing languages based on whether they can perform specific tasks is a fairly unhelpful exercise. It's focusing on the brick-laying at the expense of the "foremanning". Where R (+ RStudio + tidyverse) excel, and where I believe Stata is lacking, is in project management and workflow. 
 
 I won't try too hard to justify that claim here, but just as an illustration, [this blogpost on NIH principal investigators](https://wytham.rbind.io/post/scraping-nih-pis-with-rvest/) was written completely within R. From scraping to cleaning to joining to visualization to writing to compiling the post itself. To be able to do all these things within a single programming environment is really, really nice. 
-
-```{r, echo = FALSE, eval = FALSE}
-blogdown::shortcode("tweet", "969586654431404033")
-```
 
 ## Don't NOT use R because you are counter-signaling
 
