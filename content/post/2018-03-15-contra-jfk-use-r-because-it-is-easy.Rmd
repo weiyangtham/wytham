@@ -1,9 +1,9 @@
 ---
-title: Contra JFK, use R because it is easy, not because it is hard
+title: "Contra JFK, use R because it is easy, not because it is hard"
 author: Wei Yang
 date: '2018-03-15'
 summary: Thoughts on coding and tools in applied economics
-draft: true
+draft: false
 slug: contra-jfk-use-r-because-it-is-easy
 fig_caption: true
 categories:
@@ -22,10 +22,7 @@ p.caption {
 
 There's an attitude that I believe is reasonably common among applied economists, that coding is the easy part of what we do and where we add the least value. If we were building a house, coding is like laying bricks - it's the "menial" and "boring" part of the job (no slight meant against actual bricklayers) - and we add the most value as the architect by coming up with an interesting research question, thinking about endogeneity and so on. 
 
-![](https://media.giphy.com/media/7GySaKuIzts9q/giphy.gif)
-
 ![Except nobody wants to be this kind of architect](/post/2018-03-15-contra-jfk-use-r-because-it-is-easy_files/architect.webp)
-
 
 This is true in a narrow sense: it's not hard to learn how to replace missing values, or to merge two datasets. But you need more than that to execute a research project. You have to perform each of these little tasks over and over again in various permutations, and you have to figure out how to do so in a way that doesn't drive you nuts. That is, you actually need to know how to organize the project and have a reproducible workflow. Going back to the house metaphor (and here we reach the limits of my knowledge of the construction sector), you need a site manager or foreman - someone to make sure that things are done efficiently and come together in a coherent manner. 
 
@@ -57,9 +54,11 @@ Look, I get it. Learning new languages takes a lot of time, there are network ef
 
 
 <!-- ![](https://www.nasa.gov/sites/default/files/s62-05616.jpg) -->
-## Use R because it makes your life easy
+## Use R because it makes your life easy 
 
-Which brings us back to the title of our post: use R because it makes your life easy, not because you're trying to signal some kind of technical wizardry. The irony in the idea that R is a way to signal technical competence is that many R developers today are trying to make it as *easy* to use as possible. For instance, a theme that Hadley Wickham often talks about is designing tools so that users fall into a ["pit of success"](https://youtu.be/cpbtcsGE0OA?t=35m30s).
+[^1]: Which is a riff on [JFK's moon speech at Rice University](https://en.wikipedia.org/wiki/We_choose_to_go_to_the_Moon)
+
+Which brings us back to the title of our post [^1]: use R because it makes your life easy, not because you're trying to signal some kind of technical wizardry. The irony in the idea that R is a way to signal technical competence is that many R developers today are trying to make it as *easy* to use as possible. For instance, a theme that Hadley Wickham often talks about is designing tools so that users fall into a ["pit of success"](https://youtu.be/cpbtcsGE0OA?t=35m30s).
 
 ```{r, echo = FALSE}
 blogdown::shortcode("tweet", "973730478476886016")
@@ -72,11 +71,3 @@ As a more concrete example, RStudio has "point-and-click" options via its Addins
 ## Conclusion
 
 I honestly find working in R a lot more enjoyable than working in Stata, which is why I'll extol its virtues to anyone willing to listen. But of course it's fine (sort of) if you decide it's not the right tool for you. The problem isn't that people aren't reaching the right conclusion about tooling. It's that far too often we're having the wrong conversation, or not even having it at all.
-
-<!--
-- "Coding is easy"; no. metaphor is architect v.s. supervisor, not architect v.s. brick layer
-- Signaling; lots of emphasis on avoiding command line bullshittery e.g. Jenny Bryan encourages use of GUIs. Lots of counter-signaling - I use simple tools which leaves me time to think deep thoughts
-- Don't use R to signal something; use it to make your life easier
-- Switching costs are real. that doesn't mean we shouldn't pay attention tools out there; budding researchers look to experienced ones for guidance - pointing everyone to Stata is not helpful
-
--->
