@@ -23,7 +23,10 @@ Something helpful that came out of this exercise was that it really made me sit 
 1. useful and 
 1. accessible to "non-programmers"
 
-Here are some principles I settled on. These were heavily influenced by Jenny Bryan's article, [Excuse me, do you have a moment to talk about version control?] (https://peerj.com/preprints/3159.pdf). 
+Here are some principles I settled on. These were heavily influenced by Jenny Bryan's excellent article, [Excuse me, do you have a moment to talk about version control?](https://peerj.com/preprints/3159.pdf). 
 
-1. We are not software developers
-1. The ggplot2 principle of teaching
+### Project management as much as version control
+
+We are not software developers, and more to the point, the modal number of active coders on a given project is 1 or 2. I do think version control is useful even when you're working alone, but it's also true that its usefulness increases exponentially as the number of collaborators increases. 
+
+### The ggplot2 principle of teaching
