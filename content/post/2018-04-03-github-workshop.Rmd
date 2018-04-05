@@ -1,0 +1,29 @@
+---
+title: Github workshop
+author: Wei Yang
+date: '2018-04-03'
+slug: github-workshop
+summary: Thoughts on running a Git/Github workshop
+categories:
+  - Github
+  - Economics
+tags:
+  - Git
+  - Github
+  - workflow
+header:
+  caption: ''
+  image: ''
+---
+
+Recently, I ran a Git + Github workshop for my research group here at Ohio State. You can find the materials [here](http://rpubs.com/weiyangtham/376054), which I used along with a live demonstration. 
+
+Something helpful that came out of this exercise was that it really made me sit down and think about how exactly version control is useful to applied economists and how it can be presented as something that is 
+
+1. useful and 
+1. accessible to "non-programmers"
+
+Here are some principles I settled on. These were heavily influenced by Jenny Bryan's article, [Excuse me, do you have a moment to talk about version control?] (https://peerj.com/preprints/3159.pdf). 
+
+1. We are not software developers
+1. The ggplot2 principle of teaching
