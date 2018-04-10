@@ -1,10 +1,10 @@
 ---
-title: Github workshop
+title: Git + Github for economists
 author: Wei Yang
 date: '2018-04-03'
 draft: false
 slug: github-workshop
-summary: Thoughts on Git + Github for economists
+summary: Thoughts on making version control more palatable
 categories:
   - Github
   - Economics
