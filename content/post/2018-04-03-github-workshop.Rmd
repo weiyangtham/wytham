@@ -57,4 +57,9 @@ Firstly, the visual representation of commits and branches makes the logic of ve
 
 ### Conclusion
 
-I was lucky to find out about version control relatively early on, which gave me time to experiment with it and figure out how it could be useful to me, but it's easy to see how the Git + Github workflow can seem like more work than it's worth to a newcomer. I'd be interested to know how others have introduced Git + Github in fields where it's not used universally. 
+I was lucky to find out about version control relatively early on, which gave me time to experiment with it and figure out how it could be useful to me, but it's easy to see how the Git + Github workflow can seem like more work than it's worth to a newcomer. I'd be interested to know how others have introduced Git + Github in fields where it's not used universally. Shoot me an email/tweet!
+
+Also, I'd be remiss not to mention how helpful the RStudio community was in suggesting [resources and teaching tips](https://community.rstudio.com/t/what-are-your-favorite-slides-other-material-for-teaching-github-to-complete-beginners/5706). 
+
+
+
