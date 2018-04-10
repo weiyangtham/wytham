@@ -1,0 +1,62 @@
+---
+title: Github workshop
+author: Wei Yang
+date: '2018-04-03'
+draft: true
+slug: github-workshop
+summary: Thoughts Git/Github workshop for economists
+categories:
+  - Github
+  - Economics
+tags:
+  - Git
+  - Github
+  - workflow
+---
+
+
+
+<style>
+p.caption {
+  font-size: 0.8em;
+}
+</style>
+<div class="figure">
+<img src="/post/2018-04-03-github-workshop_files/github_collaboration.png" alt="From Excuse me, do you have a moment to talk about version control?" />
+<p class="caption">From “Excuse me, do you have a moment to talk about version control?”</p>
+</div>
+<p>Recently, I ran a Git + Github workshop for my research group here at Ohio State. You can find the materials <a href="http://rpubs.com/weiyangtham/376054">here</a>, which I used along with a live demonstration.</p>
+<p>Something helpful that came out of this exercise was that it really made me sit down and think about how exactly version control is useful to applied economists and how it can be made to feel as accessible as possible.</p>
+<p>Here are some principles I settled on. These were heavily influenced by Jenny Bryan’s excellent article, <a href="https://peerj.com/preprints/3159.pdf">Excuse me, do you have a moment to talk about version control?</a> and <a href="http://varianceexplained.org/r/why-I-use-ggplot2/">David Robinson’s approach</a> to <a href="http://varianceexplained.org/r/teach-tidyverse/">teaching the <code>tidyverse</code> suite of packages</a>.</p>
+<p>If you haven’t read David’s blog posts, my takeaway from them is that the earlier you can get students to the payoff, the better. Here’s a key quote from his ggplot2 post:</p>
+<blockquote>
+<p>Why does it matter how the plot looks? Because you’re not just teaching students how to program in R, you’re teaching them that they should. Learning to program takes effort and investment, and the more compelling the figures you can create very early in the course, the more easily you can convince them it is worth the effort.</p>
+</blockquote>
+<p>Here’s how I translated David’s principles into the Git + Github context.</p>
+<div id="emphasize-project-management-as-much-as-version-control" class="section level3">
+<h3>Emphasize project management as much as version control</h3>
+<p>Broadly speaking, there are two reasons the Git/Github workflow is useful.</p>
+<ol style="list-style-type: decimal">
+<li>Version control makes it easy to track and reconcile changes made by multiple collaborators</li>
+<li>Github repos are a pleasant interface for managing a project - e.g. rendering of Markdown documents, using Issues for task management</li>
+</ol>
+<p>Most guides to version control that I’ve seen tend to emphasize version control much more than the handiness of the Github interface, so I tried to shift the emphasis just a little bit more in the other direction. My sense is that for applied economists, solo work is still common enough that the benefits of version control are not immediately obvious. Even teams of 2-3 people can still find reasonably effective ad-hoc alternatives, especially if they are working on sufficiently distinct portions of the project.</p>
+<p>On the other hand, I find the usefulness of the Github interface much easier to explain because it is visual. Explaining how to navigate a web page is a lot easier than trying to explain how to make a commit or a branch, and a beautifully rendered markdown document speaks for itself.</p>
+</div>
+<div id="sticky-gui-fudge" class="section level3">
+<h3>Sticky GUI fudge</h3>
+<div class="figure">
+<img src="https://ofbatteranddough.com/wp-content/uploads/2017/08/Brownie-pie-chocolate-fudge-featured-2-12-1170x617.jpg" alt="Best kind of GUI" />
+<p class="caption">Best kind of GUI</p>
+</div>
+<p>Another thing I tried to emphasize is the usefulness of Git clients (specifically, GitKraken). This is a point that’s been made by <a href="http://happygitwithr.com/git-client.html">Jenny Bryan</a>.</p>
+<p>Firstly, the visual representation of commits and branches makes the logic of version control a lot more intuitive. Secondly, many people just don’t work from the command line that much and it might be unnecessarily intimidating. In fact, I’d go so far as to say that the GitKraken interface makes version control look…<em>fun???</em></p>
+<div class="figure">
+<img src="https://i.imgur.com/lXtZnV2.png" alt="Wheeee! Time to get crackin’" />
+<p class="caption">Wheeee! Time to get crackin’</p>
+</div>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<p>I was lucky to find out about version control relatively early on, which gave me time to experiment with it and figure out how it could be useful to me, but it’s easy to see how the Git + Github workflow can seem like more work than it’s worth to a newcomer. I’d be interested to know how others have introduced Git + Github in fields where it’s not used universally.</p>
+</div>
