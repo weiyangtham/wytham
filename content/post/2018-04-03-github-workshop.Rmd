@@ -26,7 +26,7 @@ Recently, I ran a Git + Github workshop for my research group here at Ohio State
 
 Something helpful that came out of this exercise was that it really made me sit down and think about how exactly version control is useful to applied economists and how it can be made to feel as accessible as possible. 
 
-Here are some principles I settled on. These were heavily influenced by Jenny Bryan's excellent article, [Excuse me, do you have a moment to talk about version control?](https://peerj.com/preprints/3159.pdf) and [David Robinson's approach](http://varianceexplained.org/r/why-I-use-ggplot2/) to [teaching the `tidyverse` suite of packages](http://varianceexplained.org/r/teach-tidyverse/). 
+Here are some principles I settled on. These were heavily influenced by Jenny Bryan's excellent article, [Excuse me, do you have a moment to talk about version control?](https://peerj.com/preprints/3159.pdf) and [David Robinson's approach](http://varianceexplained.org/r/why-I-use-ggplot2/) to [teaching the `tidyverse` suite of packages](http://varianceexplained.org/r/teach-tidyverse/). The RStudio community was also super helpful in suggesting [resources and teaching tips](https://community.rstudio.com/t/what-are-your-favorite-slides-other-material-for-teaching-github-to-complete-beginners/5706). 
 
 If you haven't read David's blog posts, my takeaway from them is that the earlier you can get students to the payoff, the better. Here's a key quote from his ggplot2 post: 
 
@@ -58,8 +58,3 @@ Firstly, the visual representation of commits and branches makes the logic of ve
 ### Conclusion
 
 I was lucky to find out about version control relatively early on, which gave me time to experiment with it and figure out how it could be useful to me, but it's easy to see how the Git + Github workflow can seem like more work than it's worth to a newcomer. I'd be interested to know how others have introduced Git + Github in fields where it's not used universally. Shoot me an email/tweet!
-
-Also, I'd be remiss not to mention how helpful the RStudio community was in suggesting [resources and teaching tips](https://community.rstudio.com/t/what-are-your-favorite-slides-other-material-for-teaching-github-to-complete-beginners/5706). 
-
-
-
