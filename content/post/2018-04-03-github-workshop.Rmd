@@ -4,7 +4,7 @@ author: Wei Yang
 date: '2018-04-03'
 draft: false
 slug: github-workshop
-summary: Thoughts on a recent workshop
+summary: Thoughts on a workshop I ran recently
 categories:
   - Github
   - Economics
