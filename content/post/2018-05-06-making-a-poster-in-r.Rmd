@@ -10,35 +10,116 @@ tags: []
 header:
   caption: ''
   image: ''
+output:
+  blogdown::html_page:
+    toc: true
+    number_sections: true
 ---
 
-I just attended the SOLE (Society of Labor Economists) conference and was very lucky to get the opportunity to present a poster there. You can see a copy of the poster here [here](github.com/weiyangtham) (preliminary results; do not cite!). 
-
-Making posters is hard. There's tons of advice on formatting papers and making presentations for example, but I found it hard to settle on a satisfactory set of principles for making a good poster. Part of it is that posters tend to get short shrift and therefore little attention from academics. The other is that making a poster is hard in any software. 
+I just attended the SOLE (Society of Labor Economists) conference and was very lucky to get the opportunity to present a poster there. You can see a copy of the poster [here](github.com/weiyangtham) (preliminary results; do not cite!). 
 
 While making my poster, I relied heavily on the principles in this [blog post by Tullio Rossi](https://www.animateyour.science/single-post/How-to-design-an-award-winning-conference-poster). Unfortunately, I can't figure out who pointed me to this link. 
 
-The main area where I found the Rossi post lacking was on software. All the suggestions he makes (e.g. Powerpoint, Canva, Adobe Illustrator) are point-and-click. I have nothing against the idea of using point-and-click software to make a poster, so if it works for you then go ahead. Personally, I'm so used to leaving typesetting and formatting to the computer that there are a lot of details I just don't want to worry about. On the other hand, doing your poster in something like LaTex or R Markdown (like I did) leaves you less room for customizability, which could limit you from making a *great* poster. However, I think you can still make a *good* poster that is clear and readable. 
+The main area where I found the Rossi post lacking was on software. All the suggestions he makes (e.g. Powerpoint, Canva, Adobe Illustrator) are point-and-click. I have nothing against the idea of using point-and-click software to make a poster, so if it works for you then go ahead. I'm just so used to leaving typesetting and formatting to the computer that there are a lot of details I just don't want to worry about. On the other hand, doing your poster in something like LaTex or R Markdown (like I did) leaves you less room for customizability, which could limit you from making a *great* poster. However, I think you can still make a *good* poster that is clear and readable. 
 
 Here's how I did mine. 
 
-1. Use the [`postr` package](https://github.com/odeleongt/postr)
+# Use the [`postr` package](https://github.com/odeleongt/postr)
 
 ```{r, eval = FALSE}
 devtools::install_github("odeleongt/postr")
 ```
 
-2. Font Awesome icons
+The `postr` package allows you to create a poster in R Markdown. It uses [`flexdashboard`](https://rmarkdown.rstudio.com/flexdashboard/using.html) to create a poster layout and then takes a sreenshot of the html output. 
 
-3. Background color
+A couple of things that might help you get going quicker: 
 
-4. Make sure your graphs have the right dpi. Default dpi is 72 - you want to set to 300. 
+1. Set `render_print` in the YAML header to `false` so that when you "Knit" the R Markdown document in RStudio, this produces only the html file and not the screenshot. 
 
-5. Use Viz-palette to choose colours
+1. Then to generate the image file (you'll send this to the poster printer), run `postr::render("path/to/poster.html")`. Use the `aspect_ratio` and `poster_width` arguments to set your poster size and dimensions. 
 
-6. Crick-Watson-Franklin diagram
+# Font Awesome icons
 
-7. Put your graphic together with `patchwork`. 
+If you want to have the neat little icons next to your contact information (like the twitter bird 
+<i class="fa fa-twitter" aria-hidden="true"></i>), download [Font Awesome](https://fontawesome.com/) (free). You'll get a bunch of folders and files - find the `fontawesome-all.css` and copy and paste it somewhere, and point to that file in the YAML (e.g. see below). 
+
+```{r, eval = FALSE}
+output: 
+  postr::flex_dashboard_poster:
+    render_print: false
+    css: ["resources/fontawesome-all.css"]
+```
+
+Example: To generate the twitter icon, insert `<i class="fab fa-twitter" aria-hidden="true"></i>` into wherever you want it on your document. Just google "Font Awesome X icon" to find the code for the icon you need (that's the "fab fa-twitter" part). 
+
+#  Background color
+
+A great suggestion I got while presenting earlier drafts of my poster was to change the default `postr` background so that the white panels would "pop" better. You can do this by creating a `.css` file and with the following code: 
+
+```{r, eval=F}
+body{
+  font-family: "Arial"; # you can specify the font too
+  background-color: #b3c3de; # 
+}
+```
+
+I settled on a not too saturated blue but still darker than the default light grey, but feel free to play around with it.
+
+#  Make sure your graphs have the right dpi
+
+I still don't know what "dpi" means, but basically it makes sure your images still look crisp after they blown up for the actual poster. The default dpi in R Markdown is 72, but for printing you want to set it to 300. If you're generating the image from within the R Markdown document, you can do that with ` ```{r, dpi=300} ` in your code chunk options. If you're using an externally generated image (i.e. linking to an image file not generated from code within the document itself), you'll have to take care of the dpi settings wherever you're generating the image. 
+
+# Use Viz-Palette to choose colours
+
+I've become a big fan of [Viz-Palette](http://projects.susielu.com/viz-palette) by Susie Lu and Elijah Meeks. Essentially you give it a list of colors and it shows you how they look on different kinds of graphs (line, area, network etc.). The idea is that different sets of colors work differently on different kinds of graphs, so you may want to make adjustments to your color palette accordingly. You can also see how the colors look for different forms of color blindness. 
+
+I'm not experienced with colors but I'm trying to get better. To make it easy, I started out with a palette from ColorBrewer (http://colorbrewer2.org/) and then pasted the hex codes into Viz-Palette to see how they looked. From there I made slight adjustments within Viz-Palette to get what I wanted. 
+
+# Crick-Watson-Franklin diagram (you can skip this section)
+
+Just above my main graph, I have a diagram that illustrates the research design. Obviously this particular diagram is not something that posters generally need, but it's a nice example of how you can make a customized diagram with `ggplot2` without having to make point-and-click drawings. This way you don't have to worry about placing something off-center when you wanted it to be perfectly centered, or having two lines be at 89 degrees when they should have been perfectly perpendicular.
+
+The point of the diagram is to show two scientists (Crick and Watson) serving as reviewers on a grant review panel whose 4-years terms as reviewers overlap even though they start at different times. In short, I used error bars to create the intervals, flipped the axes (`coord_flip`) to make them horizontal, and used `annotate` to highlight the area of overlap.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+leftlabel = 
+  tribble(
+    ~x, ~y, ~label, 
+    3.25, -1, "Crick",
+    2.25, 2, "Watson"
+  )
+
+leftterms = 
+  tribble(
+    ~x, ~start, ~end, 
+    3, -3, 1, 
+    2,  0, 4
+  )
+
+pleft = ggplot() + 
+  geom_text(data = leftlabel, aes(x = x, y = y, label = label)) +
+  geom_errorbar(data = leftterms, aes(x, ymin = start, ymax = end)) + 
+  coord_flip() + 
+  theme_void() + 
+  annotate("rect", 
+           xmin = 2, xmax = 3, ymin = 0, ymax = 1, 
+           alpha = 1, fill = "#bb1200") + 
+  labs(title = str_wrap("Crick-Watson are treated with 1 year overlap", 25)) +
+  theme(plot.title = element_text(hjust = 0.5, colour = "#bb1200")) + 
+  NULL
+
+pleft
+```
+
+Finally I put the diagrams and graph together with [`patchwork`](https://github.com/thomasp85/patchwork) (the `pright` and `coefplot` graphics are not generated in this post so the code below won't do anything for you). 
+
+```{r, eval=F}
+library(patchwork)
+(pleft | pright) / coefplot + plot_layout(ncol = 1, heights = c(1, 3))
+```
+
 
 
 
