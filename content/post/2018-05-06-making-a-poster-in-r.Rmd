@@ -1,0 +1,45 @@
+---
+title: Making a Poster in R
+author: Wei Yang
+date: '2018-05-06'
+draft: true
+slug: making-a-poster-in-r
+categories:
+  - R
+tags: []
+header:
+  caption: ''
+  image: ''
+---
+
+I just attended the SOLE (Society of Labor Economists) conference and was very lucky to get the opportunity to present a poster there. You can see a copy of the poster here [here](github.com/weiyangtham) (preliminary results; do not cite!). 
+
+Making posters is hard. There's tons of advice on formatting papers and making presentations for example, but I found it hard to settle on a satisfactory set of principles for making a good poster. Part of it is that posters tend to get short shrift and therefore little attention from academics. The other is that making a poster is hard in any software. 
+
+While making my poster, I relied heavily on the principles in this [blog post by Tullio Rossi](https://www.animateyour.science/single-post/How-to-design-an-award-winning-conference-poster). Unfortunately, I can't figure out who pointed me to this link. 
+
+The main area where I found the Rossi post lacking was on software. All the suggestions he makes (e.g. Powerpoint, Canva, Adobe Illustrator) are point-and-click. I have nothing against the idea of using point-and-click software to make a poster, so if it works for you then go ahead. Personally, I'm so used to leaving typesetting and formatting to the computer that there are a lot of details I just don't want to worry about. On the other hand, doing your poster in something like LaTex or R Markdown (like I did) leaves you less room for customizability, which could limit you from making a *great* poster. However, I think you can still make a *good* poster that is clear and readable. 
+
+Here's how I did mine. 
+
+1. Use the [`postr` package](https://github.com/odeleongt/postr)
+
+```{r, eval = FALSE}
+devtools::install_github("odeleongt/postr")
+```
+
+2. Font Awesome icons
+
+3. Background color
+
+4. Make sure your graphs have the right dpi. Default dpi is 72 - you want to set to 300. 
+
+5. Use Viz-palette to choose colours
+
+6. Crick-Watson-Franklin diagram
+
+7. Put your graphic together with `patchwork`. 
+
+
+
+
