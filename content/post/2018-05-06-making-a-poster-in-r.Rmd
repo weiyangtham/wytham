@@ -17,7 +17,7 @@ output:
     fig_caption: yes
 ---
 
-I just attended the [SOLE (Society of Labor Economists) 2018 conference](http://www.sole-jole.org/2018FullProgram.html) and was very lucky to get the opportunity to present a poster there. 
+I just attended the [SOLE (Society of Labor Economists) 2018 conference](http://www.sole-jole.org/2018FullProgram.html) and was very lucky to get to present a poster there. 
 
 ![](/post/2018-05-06-making-a-poster-in-r_files/sole2018.png)
 
