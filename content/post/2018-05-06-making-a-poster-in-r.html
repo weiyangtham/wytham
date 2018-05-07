@@ -1,0 +1,148 @@
+---
+title: How to make a poster in R
+author: Wei Yang
+date: '2018-05-06'
+slug: making-a-poster-in-r
+summary: How to make a poster in R
+categories:
+  - R
+tags: []
+header:
+  caption: ''
+  image: ''
+output:
+  blogdown::html_page:
+    toc: true
+    number_sections: true
+    fig_caption: yes
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#essentials"><span class="toc-section-number">1</span> Essentials</a><ul>
+<li><a href="#use-the-postr-package"><span class="toc-section-number">1.1</span> Use the <a href="https://github.com/odeleongt/postr"><code>postr</code> package</a></a></li>
+<li><a href="#make-sure-your-graphs-have-the-right-dpi"><span class="toc-section-number">1.2</span> Make sure your graphs have the right dpi</a></li>
+</ul></li>
+<li><a href="#the-little-things"><span class="toc-section-number">2</span> The little things</a><ul>
+<li><a href="#font-awesome-icons"><span class="toc-section-number">2.1</span> Font Awesome icons</a></li>
+<li><a href="#background-color"><span class="toc-section-number">2.2</span> Background color</a></li>
+<li><a href="#use-viz-palette-to-choose-graph-colours"><span class="toc-section-number">2.3</span> Use Viz-Palette to choose graph colours</a></li>
+<li><a href="#text-size"><span class="toc-section-number">2.4</span> Text size</a></li>
+<li><a href="#making-diagrams-and-integrating-them-with-your-graphs"><span class="toc-section-number">2.5</span> Making diagrams and integrating them with your graphs</a></li>
+</ul></li>
+<li><a href="#should-you-do-a-poster"><span class="toc-section-number">3</span> Should you do a poster?</a></li>
+</ul>
+</div>
+
+<p>I just attended the <a href="http://www.sole-jole.org/2018FullProgram.html">SOLE (Society of Labor Economists) 2018 conference</a> and was very lucky to get the opportunity to present a poster there.</p>
+<div class="figure">
+<img src="/post/2018-05-06-making-a-poster-in-r_files/sole2018.png" />
+
+</div>
+<p>While making my poster, I relied heavily on the principles in this <a href="https://www.animateyour.science/single-post/How-to-design-an-award-winning-conference-poster">blog post by Tullio Rossi</a>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>The main area where I found the Rossi post lacking was on software. All the suggestions he makes (e.g. Powerpoint, Canva, Adobe Illustrator) are point-and-click. I have nothing against using point-and-click software to make a poster, so if it works for you then go ahead. I’m just so used to leaving typesetting and formatting to the computer that there are a lot of details I don’t want to worry about.</p>
+<p>On the other hand, doing your poster in something like LaTex or R Markdown leaves you less room for customizability, which could limit you from making a <em>great</em> poster. However, I think you can still make a <em>good</em> poster that is clear, readable, and pleasant to look at. With that, here’s how you can make a poster in R, plus some tips for customization. I’ve made the code available in a <a href="https://github.com/weiyangtham/sole2018_poster_example">Github repo</a>.</p>
+<div id="essentials" class="section level1">
+<h1><span class="header-section-number">1</span> Essentials</h1>
+<div id="use-the-postr-package" class="section level2">
+<h2><span class="header-section-number">1.1</span> Use the <a href="https://github.com/odeleongt/postr"><code>postr</code> package</a></h2>
+<pre class="r"><code>devtools::install_github(&quot;odeleongt/postr&quot;)</code></pre>
+<p>The <code>postr</code> package allows you to create a poster in R Markdown. It uses <a href="https://rmarkdown.rstudio.com/flexdashboard/using.html"><code>flexdashboard</code></a> to create a poster layout and then takes a sreenshot of the html output.</p>
+<p>A couple of things that might help you get going quicker:</p>
+<ol style="list-style-type: decimal">
+<li><p>Set <code>render_print</code> in the YAML header to <code>false</code> so that when you “Knit” the R Markdown document in RStudio, this produces only the html file and not the screenshot.</p></li>
+<li><p>Then to generate the image file (you’ll send this to the poster printer), run <code>postr::render(&quot;path/to/poster.html&quot;)</code>. Use the <code>aspect_ratio</code> and <code>poster_width</code> arguments to set your poster size and dimensions.</p></li>
+</ol>
+</div>
+<div id="make-sure-your-graphs-have-the-right-dpi" class="section level2">
+<h2><span class="header-section-number">1.2</span> Make sure your graphs have the right dpi</h2>
+<p>I still don’t know what “dpi” stands for, but basically it makes sure your images still look crisp after they blown up for the actual poster. The default dpi in R Markdown is 72, but for printing you want to set it to 300. If you’re generating the image from within the R Markdown document, you can do that with <code>```{r, dpi=300}</code> in your code chunk options. If you’re using an externally generated image (i.e. linking to an image file generated from code somewhere else), you’ll have to take care of the dpi settings wherever you’re generating the image.</p>
+<p>A quick check to make sure you have the right dpi is to just zoom in on your poster and make sure the words and images stay crisp.</p>
+</div>
+</div>
+<div id="the-little-things" class="section level1">
+<h1><span class="header-section-number">2</span> The little things</h1>
+<div id="font-awesome-icons" class="section level2">
+<h2><span class="header-section-number">2.1</span> Font Awesome icons</h2>
+<p>If you want to have the neat little icons next to your contact information (like the twitter bird <i class="fa fa-twitter" aria-hidden="true"></i>), download <a href="https://fontawesome.com/">Font Awesome</a> (free). You’ll get a bunch of folders and files - find the <code>fontawesome-all.css</code> and copy and paste it somewhere, and point to that file in the YAML (e.g. see below).</p>
+<pre class="r"><code>output: 
+  postr::flex_dashboard_poster:
+    render_print: false
+    css: [&quot;resources/fontawesome-all.css&quot;]</code></pre>
+<p>Example: To generate the twitter icon, insert <code>&lt;i class=&quot;fab fa-twitter&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;</code> into wherever you want it on your document. Just google “Font Awesome X icon” to find the code for the icon you need (that’s the “fab fa-twitter” part).</p>
+</div>
+<div id="background-color" class="section level2">
+<h2><span class="header-section-number">2.2</span> Background color</h2>
+<p>A great suggestion I got while presenting earlier drafts of my poster was to change the default <code>postr</code> background so that the white panels would “pop” better. You can do this by creating a <code>.css</code> file and with the following code:</p>
+<pre class="r"><code>body{
+  font-family: &quot;Arial&quot;; # you can specify the font too
+  background-color: #b3c3de; # hex for background
+}</code></pre>
+<p>I settled on a not too saturated blue (so that it would matched the banner) but still darker than the default light grey, but feel free to play around with it. You can point to multiple css files in the YAML with</p>
+<pre class="r"><code>css: [&quot;resources/fontawesome-all.css&quot;, &quot;sole2018.css&quot;]</code></pre>
+</div>
+<div id="use-viz-palette-to-choose-graph-colours" class="section level2">
+<h2><span class="header-section-number">2.3</span> Use Viz-Palette to choose graph colours</h2>
+<p>I’ve become a big fan of <a href="http://projects.susielu.com/viz-palette">Viz-Palette</a> by Susie Lu and Elijah Meeks. Essentially you give it a list of colors and it shows you how they look on different kinds of graphs (line, area, network etc.). The idea is that different sets of colors work differently on different kinds of graphs, so you may want to make adjustments to your color palette accordingly. You can also see how the colors look for different forms of color blindness.</p>
+<p>I’m not experienced with colors but I’m trying to get better. To make it easy, I started out with a palette from ColorBrewer (<a href="http://colorbrewer2.org/" class="uri">http://colorbrewer2.org/</a>) and then pasted the hex codes into Viz-Palette to see how they looked. From there I made slight adjustments within Viz-Palette to get what I wanted, mainly increasing the saturation to stand out better against the white background. When you’re happy with the colors, copy the hex codes and apply them to your graph (if you’re using ggplot2, this would be with the <code>scale_X_manual</code> family of functions).</p>
+</div>
+<div id="text-size" class="section level2">
+<h2><span class="header-section-number">2.4</span> Text size</h2>
+<p>Every one who makes a poster is tempted at some point to shrink their font size or reduce line space to fit more text in. You should do this with caution since that risks hurting the readability of your poster.</p>
+<p>In <code>postr</code> you have options to create a panel that has a smaller font e.g. <code>### Title of Small Panel {.small}</code>. If you want even more control over text size (e.g. only change the size of a specific sentence or the default sizes aren’t working for you), you can use html tags e.g. <code>&lt;small&gt; This sentence is for ants.  &lt;/small&gt;</code>. Google “html text size” for more options.</p>
+</div>
+<div id="making-diagrams-and-integrating-them-with-your-graphs" class="section level2">
+<h2><span class="header-section-number">2.5</span> Making diagrams and integrating them with your graphs</h2>
+<p>Just above my main graph, I have a diagram that illustrates my research design. Obviously this specific diagram is not something that posters generally need, but it’s a nice example of how you can make a customized diagram with <code>ggplot2</code> without having to make point-and-click drawings. This way you don’t have to worry about placing something off-center when you wanted it to be perfectly centered, or having two lines be at 89 degrees when they should have been 90.</p>
+<p>The point of the diagram is to show two scientists (Crick and Watson) serving as reviewers on a grant review panel whose terms as reviewers overlap even though they start at different times. I used error bars to create the intervals, flipped the axes (<code>coord_flip</code>) to make them horizontal, and used <code>annotate</code> to highlight the area of overlap.</p>
+<pre class="r"><code>library(tidyverse)
+
+leftlabel = 
+  tribble(
+    ~x, ~y, ~label, 
+    3.25, -1, &quot;Crick&quot;,
+    2.25, 2, &quot;Watson&quot;
+  )
+
+leftterms = 
+  tribble(
+    ~x, ~start, ~end, 
+    3, -3, 1, 
+    2,  0, 4
+  )
+
+pleft = ggplot() + 
+  geom_text(data = leftlabel, aes(x = x, y = y, label = label)) +
+  geom_errorbar(data = leftterms, aes(x, ymin = start, ymax = end)) + 
+  coord_flip() + 
+  theme_void() + 
+  annotate(&quot;rect&quot;, 
+           xmin = 2, xmax = 3, ymin = 0, ymax = 1, 
+           alpha = 1, fill = &quot;#bb1200&quot;) + 
+  labs(title = str_wrap(&quot;Crick-Watson are treated with 1 year overlap&quot;, 25)) +
+  theme(plot.title = element_text(hjust = 0.5, colour = &quot;#bb1200&quot;)) + 
+  NULL
+
+pleft</code></pre>
+<p><img src="/post/2018-05-06-making-a-poster-in-r_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Finally I put the diagrams and graph together with <a href="https://github.com/thomasp85/patchwork"><code>patchwork</code></a>.</p>
+<pre class="r"><code>library(patchwork)
+(pleft | pright) / coefplot + plot_layout(ncol = 1, heights = c(1, 3))</code></pre>
+</div>
+</div>
+<div id="should-you-do-a-poster" class="section level1">
+<h1><span class="header-section-number">3</span> Should you do a poster?</h1>
+<p>The success of a poster session is often dependent on factors beyond your control, particularly whether conference organizers send the appropriate signals e.g. not scheduling other sessions at the same time. If those conditions are met, then I see the poster as doing two things.</p>
+<ol style="list-style-type: decimal">
+<li>It forces you to identify the central message of your research and deliver that in a short amount of time (what is my sales pitch?)</li>
+<li>It forces you to think of the best way to condense your research <strong>visually</strong> (how can I tell my story in 1-2 pictures?)</li>
+</ol>
+<p>The ideas you get from having to do these things could eventually end up being useful in a longer presentation or the paper itself. For example, I’m pretty sure the Crick-Watson diagram I made will end up in a future presentation. If nothing else, at least you’ll have killer calves after standing for an hour and a half straight.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Unfortunately, I can’t figure out who pointed me to this link.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>

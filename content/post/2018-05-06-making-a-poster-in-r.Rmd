@@ -2,7 +2,6 @@
 title: How to make a poster in R
 author: Wei Yang
 date: '2018-05-06'
-draft: true
 slug: making-a-poster-in-r
 summary: How to make a poster in R
 categories:
