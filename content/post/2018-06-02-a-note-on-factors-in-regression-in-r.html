@@ -54,8 +54,8 @@ df %&gt;%
   scale_colour_manual(labels = c(&quot;Treated&quot;, &quot;Control&quot;), values = c(&quot;#ea5f94&quot;, &quot;#9d02d7&quot;)) +
   scale_linetype_manual(labels = c(&quot;Treated&quot;, &quot;Control&quot;), values = c(1, 2))</code></pre>
 <p><img src="/post/2018-06-02-a-note-on-factors-in-regression-in-r_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Normally what we want to do here is estimate a separate “treatment” coefficient for the year before treatment and the year after treatment after including person and year fixed effects. Another way of putting it is that we want to estimate the interaction of the treatment variable and the year variable. Since there are 3 years and the treatment is binary, that results in a factor with 6 levels (2001-treated, 2001-control, 2002-treated, …), but only 2 levels are identified. In this example, the pre-treatment coefficient is 0 and post-treatment coefficient is 0.5.</p>
-<p>Normally, we can specify an interaction in the R regression formula with a colon <code>:</code> (e.g. <code>factor(year):factor(treated)</code>), but to help with clarity I’m going explicitly create the treatment:time interaction variable and call it <code>treat_time</code>.</p>
+<p>Normally what we want to do here is estimate a separate “treatment” coefficient for the year before treatment and the year after treatment after including person and year fixed effects. Another way of putting it is that we want to estimate the interaction of the treatment variable and the year variable. Since there are 3 years and the treatment is binary, that results in a factor with 6 levels (2001-treated, 2001-control, 2002-treated, …), but only 2 levels are identified. In this example, the pre-treatment coefficient is 0 and the post-treatment coefficient is 0.5.</p>
+<p>Normally, we can specify an interaction in the R regression formula with a colon <code>:</code> (e.g. <code>factor(year):factor(treated)</code>), but to help with clarity I’m going to explicitly create the treatment:time interaction variable and call it <code>treat_time</code>.</p>
 <pre class="r"><code>library(lfe)
 library(broom)
 

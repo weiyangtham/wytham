@@ -62,9 +62,9 @@ df %>%
 
 ```
 
-Normally what we want to do here is estimate a separate "treatment" coefficient for the year before treatment and the year after treatment after including person and year fixed effects. Another way of putting it is that we want to estimate the interaction of the treatment variable and the year variable. Since there are 3 years and the treatment is binary, that results in a factor with 6 levels (2001-treated, 2001-control, 2002-treated, ...), but only 2 levels are identified. In this example, the pre-treatment coefficient is 0 and post-treatment coefficient is 0.5.
+Normally what we want to do here is estimate a separate "treatment" coefficient for the year before treatment and the year after treatment after including person and year fixed effects. Another way of putting it is that we want to estimate the interaction of the treatment variable and the year variable. Since there are 3 years and the treatment is binary, that results in a factor with 6 levels (2001-treated, 2001-control, 2002-treated, ...), but only 2 levels are identified. In this example, the pre-treatment coefficient is 0 and the post-treatment coefficient is 0.5.
 
-Normally, we can specify an interaction in the R regression formula with a colon `:` (e.g. `factor(year):factor(treated)`), but to help with clarity I'm going explicitly create the treatment:time interaction variable and call it `treat_time`. 
+Normally, we can specify an interaction in the R regression formula with a colon `:` (e.g. `factor(year):factor(treated)`), but to help with clarity I'm going to explicitly create the treatment:time interaction variable and call it `treat_time`. 
 
 ```{r, warning = TRUE}
 library(lfe)
