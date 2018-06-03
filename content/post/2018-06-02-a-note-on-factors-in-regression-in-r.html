@@ -99,10 +99,46 @@ df %&lt;&gt;%
          treat_time_b = fct_relabel(treat_time_b, ctrl_lvl), 
          treat_time_b = fct_relevel(treat_time_b, &quot;FALSE&quot;)) # set &quot;FALSE&quot; to lowest level
 
-knitr::kable(list(df %&gt;% count(treat_time_a), df %&gt;% count(treat_time_b)))</code></pre>
+knitr::kable(list(df %&gt;% count(treat_time), df %&gt;% count(treat_time_a), df %&gt;% count(treat_time_b)))</code></pre>
 <table class="kable_wrapper">
 <tbody>
 <tr>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th align="left">treat_time</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2001_FALSE</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">2001_TRUE</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">2002_FALSE</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">2002_TRUE</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">2003_FALSE</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">2003_TRUE</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+</td>
 <td>
 <table>
 <thead>

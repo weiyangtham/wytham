@@ -116,7 +116,7 @@ df %<>%
          treat_time_b = fct_relabel(treat_time_b, ctrl_lvl), 
          treat_time_b = fct_relevel(treat_time_b, "FALSE")) # set "FALSE" to lowest level
 
-knitr::kable(list(df %>% count(treat_time_a), df %>% count(treat_time_b)))
+knitr::kable(list(df %>% count(treat_time), df %>% count(treat_time_a), df %>% count(treat_time_b)))
 ```
 
 The relabelled factor `treat_time_a` or `treat_time_b` now has 3 levels rather than 6. If we run the same regression:
