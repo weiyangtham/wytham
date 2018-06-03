@@ -7,7 +7,9 @@ summary: A little trick for using factors in a regression
 categories:
   - R
   - Economics
-tags: ["factors"]
+tags: 
+  - factors 
+  - forcats
 header:
   caption: ''
   image: ''
