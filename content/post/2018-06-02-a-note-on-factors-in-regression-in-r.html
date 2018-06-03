@@ -1,0 +1,174 @@
+---
+title: A note on factors in regression (in R)
+author: Wei Yang
+date: '2018-06-02'
+slug: a-note-on-factors-in-regression-in-r
+summary: A little trick for using factors in a regression
+categories:
+  - R
+  - Economics
+tags: ["factors"]
+header:
+  caption: ''
+  image: ''
+---
+
+
+
+<p>Factors terrify me. I can avoid dealing with them most of the time, but they’re immensely useful in a regression when you have a categorical variable with many levels (e.g. “Very Bad”, “Bad”, “Good”, “Very Good”). A common example in economics is when you have a difference-in-differences design and you want to estimate how the treatment effect changes over time, before and after the treatment period.</p>
+<p>Here’s a toy example:</p>
+<pre class="r"><code>library(tidyverse)
+library(magrittr)
+library(hrbrthemes)
+
+theme_set(theme_ipsum(base_size = 18, axis_title_size = 16))
+theme_update(axis.text = element_text(size = 16))
+
+df = 
+  data_frame(treated = c(rep(T, 30), rep(F, 30)), 
+             id = rep(1:2, each = 30),
+             year = rep(2001:2003, 20))
+
+idfe = data_frame(id = 1:2, idfe = c(0.5, 0))
+timefe = data_frame(year = 2001:2003, timefe = c(0.25, 0.5, 0.75))
+
+effect = 0.5
+
+df %&lt;&gt;% 
+  left_join(idfe, by = &quot;id&quot;) %&gt;% 
+  left_join(timefe, by = &quot;year&quot;) %&gt;% 
+  mutate(y = idfe + timefe + if_else(year == 2003 &amp; treated, effect, 0))
+  
+
+df %&gt;% 
+  group_by(year, treated) %&gt;% 
+  summarise(y = mean(y)) %&gt;% 
+  ungroup() %&gt;%
+  ggplot(aes(x = year, y = y, colour = !treated, linetype = !treated)) + 
+  geom_line(size = 1.2) + 
+  geom_vline(xintercept = 2002, linetype = 2) + 
+  labs(colour = &quot;Treated&quot;, linetype = &quot;Treated&quot;) + 
+  # scale_colour_manual(labels = c(&quot;Treated&quot;, &quot;Control&quot;), values = c(&quot;#bb1200&quot;, &quot;#8078bc&quot;)) +
+  scale_colour_manual(labels = c(&quot;Treated&quot;, &quot;Control&quot;), values = c(&quot;#ea5f94&quot;, &quot;#9d02d7&quot;)) +
+  scale_linetype_manual(labels = c(&quot;Treated&quot;, &quot;Control&quot;), values = c(1, 2))</code></pre>
+<p><img src="/post/2018-06-02-a-note-on-factors-in-regression-in-r_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Normally what we want to do here is estimate a separate “treatment” coefficient for the year before treatment and the year after treatment after including person and year fixed effects. Another way of putting it is that we want to estimate the interaction of the treatment variable and the year variable. Since there are 3 years and the treatment is binary, that results in a factor with 6 levels (2001-treated, 2001-control, 2002-treated, …), but only 2 levels are identified. In this example, the pre-treatment coefficient is 0 and post-treatment coefficient is 0.5.</p>
+<p>Normally, we can specify an interaction in the R regression formula with a colon <code>:</code> (e.g. <code>factor(year):factor(treated)</code>), but to help with clarity I’m going explicitly create the treatment:time interaction variable and call it <code>treat_time</code>.</p>
+<pre class="r"><code>library(lfe)
+library(broom)
+
+df %&lt;&gt;% 
+  unite(treat_time, year, treated, remove = FALSE) 
+  
+felm(y ~ factor(treat_time) | year + id, data = df)</code></pre>
+<pre><code>## Warning in chol.default(mat, pivot = TRUE, tol = tol): the matrix is either
+## rank-deficient or indefinite</code></pre>
+<pre><code>##  factor(treat_time)2001_TRUE factor(treat_time)2002_FALSE 
+##                          NaN                          0.0 
+##  factor(treat_time)2002_TRUE factor(treat_time)2003_FALSE 
+##                          NaN                         -0.5 
+##  factor(treat_time)2003_TRUE 
+##                          NaN</code></pre>
+<p>2 problems:</p>
+<ol style="list-style-type: decimal">
+<li><p>The estimation has returned two coefficients (“2002_FALSE” and “2003_FALSE”), which is the right number of coefficients, but those aren’t the coefficients we wanted (technically we could back out the coefficients since everything is relative but that’s unnecessarily confusing).</p></li>
+<li><p>We have a warning: <code>the matrix is rank-deficient or indefinite</code>. This usually means that the model is collinear and therefore some of the coefficients aren’t identified (hence the <code>NaN</code> coefficients). Even though we expected this, I’d much prefer to not have warning messages pop up in my code. First, if I have to revisit this code at some point in the future, I might not remember why the warning is coming up and have to waste time figuring it out again. Second, if I fix the code and warnings still come up, then I’ll have discovered an error that I would have otherwise overlooked.</p></li>
+</ol>
+<p>Another thing to notice is that one level of the factor has already been left out. What we want to do now is tell R to leave out all the other levels of the factor that we know can’t be estimated instead of returning <code>NaN</code> for a coefficient.</p>
+<p>Here’s the solution I came up with:</p>
+<ol style="list-style-type: decimal">
+<li><p>Give the levels of <code>treat_time</code> that we want to leave out the same name. In this example, I’ll just give all those levels the name “FALSE”.</p></li>
+<li><p>Set the levels of the newly defined <code>treat_time</code> using the <code>fct_relevel</code> function from the <code>forcats</code> package so that “FALSE” is the lowest level. This will get R to leave it out in the estimation.</p></li>
+</ol>
+<p>There are 2 ways to perform step 1: make the changes to <code>treat_time</code> as a string, then convert it to factor, or convert it to a factor before making the changes with <code>forcats</code> functions.</p>
+<pre class="r"><code># as a string first
+
+df %&lt;&gt;%  
+  mutate(treat_time_a = if_else(str_detect(treat_time, &quot;FALSE|2002_TRUE&quot;), &quot;FALSE&quot;, treat_time), 
+         treat_time_a = factor(treat_time_a), 
+         treat_time_a = fct_relevel(treat_time_a, &quot;FALSE&quot;)) # set &quot;FALSE&quot; to lowest level</code></pre>
+<p>Or:</p>
+<pre class="r"><code>ctrl_lvl = function(x){
+    if_else(str_detect(x, &quot;FALSE|2002_TRUE&quot;), &quot;FALSE&quot;, x)
+  }
+
+df %&lt;&gt;% 
+  mutate(treat_time_b = as_factor(treat_time), 
+         treat_time_b = fct_relabel(treat_time_b, ctrl_lvl), 
+         treat_time_b = fct_relevel(treat_time_b, &quot;FALSE&quot;)) # set &quot;FALSE&quot; to lowest level
+
+knitr::kable(list(df %&gt;% count(treat_time_a), df %&gt;% count(treat_time_b)))</code></pre>
+<table class="kable_wrapper">
+<tbody>
+<tr>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th align="left">treat_time_a</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">FALSE</td>
+<td align="right">40</td>
+</tr>
+<tr class="even">
+<td align="left">2001_TRUE</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">2003_TRUE</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th align="left">treat_time_b</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">FALSE</td>
+<td align="right">40</td>
+</tr>
+<tr class="even">
+<td align="left">2001_TRUE</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">2003_TRUE</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The relabelled factor <code>treat_time_a</code> or <code>treat_time_b</code> now has 3 levels rather than 6. If we run the same regression:</p>
+<pre class="r"><code>felm(y ~ treat_time_a | year + id, data = df)</code></pre>
+<pre><code>## treat_time_a2001_TRUE treat_time_a2003_TRUE 
+##             -3.04e-17              5.00e-01</code></pre>
+<p>No more warning message! And the exact coefficients we wanted!</p>
+<div id="why-not-create-the-dummies-explicitly" class="section level1">
+<h1>Why not create the dummies explicitly?</h1>
+<p>Another solution is to create dummy variables ourselves for the coefficients we wanted.</p>
+<pre class="r"><code>df %&lt;&gt;% mutate(pretreatment = year == 2001 &amp; treated,
+               posttreatment = year == 2003 &amp; treated)
+
+felm(y ~ pretreatment + posttreatment | year + id, data = df)</code></pre>
+<pre><code>##  pretreatmentTRUE posttreatmentTRUE 
+##         -3.04e-17          5.00e-01</code></pre>
+<p>Given my active avoidance of factors in most situations, why mess around with them now? The answer becomes obvious when we start encountering this problem in more general settings. For example, what if we have 20 years of pre-treatment data? It’s technically possible to create dummies and you can come up with ways to automate it, but it’s just not really pleasant to work with. Trust me, I tried it for a good amount of time before it dawned on me how to make the factors work to my advantage.</p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>It’s quite possible I missed out on an even better solution given my inexperience with factors, so if you know of one please let me know!</p>
+</div>
