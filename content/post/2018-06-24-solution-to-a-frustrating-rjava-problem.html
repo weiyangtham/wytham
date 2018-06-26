@@ -1,0 +1,41 @@
+---
+title: Solution to a frustrating rJava problem
+author: Wei Yang
+date: '2018-06-24'
+slug: solution-to-a-frustrating-rjava-problem
+draft: true
+summary: Not my solution, just making it easier to find
+categories:
+  - R
+tags:
+  - rJava
+  - tabulizer
+header:
+  caption: ''
+  image: ''
+---
+
+
+
+<p>Recently I wanted to use the <code>tabulizer</code> package, which depends on the <code>rJava</code> package, and came across this error message when trying to load <code>tabulizer</code>.</p>
+<pre class="r"><code>library(tabulizer)
+# library(rJava) produced a similar error
+
+#&gt; Error: package or namespace load failed for &#39;tabulizer&#39;:
+#&gt;  .onLoad failed in loadNamespace() for &#39;tabulizerjars&#39;, details:
+#&gt;   call: NULL
+#&gt;   error: .onLoad failed in loadNamespace() for &#39;rJava&#39;, details:
+#&gt;   call: dyn.load(file, DLLpath = DLLpath, ...)
+#&gt;   error: unable to load shared object &#39;/Library/Frameworks/R.framework/Versions/3.5/Resources/library/rJava/libs/rJava.so&#39;:
+#&gt;   dlopen(/Library/Frameworks/R.framework/Versions/3.5/Resources/library/rJava/libs/rJava.so, 6): Library not loaded: /Library/Java/JavaVirtualMachines/jdk-9.jdk/Contents/Home/lib/server/libjvm.dylib
+#&gt;   Referenced from: /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rJava/libs/rJava.so
+#&gt;   Reason: no suitable image found.  Did find:
+#&gt;  /Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries/libjvm.dylib: mach-o, but wrong architecture</code></pre>
+<p>The solution (that worked for me) can be found <a href="https://support.rstudio.com/hc/en-us/community/posts/203663956-rJava-load-OK-in-R-not-in-R-Studio-Library-not-loaded-rpath-libjvm-dylib-OS-X-10-10-R-3-1-2-R-Studio-0-98-932">here</a>.</p>
+<p>Go to the command line and run:</p>
+<pre class="bash"><code>
+cd /Library/Frameworks/R.framework/Versions/3.5/Resources/lib
+
+ln -s /Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/server/libjvm.dylib libjvm.dylib
+</code></pre>
+<p>According to the solution at the aforementioned link, this will “create a link to libjvm.dylib inside R’s lib folder”. I can’t tell you much more, but it took me waaaay too long to find this so I hope this post makes it easier for the next person with this problem.</p>
