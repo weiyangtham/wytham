@@ -1,0 +1,46 @@
+---
+title: Most underrated advice for grad school
+author: Wei Yang
+date: '2018-08-17'
+slug: most-underrated-advice-for-grad-school
+summary: 3 pieces of advice I think need to be said more
+categories:
+  - Economics
+tags:
+  - workflow
+header:
+  caption: ''
+  image: ''
+---
+
+There is a ton of grad school advice out there [(e.g. see Jennifer Doleac's wonderful collection of Twitter threads)](http://jenniferdoleac.com/resources/), but what are the most underrated pieces of advice? What is something you could tell an early grad student that they are less likely to have heard from someone else? This is my highly subjective list for OSU students.
+
+## Invest in your workflow
+
+If you plan to work with *any* sort of data, invest heavily in your workflow. Research is messy; good workflow habits help to make it less so. I still remember copying and pasting tables from Stata into LaTex the night before my second-year paper was due, and I would not wish that hell upon anyone else. 
+
+There are many resources and tools for doing reproducible research and getting started can be a little overwhelming. I recommend reading [Good Enough Practices for Scientific Computing](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) and [Excuse me, do you have a moment to talk about version control?](https://peerj.com/preprints/3159/) to develop an understanding of the essential principles. 
+
+[Gentzkow and Shapiro's guide](http://www.brown.edu/Research/Shapiro/pdfs/CodeAndData.pdf) is a favorite among economists. It is comprehensive but a lot to absorb. Kieran Healy's [The Plain Person's Guide to Plain Text Social Science](http://plain-text.co/index.html#introduction) is a nice alternative. 
+
+## Twitter
+
+YMMV on this one, but the [Jennifer Doleac collection](http://jenniferdoleac.com/resources/) of Twitter advice threads about says it all. Other reasons:
+
+- You get to see other researchers being humans while sometimes discussing economics
+- Lots of econometrics
+- "Hi, I know you from Twitter" is a totally legitimate way to introduce yourself at a conference
+
+If you're not super into social media, you can always get an account, follow a few people and just lurk. There are so many great people to follow: [Sue Dynarski](https://twitter.com/dynarski), [Jennifer Doleac](https://twitter.com/jenniferdoleac/), [Scott Cunninngham](https://twitter.com/causalinf), [Paul Goldsmith-Pinkham](https://twitter.com/paulgp), [Dina Pomeranz](https://twitter.com/DinaPomeranz), [John Holbein](https://twitter.com/JohnHolbein1/), [Damon Jones](https://twitter.com/nomadj1s), and many more. 
+
+## Counseling
+
+I don't know if everyone should go to therapy, but I do think everyone should be *open* to the idea. You don't have to have a crisis to see a counselor. It can be part of **maintenance** for your mental health. Think of it as going to the gym, but for your mind.^[Actually going to the gym helps too.] 
+
+Hope this helps!
+
+
+
+
+
+
