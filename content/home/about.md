@@ -10,7 +10,8 @@ weight = 5
 # List your academic interests.
 [interests]
   interests = [
-    "Applied Microeconomics",
+    "Labor Economics",
+    "Innovation",
     "R"
   ]
 
@@ -34,4 +35,4 @@ weight = 5
 
 # Biography
 
-I am a Ph.D. Candidate in economics at The Ohio State University. My interests lie at the intersection of labor economics and innovation. I am also an R enthusiast. 
+I am a Ph.D. Candidate in economics at The Ohio State University. My research lies at the intersection of labor economics and innovation, with implications for urban and public economics. I am also an R enthusiast. 
