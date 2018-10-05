@@ -70,8 +70,10 @@ df = data_frame(fullname = pi_names)
 
 # separate name into first, middle, last
 df %<>%
-  tidyr::extract(fullname, into = c("last_name", "first_name"), 
-                 regex = "(.+?)\\,\\s(.+?)\\,", remove = FALSE)  %>% 
+  tidyr::extract(fullname, 
+                 into = c("last_name", "first_name"), 
+                 regex = "(.+?)\\,\\s(.+?)\\,", 
+                 remove = FALSE)  %>% 
   separate(first_name, into = c("first_name", "middle_name"), sep = "\\s") 
 
 df
@@ -103,12 +105,13 @@ df %<>%
   mutate(first_name = 
            chartr(paste(names(accent_dictionary), collapse = ''),
                   paste(accent_dictionary, collapse = ''), first_name), 
-  last_name = chartr(paste(names(accent_dictionary), collapse = ''),
+         last_name = 
+           chartr(paste(names(accent_dictionary), collapse = ''),
                      paste(accent_dictionary, collapse = ''), last_name))
 
 # Replace non-letters 
 df %<>% mutate(first_name = str_replace_all(first_name, "[^a-z]", ""), 
-              last_name = str_replace_all(last_name, "[^a-z]", "")) 
+               last_name = str_replace_all(last_name, "[^a-z]", "")) 
 
 ```
 
@@ -130,11 +133,16 @@ your_root = "/Volumes/research_data"
 path = file.path(your_root, "opm-federal-employment-data/data", 
        "2016-12-to-2017-03/non-dod/status", "Non-DoD FOIA 2017-04762 201703.txt")
 
-opm2017 = read_delim(path, col_types = cols(), delim = ";", 
-                     na = c("", "NA", "*", ".", "############"), n_max = Inf) 
+opm2017 = read_delim(path, 
+                     col_types = cols(),
+                     delim = ";", 
+                     na = c("", "NA", "*", ".", "############"), 
+                     n_max = Inf) 
 
 # install.packages("janitor")
-opm2017 %<>% janitor::clean_names() # clean column names
+opm2017 %<>% 
+  janitor::clean_names() %>% # clean column names
+  rename(subagency = sub_agency)
 
 opm2017
 ```
@@ -150,7 +158,8 @@ opm2017 %<>% filter(str_detect(subagency, "HE38"))
 opm2017 %<>%
   mutate_at(vars(last_name, first_name), str_to_lower) %>%  # set names to lower case
   mutate(first_name = str_replace_all(first_name, "[^a-z]", ""),
-       last_name = str_replace_all(last_name, "[^a-z]", "")) %>% # replace non-letters with space
+         last_name = str_replace_all(last_name, "[^a-z]", "")) %>% 
+  # replace non-letters with space
   mutate(first_name =
            chartr(paste(names(accent_dictionary), collapse = ''),
                   paste(accent_dictionary, collapse = ''), first_name),
@@ -167,17 +176,23 @@ I'm going to implement a simple matching rule: unique matches on first and last 
 ```{r, eval = TRUE}
 
 # Give IDs to track duplicates
-df %<>% mutate(id = row_number()) %>% select(id, everything())
-opm2017 %<>% mutate(opm_id = row_number()) %>% select(opm_id, everything())
+df %<>% 
+  mutate(id = row_number()) %>% 
+  select(id, everything())
 
-pi_opm = df %>% select(id, last_name, first_name) %>% 
+opm2017 %<>% 
+  mutate(opm_id = row_number()) %>% 
+  select(opm_id, everything())
+
+pi_opm = df %>% 
+  select(id, last_name, first_name) %>% 
   inner_join(opm2017, by = c("last_name", "first_name"))
 
 pi_opm %<>% 
   group_by(id) %>% 
-  mutate(x = max(row_number()) > 1) %>% # duplicate from dataframe of scraped names
+  mutate(x = n() > 1) %>% # duplicate from dataframe of scraped names
   group_by(opm_id) %>% 
-  mutate(y = max(row_number()) > 1) %>% # duplicate from OPM data
+  mutate(y = n() > 1) %>% # duplicate from OPM data
   ungroup() %>% 
   filter(!x, !y)
 
@@ -191,7 +206,9 @@ It's a good idea to take a peek at the data with the wonderful [`skimr`](https:/
 
 ```{r}
 
-pi_opm %<>% mutate(age = parse_number(age_range), yrs_since_degree = parse_number(ysd_range))
+pi_opm %<>% 
+  mutate(age = parse_number(age_range), 
+         yrs_since_degree = parse_number(ysd_range))
 
 # skimr::skim(pi_opm)
 
@@ -207,9 +224,12 @@ theme_set(theme_ipsum(base_size = 18, axis_title_size = 16))
 theme_update(axis.text = element_text(size = 16))
 
 pi_opm %>% 
-  ggplot(aes(age)) + geom_bar() +
+  ggplot(aes(age)) + 
+  geom_bar() +
   theme_ipsum(grid = "Y", base_size = 18, axis_title_size = 16) + 
-  labs(y = "Count", x = "Age (5-year bin)", title = "Intramural investigators seem old")
+  labs(y = "Count", 
+       x = "Age (5-year bin)", 
+       title = "Intramural investigators seem old")
 ```
 
 The distribution of the intramural PIs is older than I'd have guessed. Strikingly, PIs older than 65 make up the largest share of the population. It'd be interesting to see how this distribution has changed over time. While this may be related to the general aging phenomenon, research funding or hiring policies could also have an effect. 
@@ -227,7 +247,8 @@ Not a bad living, but there also seems to be a fairly wide range. Some of this m
 ```{r}
 pi_opm %>% 
   ggplot(aes(yrs_since_degree, adjusted_basic_pay)) + 
-  geom_boxplot(aes(group = yrs_since_degree), alpha = 1/2, outlier.shape = NA, size = 1.1) + 
+  geom_boxplot(aes(group = yrs_since_degree), 
+               alpha = 1/2, outlier.shape = NA, size = 1.1) + 
   geom_jitter(alpha = 1/3)
 ```
 
@@ -242,22 +263,21 @@ The actual demographics of the intramural program are available [online](https:/
 Since gender isn't available in the OPM data, I'll use [Genni](http://abel.lis.illinois.edu/cgi-bin/genni/search.cgi) to predict gender based on first name and birth year. 
 
 ```{r}
-genni = read_tsv(here::here("../Genni/ssnnamesdata.out"), col_types = cols_only(name = "c", `2008` = "c"))
+genni = read_tsv(here::here("../Genni/ssnnamesdata.out"), 
+                 col_types = cols_only(name = "c", `2008` = "c"))
 
 genni %<>% 
   rename(probs = `2008`) %>% 
-  tidyr::separate(probs, into = c("a", "b", "pfem", "d"), sep = "\\|", convert = TRUE) %>% 
+  tidyr::separate(probs, 
+                  into = c("a", "b", "pfem", "d"), 
+                  sep = "\\|", 
+                  convert = TRUE) %>% 
   select(name, pfem) %>% 
   mutate(name = str_to_lower(name))
 
-pi_opm %<>% 
-  left_join(genni, by = c("first_name" = "name")) 
+pi_opm %<>% left_join(genni, by = c("first_name" = "name")) 
 
 nafem = pi_opm %>% filter(is.na(pfem)) %>% nrow() # number names without prediction
-
-# pi_opm %>% 
-#   ggplot(aes(pfem)) + geom_histogram(na.rm =  FALSE) + 
-#   labs(title = "Probability of female based on first name")
 
 ```
 
@@ -268,7 +288,9 @@ pi_opm_fem = pi_opm %>%
   filter(pfem >= 0.75 | pfem <= 0.25) %>% 
   mutate(female = pfem >= 0.75)
 
-pi_opm_fem %>% count(female) %>% mutate(percent = n/sum(n) * 100) 
+pi_opm_fem %>% 
+  count(female) %>% 
+  mutate(percent = n/sum(n) * 100) 
 
 ```
 
@@ -287,7 +309,8 @@ A direct comparison shows that male PIs tend to earn more than female PIs. This 
 
 ```{r}
 
-mod = lm(log(adjusted_basic_pay) ~ female + factor(yrs_since_degree), data = pi_opm_fem) 
+mod = lm(log(adjusted_basic_pay) ~ female + factor(yrs_since_degree), 
+         data = pi_opm_fem) 
 
 modgap = mod %>% 
   broom::tidy(conf.int = TRUE) %>% 
@@ -304,8 +327,9 @@ ggplot(gap, aes(x, abs(estimate))) +
   geom_col() + 
   geom_errorbar(aes(ymin = abs(conf.low), ymax = abs(conf.high)), width = 0.2) + 
   coord_flip() + 
-  labs(title = "Gender gap remains after accounting for experience", 
-       x = "Log points")
+  labs(title = str_wrap("Gender gap remains after accounting for experience", 30), 
+       x = "Model",
+       y = "Log points")
 
 ```
 

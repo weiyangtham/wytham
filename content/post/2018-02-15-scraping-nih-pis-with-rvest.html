@@ -65,8 +65,9 @@ output:
 <p>At the bottom of the screenshot, SelectorGadget has determined the right CSS selector needed to extract the names. Now we can move to doing everything in R.</p>
 <pre class="r"><code>knitr::opts_chunk$set(warning = F, message = F)
 
-library(tidyverse)
-library(magrittr)
+library(tidyverse)</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.1</code></pre>
+<pre class="r"><code>library(magrittr)
 library(rvest)
 
 html = read_html(&quot;https://irp.nih.gov/our-research/principal-investigators/name&quot;)
@@ -87,12 +88,14 @@ pi_names[1:5]</code></pre>
 
 # separate name into first, middle, last
 df %&lt;&gt;%
-  tidyr::extract(fullname, into = c(&quot;last_name&quot;, &quot;first_name&quot;), 
-                 regex = &quot;(.+?)\\,\\s(.+?)\\,&quot;, remove = FALSE)  %&gt;% 
+  tidyr::extract(fullname, 
+                 into = c(&quot;last_name&quot;, &quot;first_name&quot;), 
+                 regex = &quot;(.+?)\\,\\s(.+?)\\,&quot;, 
+                 remove = FALSE)  %&gt;% 
   separate(first_name, into = c(&quot;first_name&quot;, &quot;middle_name&quot;), sep = &quot;\\s&quot;) 
 
 df</code></pre>
-<pre><code>## # A tibble: 1,039 x 4
+<pre><code>## # A tibble: 1,034 x 4
 ##    fullname                           last_name first_name middle_name
 ##    &lt;chr&gt;                              &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;      
 ##  1 Abnet, Christian C., Ph.D., M.P.H. Abnet     Christian  C.         
@@ -105,7 +108,7 @@ df</code></pre>
 ##  8 Aladjem, Mirit I., Ph.D.           Aladjem   Mirit      I.         
 ##  9 Albanes, Demetrius, M.D.           Albanes   Demetrius  &lt;NA&gt;       
 ## 10 Albert, Paul S., Ph.D.             Albert    Paul       S.         
-## # ... with 1,029 more rows</code></pre>
+## # ... with 1,024 more rows</code></pre>
 <div id="clean-names" class="section level2">
 <h2><span class="header-section-number">2.1</span> Clean names</h2>
 <p>Below is some code for standardizing the names. I do three things:</p>
@@ -129,12 +132,13 @@ df %&lt;&gt;%
   mutate(first_name = 
            chartr(paste(names(accent_dictionary), collapse = &#39;&#39;),
                   paste(accent_dictionary, collapse = &#39;&#39;), first_name), 
-  last_name = chartr(paste(names(accent_dictionary), collapse = &#39;&#39;),
+         last_name = 
+           chartr(paste(names(accent_dictionary), collapse = &#39;&#39;),
                      paste(accent_dictionary, collapse = &#39;&#39;), last_name))
 
 # Replace non-letters 
 df %&lt;&gt;% mutate(first_name = str_replace_all(first_name, &quot;[^a-z]&quot;, &quot;&quot;), 
-              last_name = str_replace_all(last_name, &quot;[^a-z]&quot;, &quot;&quot;)) </code></pre>
+               last_name = str_replace_all(last_name, &quot;[^a-z]&quot;, &quot;&quot;)) </code></pre>
 </div>
 </div>
 <div id="opm-data" class="section level1">
@@ -151,11 +155,16 @@ your_root = &quot;/Volumes/research_data&quot;
 path = file.path(your_root, &quot;opm-federal-employment-data/data&quot;, 
        &quot;2016-12-to-2017-03/non-dod/status&quot;, &quot;Non-DoD FOIA 2017-04762 201703.txt&quot;)
 
-opm2017 = read_delim(path, col_types = cols(), delim = &quot;;&quot;, 
-                     na = c(&quot;&quot;, &quot;NA&quot;, &quot;*&quot;, &quot;.&quot;, &quot;############&quot;), n_max = Inf) 
+opm2017 = read_delim(path, 
+                     col_types = cols(),
+                     delim = &quot;;&quot;, 
+                     na = c(&quot;&quot;, &quot;NA&quot;, &quot;*&quot;, &quot;.&quot;, &quot;############&quot;), 
+                     n_max = Inf) 
 
 # install.packages(&quot;janitor&quot;)
-opm2017 %&lt;&gt;% janitor::clean_names() # clean column names
+opm2017 %&lt;&gt;% 
+  janitor::clean_names() %&gt;% # clean column names
+  rename(subagency = sub_agency)
 
 opm2017</code></pre>
 <pre><code>## # A tibble: 1,355,327 x 19
@@ -184,7 +193,8 @@ opm2017 %&lt;&gt;% filter(str_detect(subagency, &quot;HE38&quot;))
 opm2017 %&lt;&gt;%
   mutate_at(vars(last_name, first_name), str_to_lower) %&gt;%  # set names to lower case
   mutate(first_name = str_replace_all(first_name, &quot;[^a-z]&quot;, &quot;&quot;),
-       last_name = str_replace_all(last_name, &quot;[^a-z]&quot;, &quot;&quot;)) %&gt;% # replace non-letters with space
+         last_name = str_replace_all(last_name, &quot;[^a-z]&quot;, &quot;&quot;)) %&gt;% 
+  # replace non-letters with space
   mutate(first_name =
            chartr(paste(names(accent_dictionary), collapse = &#39;&#39;),
                   paste(accent_dictionary, collapse = &#39;&#39;), first_name),
@@ -195,26 +205,34 @@ opm2017 %&lt;&gt;%
 <h2><span class="header-section-number">3.1</span> Linking PI names to OPM payroll data</h2>
 <p>I’m going to implement a simple matching rule: unique matches on first and last names.</p>
 <pre class="r"><code># Give IDs to track duplicates
-df %&lt;&gt;% mutate(id = row_number()) %&gt;% select(id, everything())
-opm2017 %&lt;&gt;% mutate(opm_id = row_number()) %&gt;% select(opm_id, everything())
+df %&lt;&gt;% 
+  mutate(id = row_number()) %&gt;% 
+  select(id, everything())
 
-pi_opm = df %&gt;% select(id, last_name, first_name) %&gt;% 
+opm2017 %&lt;&gt;% 
+  mutate(opm_id = row_number()) %&gt;% 
+  select(opm_id, everything())
+
+pi_opm = df %&gt;% 
+  select(id, last_name, first_name) %&gt;% 
   inner_join(opm2017, by = c(&quot;last_name&quot;, &quot;first_name&quot;))
 
 pi_opm %&lt;&gt;% 
   group_by(id) %&gt;% 
-  mutate(x = max(row_number()) &gt; 1) %&gt;% # duplicate from dataframe of scraped names
+  mutate(x = n() &gt; 1) %&gt;% # duplicate from dataframe of scraped names
   group_by(opm_id) %&gt;% 
-  mutate(y = max(row_number()) &gt; 1) %&gt;% # duplicate from OPM data
+  mutate(y = n() &gt; 1) %&gt;% # duplicate from OPM data
   ungroup() %&gt;% 
   filter(!x, !y)</code></pre>
-<p>We had 1039 names and managed to match 899 of them. We could maybe do better but for such a simple “algorithm” I’m happy enough.</p>
+<p>We had 1034 names and managed to match 890 of them. We could maybe do better but for such a simple “algorithm” I’m happy enough.</p>
 </div>
 </div>
 <div id="what-can-we-learn-about-the-intramural-program" class="section level1">
 <h1><span class="header-section-number">4</span> What can we learn about the intramural program?</h1>
 <p>It’s a good idea to take a peek at the data with the wonderful <a href="https://github.com/ropenscilabs/skimr"><code>skimr</code></a> package, even if we will plot some of the variables again later, but this post is getting long so I won’t print the results of that. Age and years of service are reported in 5-year bins, so to I’ve converted them into numeric values based on the lower end of the bin.</p>
-<pre class="r"><code>pi_opm %&lt;&gt;% mutate(age = parse_number(age_range), yrs_since_degree = parse_number(ysd_range))
+<pre class="r"><code>pi_opm %&lt;&gt;% 
+  mutate(age = parse_number(age_range), 
+         yrs_since_degree = parse_number(ysd_range))
 
 # skimr::skim(pi_opm)</code></pre>
 <div id="aging-of-the-scientifc-workforce" class="section level2">
@@ -225,9 +243,12 @@ theme_set(theme_ipsum(base_size = 18, axis_title_size = 16))
 theme_update(axis.text = element_text(size = 16))
 
 pi_opm %&gt;% 
-  ggplot(aes(age)) + geom_bar() +
+  ggplot(aes(age)) + 
+  geom_bar() +
   theme_ipsum(grid = &quot;Y&quot;, base_size = 18, axis_title_size = 16) + 
-  labs(y = &quot;Count&quot;, x = &quot;Age (5-year bin)&quot;, title = &quot;Intramural investigators seem old&quot;)</code></pre>
+  labs(y = &quot;Count&quot;, 
+       x = &quot;Age (5-year bin)&quot;, 
+       title = &quot;Intramural investigators seem old&quot;)</code></pre>
 <p><img src="/post/2018-02-15-scraping-nih-pis-with-rvest_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>The distribution of the intramural PIs is older than I’d have guessed. Strikingly, PIs older than 65 make up the largest share of the population. It’d be interesting to see how this distribution has changed over time. While this may be related to the general aging phenomenon, research funding or hiring policies could also have an effect.</p>
 </div>
@@ -240,7 +261,8 @@ pi_opm %&gt;%
 <p>Not a bad living, but there also seems to be a fairly wide range. Some of this might be down to experience, which we can check using years since degree as a proxy.</p>
 <pre class="r"><code>pi_opm %&gt;% 
   ggplot(aes(yrs_since_degree, adjusted_basic_pay)) + 
-  geom_boxplot(aes(group = yrs_since_degree), alpha = 1/2, outlier.shape = NA, size = 1.1) + 
+  geom_boxplot(aes(group = yrs_since_degree), 
+               alpha = 1/2, outlier.shape = NA, size = 1.1) + 
   geom_jitter(alpha = 1/3)</code></pre>
 <p><img src="/post/2018-02-15-scraping-nih-pis-with-rvest_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>Salary seems to generally increase with years since degree, but there is a fair amount of spread within each <code>yrs_since_degree</code> bin. The median salary also starts to stagnate from the 30-34 bin onwards.</p>
@@ -249,33 +271,34 @@ pi_opm %&gt;%
 <h2><span class="header-section-number">4.3</span> Gender representation in the intramural program</h2>
 <p>The actual demographics of the intramural program are available <a href="https://oir.nih.gov/sourcebook/personnel/irp-demographics/intramural-research-program-personnel-demographics-end-fy17">online</a>. The number of female tenured researchers (Senior Investigators) is low at 23%, and increases somewhat as you go to more junior appointments.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
 <p>Since gender isn’t available in the OPM data, I’ll use <a href="http://abel.lis.illinois.edu/cgi-bin/genni/search.cgi">Genni</a> to predict gender based on first name and birth year.</p>
-<pre class="r"><code>genni = read_tsv(here::here(&quot;../Genni/ssnnamesdata.out&quot;), col_types = cols_only(name = &quot;c&quot;, `2008` = &quot;c&quot;))
+<pre class="r"><code>genni = read_tsv(here::here(&quot;../Genni/ssnnamesdata.out&quot;), 
+                 col_types = cols_only(name = &quot;c&quot;, `2008` = &quot;c&quot;))
 
 genni %&lt;&gt;% 
   rename(probs = `2008`) %&gt;% 
-  tidyr::separate(probs, into = c(&quot;a&quot;, &quot;b&quot;, &quot;pfem&quot;, &quot;d&quot;), sep = &quot;\\|&quot;, convert = TRUE) %&gt;% 
+  tidyr::separate(probs, 
+                  into = c(&quot;a&quot;, &quot;b&quot;, &quot;pfem&quot;, &quot;d&quot;), 
+                  sep = &quot;\\|&quot;, 
+                  convert = TRUE) %&gt;% 
   select(name, pfem) %&gt;% 
   mutate(name = str_to_lower(name))
 
-pi_opm %&lt;&gt;% 
-  left_join(genni, by = c(&quot;first_name&quot; = &quot;name&quot;)) 
+pi_opm %&lt;&gt;% left_join(genni, by = c(&quot;first_name&quot; = &quot;name&quot;)) 
 
-nafem = pi_opm %&gt;% filter(is.na(pfem)) %&gt;% nrow() # number names without prediction
-
-# pi_opm %&gt;% 
-#   ggplot(aes(pfem)) + geom_histogram(na.rm =  FALSE) + 
-#   labs(title = &quot;Probability of female based on first name&quot;)</code></pre>
+nafem = pi_opm %&gt;% filter(is.na(pfem)) %&gt;% nrow() # number names without prediction</code></pre>
 <p>There are 90 persons whose first names do not appear in Genni. I’ll impose an arbitrary threshold that we have to be at least 75% sure to classify someone as female or male.</p>
 <pre class="r"><code>pi_opm_fem = pi_opm %&gt;% 
   filter(pfem &gt;= 0.75 | pfem &lt;= 0.25) %&gt;% 
   mutate(female = pfem &gt;= 0.75)
 
-pi_opm_fem %&gt;% count(female) %&gt;% mutate(percent = n/sum(n) * 100) </code></pre>
+pi_opm_fem %&gt;% 
+  count(female) %&gt;% 
+  mutate(percent = n/sum(n) * 100) </code></pre>
 <pre><code>## # A tibble: 2 x 3
 ##   female     n percent
 ##   &lt;lgl&gt;  &lt;int&gt;   &lt;dbl&gt;
-## 1 F        587    74.9
-## 2 T        197    25.1</code></pre>
+## 1 FALSE    580    74.8
+## 2 TRUE     195    25.2</code></pre>
 <div id="gender-salary-differences" class="section level3">
 <h3><span class="header-section-number">4.3.1</span> Gender salary differences</h3>
 <pre class="r"><code>pi_opm_fem %&gt;% 
@@ -284,7 +307,8 @@ pi_opm_fem %&gt;% count(female) %&gt;% mutate(percent = n/sum(n) * 100) </code><
   labs(title = &quot;Men tend to earn more&quot;)</code></pre>
 <p><img src="/post/2018-02-15-scraping-nih-pis-with-rvest_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>A direct comparison shows that male PIs tend to earn more than female PIs. This isn’t entirely surprising since we know from the IRP website that <a href="https://oir.nih.gov/sourcebook/personnel/irp-demographics/intramural-research-program-personnel-demographics-end-fy17">there are many more men than women in senior appointments</a>, so what happens if we try to “control for” seniority? I’ll run a simple linear regression with controls for the <code>years since degree</code> bins.</p>
-<pre class="r"><code>mod = lm(log(adjusted_basic_pay) ~ female + factor(yrs_since_degree), data = pi_opm_fem) 
+<pre class="r"><code>mod = lm(log(adjusted_basic_pay) ~ female + factor(yrs_since_degree), 
+         data = pi_opm_fem) 
 
 modgap = mod %&gt;% 
   broom::tidy(conf.int = TRUE) %&gt;% 
@@ -301,8 +325,9 @@ ggplot(gap, aes(x, abs(estimate))) +
   geom_col() + 
   geom_errorbar(aes(ymin = abs(conf.low), ymax = abs(conf.high)), width = 0.2) + 
   coord_flip() + 
-  labs(title = &quot;Gender gap remains after accounting for experience&quot;, 
-       x = &quot;Log points&quot;)</code></pre>
+  labs(title = str_wrap(&quot;Gender gap remains after accounting for experience&quot;, 30), 
+       x = &quot;Model&quot;,
+       y = &quot;Log points&quot;)</code></pre>
 <p><img src="/post/2018-02-15-scraping-nih-pis-with-rvest_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>The gap has shrunk by more than half but still remains at about 5-6 percentage points.</p>
 <p>Two big caveats here:</p>
