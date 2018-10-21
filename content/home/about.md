@@ -19,7 +19,7 @@ weight = 5
 [[education.courses]]
   course = "PhD in Economics"
   institution = "The Ohio State University"
-  year = 2018
+  year = 2019
 
 [[education.courses]]
   course = "MA in Economics"
