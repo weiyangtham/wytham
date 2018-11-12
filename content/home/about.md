@@ -35,4 +35,6 @@ weight = 5
 
 # Biography
 
-I am a Ph.D. Candidate in economics at The Ohio State University. My research lies at the intersection of labor economics and innovation, with implications for urban and public economics. I am also an R enthusiast. [Job market paper](/pdf/uncertainty.pdf)
+I am a Ph.D. Candidate in economics at The Ohio State University. My research lies at the intersection of labor economics and innovation, with implications for urban and public economics. I am also an R enthusiast.
+
+My job market paper is available [here](/pdf/uncertainty.pdf). I will be available for interviews at the 2019 ASSA Meetings in Atlanta. 
