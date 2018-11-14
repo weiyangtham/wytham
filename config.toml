@@ -58,7 +58,7 @@ defaultContentLanguageInSubdir = false
   organizations = [ { name = "The Ohio State University", url = "" } ]
 
   gravatar = false  # Get your avatar from Gravatar.com? (true/false)
-  avatar = ""  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
+  avatar = "suit.jpg"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
   email = "weiyang.tham@gmail.com"
   address = ""
   office_hours = ""
