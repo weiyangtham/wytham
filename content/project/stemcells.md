@@ -1,6 +1,6 @@
 +++
-title = "Stem cell policy"
-date = 2018-02-24T18:40:15-05:00
+title = "The Effect of Targeted Increases in Science Funding: Stem Cell Research in California"
+date = "2018-11-14"
 draft = false
 
 # Tags: can be used for filtering projects.

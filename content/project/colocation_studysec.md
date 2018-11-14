@@ -6,7 +6,7 @@ date = "2018-01-13"
 title = "The Effect of Temporary Colocation on Knowledge Flows"
 
 # Project summary to display on homepage.
-summary = "I study the effect of temporary colocation on scientific collaboration and knowledge flows. Using variation in the timing of when reviewers serve together as reviewers for the NIH, I find that short-term interactions lead to an increase in citations between pairs of scientists."
+summary = "I study the effect of short-term interactions on scientific collaboration and knowledge flows. Using variation in the timing of when reviewers serve together as reviewers for the NIH, I find that short-term interactions lead to an increase in citations between pairs of scientists."
 
 # Optional image to display on homepage (relative to `static/img/` folder).
 # image_preview = "bubbles.jpg"
