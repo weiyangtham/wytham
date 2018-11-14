@@ -5,7 +5,7 @@ draft = false
 
 # Tags: can be used for filtering projects.
 # Example: `tags = ["machine-learning", "deep-learning"]`
-tags = ["economics", "innovation", "science"]
+tags = ["economics", "innovation", "science", "stem cells", "California", "CIRM"]
 
 # Project summary to display on homepage.
 summary = "To what extent can policy influence the volume and direction of research? We address this question by studying California's decision in 2004 to invest $3 billion over 10 years towards stem cell research."
