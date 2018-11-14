@@ -30,6 +30,6 @@ caption = ""
 
 +++
 
-To what extent can policy influence the volume and direction of research? We address this question using a policy experiment in California. In 2004, California allocated \$3 billion over 10 years towards stem cell research in response to federal funding restrictions. We evaluate the effects of this policy using the synthetic control method and find that California produced 20\% more stem cell-related publications than a control state following the policy's implementation. Using citation- and text-based metrics, we find little evidence of a change in the quality of the average California publication. However, the increase in research volume alone increased California involvement at the frontier of stem cell research.
+To what extent can policy influence the volume and direction of research? We address this question using a policy experiment in California. In 2004, California allocated $3 billion over 10 years towards stem cell research in response to federal funding restrictions. We evaluate the effects of this policy using the synthetic control method and find that California produced 20% more stem cell-related publications than a control state following the policy's implementation. Using citation- and text-based metrics, we find little evidence of a change in the quality of the average California publication. However, the increase in research volume alone increased California involvement at the frontier of stem cell research.
 
 Joint with [Joe Staudt](https://josephstaudt.weebly.com/). 
