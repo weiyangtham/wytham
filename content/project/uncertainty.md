@@ -3,7 +3,7 @@
 date = "2018-11-14"
 
 # Project title.
-title = "Science, Interrupted: Budget Uncertainty and Its Effects on Innovation"
+title = "Science, Interrupted: Budget Uncertainty and Its Effects on Innovation (JMP)"
 
 # Project summary to display on homepage.
 summary = "I study how uncertainty affects economic activity by focusing on a particular sector with uniquely rich transaction-level data - federally-sponsored research."
@@ -27,5 +27,7 @@ math = false
 # caption = "My caption :smile:"
 
 +++
+
+[You can find my JMP here.](/pdf/uncertainty.pdf)
 
 In recent years, the U.S. federal budget has been a major source of uncertainty, which potentially impedes economic activity. This uncertainty can induce federal agencies to delay spending till later in the fiscal year. Businesses that rely on public funding may have their funding stream interrupted as a result. I study the effect of funding interruptions on one particular type of economic activity - research - for which exceptionally rich transaction-level data is available. I find that researchers respond to the uncertainty from funding interruptions by spending less in the months leading up to the expiry of funding. Spending is substantially lower in the first month after funding resumes but recovers within 2 months, suggesting that interruptions have a disruptive effect on research even when funds become available. These findings suggest that in addition to the quality of projects, agencies should take into account the continuity of funding when they make research awards.
