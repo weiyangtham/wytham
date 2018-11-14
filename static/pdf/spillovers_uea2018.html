@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Effect of Temporary Co-location on Knowledge Flows</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Wei Yang Tham The Ohio State University" />
+    <meta name="date" content="2018-10-13" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="/Users/weiyangtham/Documents/WYT Projects/Spillovers - NIH Study Sections/spillovers_studysections/presentations/sole2018/resources/fontawesome-all.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# The Effect of Temporary Co-location on Knowledge Flows
+## Evidence from NIH Study Sections
+### Wei Yang Tham<br><span style="font-size: 70%;">The Ohio State University</span>
+### October 13, 2018
+
+---
+
+
+
+
+
+
+
+
+
+
+## Discovery of The Double Helix
+
+Central figures: Watson, Crick, Wilkins, and Franklin 
+
+**In 1951, Watson saw Wilkins present at a conference in Naples**
+
+This encounter prompted Watson to move to Cambridge and change the direction of his research
+
+---
+
+## Research Question
+
+Vast literature on spillovers, long-term interactions
+
+"Cricket spills over into business" - Enrico Moretti's *The New Geography of Jobs*
+
+--
+
+What is the effect of short-term interactions on collaboration and knowledge diffusion?
+
+Does networking have scientific value (collaborations, knowledge diffusion)? Or just "private" value (finding a job)?
+    
+&lt;!-- - Do people actually find new collaborators and learn new things at conferences? Or are the benefits mostly private? --&gt;
+
+???
+
+If you're a policy maker trying to encourage more knowledge diffusion then knowing scientific/private distinction is important
+    
+---
+
+## Empirical challenges
+ 
+Data on short-term interactions is hard to find
+
+Endogeneity of colocation - people aren't randomly in the same place
+
+Measurement
+
+&lt;!--
+
+## Related work
+
+Boudreau et al (2017): scientists randomly assigned to breakout sessions more likely to apply for grant together
+
+Campos, Leon, McQuillin (2018): Cancellation of major political science meeting due to hurricane led to reduction in coauthoring
+
+Chai (2014): effect of conference 
+@waldinger2018frontier
+--&gt;
+
+---
+
+## My approach
+
+Quasi-experimental
+
+Repeated interactions
+
+Long-term outcomes
+
+---
+
+class: inverse, middle, center
+
+## Setting
+
+---
+
+## NIH study sections
+
+NIH panels that evaluate grant applications 
+
+Convened by a Scientific Review Officer from the NIH
+
+Organized around topics e.g. "Acute Neural Injury and Epilepsy", "Cellular Signaling and Regulatory Systems"
+
+---
+
+## Criteria for reviewer selection
+
+1. Expertise 
+
+1. Study section must have enough breadth to cover its scientific area 
+
+---
+
+## Permanent vs. Temporary Members
+
+Permanent members serve 4-year terms, 3 meetings a year
+
+Temporary members are recruited on an ad hoc basis
+
+Temporary memberships are sometimes used as tryouts for permanent membership
+
+&lt;!-- Each meeting has on average 17 permanent and 13 temporary reviewers 
+--&gt;
+
+---
+
+## What happens in a study section?
+
+Each application is assigned 3 reviewers
+
+Reviewers present their assessment of the application and discussion opens up to rest of panel
+
+--
+
+**What potential is there for knowledge diffusion?** What do reviewers actually talk about?
+
+---
+
+## Are reviewers different enough?
+
+"I was always a minority, a clinical cardiologist, not an engineer. **So it was my job to defend cardiology science and explain it**" - Dr. David Sahn, Oregon Health Sciences University
+
+---
+
+## Do they learn from each other?
+
+"I've come away grateful for the opportunity and consciously aware that **I learned some new science** and developed skills to **interact with people with different attitudes and opinions**" - Dr. Alice Clark, University of Mississippi
+
+???
+
+Suggests
+
+1. reviewers are not entirely familiar with each other's fields
+1. there are learning opportunities within the reviewing process
+
+---
+
+## Intellectual similarity
+
+If scientists are too similar, may already be familiar with each other's work
+
+If scientists are too distant, may be harder to use each other's knowledge
+
+--
+
+Effects may vary by intellectual similarity and could be non-monotonic
+
+---
+
+class: center, middle, inverse
+
+# Data
+
+---
+
+## Study section rosters
+
+List of reviewers who attended a particular meeting for a particular study section
+
+---
+
+## Author-ity
+
+Dataset of disambiguated author names ("John Smith" problem)
+
+Derived from MEDLINE, repository for biomedical literature
+
+---
+
+## Citations
+
+Clarivate Analytics Web of Science 
+
+---
+
+&lt;!--
+## Data
+
+&lt;img src="spillovers_uea2018_files/figure-html/unnamed-chunk-2-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+--&gt;
+
+## Setup
+
+Scientist pair (not ordered): `\((i, j) \equiv (j, i)\)`
+
+Pair-year panel
+
+---
+
+## Sample
+
+
+
+Over 14000 individuals matched out of 19000
+
+235 study sections
+
+Each panel has 29 members on average
+
+Time period: 1992 to 2010, but most meetings observed are in 2006 or earlier
+
+---
+
+class: inverse, middle, center
+
+# Estimation
+
+---
+
+## Identification
+
+Limit to permanent members of study sections
+
+Make use of fixed 4-year terms
+
+---
+
+## Identification 
+
+&lt;img src="spillovers_uea2018_files/figure-html/unnamed-chunk-4-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Treatment intensity
+
+&lt;img src="spillovers_uea2018_files/figure-html/unnamed-chunk-5-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Identifying assumption
+
+Use reviewer-pairs who served within 3 years of each other 
+
+If scientists `\(i\)` and `\(j\)` served on a study section, *when* they were on the study section is exogenous
+
+---
+
+## Model
+
+`$$y_{ij, t} = \sum^{10}_{k = -10}\beta_k 1(K_{ij, t} = k)1(N_{ij} \in \{1, 2, 3\}) + \gamma_t + \delta_{ij} + \epsilon_{ij, t}$$`
+
+`\(k \equiv\)` number of years since first colocation
+
+`\(N_{ij} \equiv\)` number of years of overlap
+
+`\(y_{ij,t} \equiv\)` number of times `\(i\)` and `\(j\)` have cited each other
+
+`\(\delta_{ij} \equiv\)` pair fixed effects
+
+`\(\gamma_t \equiv\)` year fixed effects
+
+---
+
+class: middle, center, inverse
+
+## Results
+
+---
+
+## Pre-trends
+
+&lt;img src="spillovers_uea2018_files/figure-html/unnamed-chunk-6-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+
+&lt;img src="spillovers_uea2018_files/figure-html/unnamed-chunk-7-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Pre-trends
+
+&lt;img src="spillovers_uea2018_files/figure-html/unnamed-chunk-8-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Post-treatment
+
+&lt;img src="spillovers_uea2018_files/figure-html/unnamed-chunk-9-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Post-treatment
+
+&lt;img src="spillovers_uea2018_files/figure-html/unnamed-chunk-10-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Post-treatment
+
+&lt;img src="spillovers_uea2018_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## 95% confidence intervals
+
+&lt;img src="spillovers_uea2018_files/figure-html/unnamed-chunk-12-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+```
+NULL
+```
+
+
+---
+
+## Discussion
+
+Repeated interactions matter - familiarity matters, not just awareness
+
+Effects may be persistent
+
+---
+
+## Future work
+
+Other outcome variables of interest: collaborations, text measures of intellectual distance
+
+Compare results for temporary members
+
+Estimate specification with more structure
+
+---
+
+## Conclusion
+
+Repeated short-term interactions matter
+
+Some evidence (not shown) that heterogeneity matters
+
+---
+
+class: inverse, middle, center
+
+## Feel free to reach out!
+
+&lt;i class="fas fa-envelope"&gt;&lt;/i&gt; weiyang.tham@gmail.com
+
+&lt;i class="fab fa-twitter"&gt;&lt;/i&gt; @wytham88
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
