@@ -1,6 +1,6 @@
 +++
 # Date this page was created.
-date = "2018-01-13"
+date = "2018-11-14"
 
 # Project title.
 title = "Science, Interrupted: Budget Uncertainty and Its Effects on Innovation"
@@ -13,7 +13,7 @@ summary = "I study how uncertainty affects economic activity by focusing on a pa
 
 # Tags: can be used for filtering projects.
 # Example: `tags = ["machine-learning", "deep-learning"]`
-tags = ["economics", "innovation", "networks"]
+tags = ["economics", "innovation", "NIH", "federal budget", "public", "uncertainty"]
 
 # Optional external URL for project (replaces project detail page).
 external_link = ""
