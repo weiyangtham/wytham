@@ -8,7 +8,7 @@ draft = false
 tags = ["economics", "innovation", "science"]
 
 # Project summary to display on homepage.
-summary = "To what extent can policy influence the volume and direction of research? We address this question by studying California's decision in 2004 to invest \$3 billion over 10 years towards stem cell research."
+summary = "To what extent can policy influence the volume and direction of research? We address this question by studying California's decision in 2004 to invest $3 billion over 10 years towards stem cell research."
 
 # Optional image to display on homepage.
 image_preview = ""
