@@ -1,0 +1,15 @@
+---
+title: Chicago R Unconference
+author: Wei Yang
+date: '2019-03-26'
+slug: chicago-r-unconference
+summary: "My first Unconference!"
+categories:
+  - R
+tags:
+  - r
+header:
+  caption: ''
+  image: ''
+---
+
