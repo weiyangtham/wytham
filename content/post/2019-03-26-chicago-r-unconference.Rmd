@@ -4,6 +4,7 @@ author: Wei Yang
 date: '2019-03-26'
 slug: chicago-r-unconference
 summary: "My first Unconference!"
+draft: true
 categories:
   - R
 tags:
@@ -12,4 +13,16 @@ header:
   caption: ''
   image: ''
 ---
+
+A few weeks ago, I left the not-very-balmy climes of Columbus to brave the even-less-balmy climes of Chicago and attend the [Chicago R Unconference](https://chirunconf.github.io/). By the way, if you're going to take a 10-11 hour bus trip, make sure you're loaded up on podcasts in case the wifi that was promised doesn't work. 
+
+Wifi-less bus aside, the Unconference was a wonderfully refreshing experience that I highly recommend if you like R and are looking to get involved in the community or need help jump-starting projects. Here are some thoughts. 
+
+## What even is an Unconference?
+
+The best description I can think of is that it's some combination of a "hack-a-thon" and a community building event. But I put "hack-a-thon" in scare quotes because that implies a certain competitiveness and level of technicality that can be intimidating, which the Unconference style is actively not. 
+
+The neat thing about the Unconference is that there was such a variety of projects and variety of tasks within each project that everyone could contribute in some way. You could tackle Github issues on mature projects like [`broom`](https://github.com/tidymodels/broom/), help build an education package like [`rlangtip`](https://github.com/revodavid/rlangtip), or if you wanted to go meta, build an [Unconference toolbox](https://unconf-toolbox.github.io/unconf-guide/). 
+
+
 
