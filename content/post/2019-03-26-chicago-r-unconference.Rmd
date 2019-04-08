@@ -4,7 +4,7 @@ author: Wei Yang
 date: '2019-03-26'
 slug: chicago-r-unconference
 summary: "My first Unconference!"
-draft: true
+draft: false
 categories:
   - R
 tags:
@@ -14,9 +14,15 @@ header:
   image: ''
 ---
 
-A few weeks ago, I left the not-very-balmy climes of Columbus to brave the even-less-balmy climes of Chicago and attend the [Chicago R Unconference](https://chirunconf.github.io/). By the way, if you're going to take a 10-11 hour bus trip, make sure you're loaded up on podcasts in case the wifi that was promised doesn't work. 
+<style>
+p.caption {
+  font-size: 0.8em;
+}
+</style>
 
-Wifi-less bus aside, the Unconference was a wonderfully refreshing experience that I highly recommend if you like R and are looking to get involved in the community or need help jump-starting projects. Here are some thoughts. 
+A few weeks ago, I left the not-very-balmy climes of Columbus to brave the even-less-balmy climes of Chicago and attend the [Chicago R Unconference](https://chirunconf.github.io/).^[By the way, if you're going to take a 10-11 hour bus trip, make sure you're loaded up on podcasts in case the wifi that was promised doesn't work.]
+
+The Unconference was a wonderfully refreshing experience that I highly recommend if you like R and are looking to get involved in the community or need help jump-starting projects. Here are some thoughts. 
 
 ## What even is an Unconference?
 
@@ -32,9 +38,14 @@ At the actual Unconference, after an intro + icebreakers, we did an overview of 
 
 As someone with a lot of experience as a user and not so much as a developer, I wanted to get my feet wet with a more mature package where I could work on "beginner-friendly" issues and have someone more experienced to guide me. I decided to help out with [`broom`](https://github.com/tidymodels/broom/), since I use it a ton and it literally has issues that are tagged as "beginner-friendly". [Alex Hayes](https://twitter.com/alexpghayes) was super patient and helpful and helped many of us get our first pull requests!
 
-You weren't bound to the project you started with. Many people stuck with the same project some also moved around. So on the second day I went over to the [`footrulr`](https://github.com/kanishkamisra/footrulr) team and got to help out and learn a little bit about NLP, but most importantly hang out with even more cool folks!
+![The broom team!](/post/2019-03-26-chicago-r-unconference_files/chirunconf_broom.jpg)
+
+You weren't bound to the project you started with. Many people stayed with the same project but some also moved around. So on the second day I went over to the [`footrulr`](https://github.com/kanishkamisra/footrulr) team and got to help out and learn a little bit about NLP, but most importantly hang out with even more cool folks!
 
 ## What do you get out of it?
+
+Easily the best thing about the Unconference was just getting to hang out with a bunch of people who are unabashedly enthusiastic about R and who really care about building the R community in a way that is kind and supportive. There aren't many R users in my department that I can geek out with, so this was my chance to really soak it all in. It was so cool to see such a wide range of backgrounds represented and simultaneously feel like you brought something to the table because of your unique background or skillset. So much credit goes to to the organizers - [Angela](https://twitter.com/CivicAngela), [Emily](https://twitter.com/EmilyRiederer), and [Alex](https://twitter.com/alexpghayes) - for successfully translating the great #rstats online community into an enjoyable and fruitful weekend of learning and collaboration. If you have a chance, DEFINITELY apply!
+
 
 
 
