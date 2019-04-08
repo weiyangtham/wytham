@@ -22,7 +22,24 @@ Wifi-less bus aside, the Unconference was a wonderfully refreshing experience th
 
 The best description I can think of is that it's some combination of a "hack-a-thon" and a community building event. But I put "hack-a-thon" in scare quotes because that implies a certain competitiveness and level of technicality that can be intimidating, which the Unconference style is actively not. 
 
-The neat thing about the Unconference is that there was such a variety of projects and variety of tasks within each project that everyone could contribute in some way. You could tackle Github issues on mature projects like [`broom`](https://github.com/tidymodels/broom/), help build an education package like [`rlangtip`](https://github.com/revodavid/rlangtip), or if you wanted to go meta, build an [Unconference toolbox](https://unconf-toolbox.github.io/unconf-guide/). 
+The neat thing about the Unconference is that there was such a variety of projects and variety of tasks within each project that everyone could contribute in some way. You could tackle Github issues on mature projects like [`broom`](https://github.com/tidymodels/broom/), help build an education package like [`rlangtip`](https://github.com/revodavid/rlangtip), or if you wanted to go meta, build an [Unconference toolbox](https://unconf-toolbox.github.io/unconf-guide/)!
+
+## What actually happens?
+
+Before the actual Unconference, we started out with a virtual brainstorming session by creating [Github issues](https://github.com/chirunconf/chirunconf19/issues). Maintainers would post if they wanted help with their packages, but lots of other people also proposed ideas for new packages. There are a lot of ideas flying around so I think it can be tempting to hold back at this stage of the process, but I really recommend trying to be involved if you can. Even though I didn't work on anything that I proposed, just going through the process helped me to come up with ideas for projects I want to work on in the future *and* get feedback about those ideas from people with way more developer experience.  
+
+At the actual Unconference, after an intro + icebreakers, we did an overview of the different projects that had come up in the Github issues and people leading those projects would set up in different parts of the room. If you wanted to work on a particular project, you just headed over to that part of the room. You could even work on your own project if you wanted!
+
+As someone with a lot of experience as a user and not so much as a developer, I wanted to get my feet wet with a more mature package where I could work on "beginner-friendly" issues and have someone more experienced to guide me. I decided to help out with [`broom`](https://github.com/tidymodels/broom/), since I use it a ton and it literally has issues that are tagged as "beginner-friendly". [Alex Hayes](https://twitter.com/alexpghayes) was super patient and helpful and helped many of us get our first pull requests!
+
+You weren't bound to the project you started with. Many people stuck with the same project some also moved around. So on the second day I went over to the [`footrulr`](https://github.com/kanishkamisra/footrulr) team and got to help out and learn a little bit about NLP, but most importantly hang out with even more cool folks!
+
+## What do you get out of it?
+
+
+
+
+
 
 
 
