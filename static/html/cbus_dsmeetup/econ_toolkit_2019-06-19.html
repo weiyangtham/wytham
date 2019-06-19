@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>The Applied Economist’s Toolkit</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Wei Yang Tham" />
+    <meta name="date" content="2019-06-19" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# The Applied Economist’s Toolkit
+### Wei Yang Tham
+### 2019-06-19
+
+---
+
+
+
+
+
+
+
+# About Me
+  
+Finishing my PhD in Economics at The Ohio State University
+
+Economics of science and innovation
+
+R, dataviz, causal inference
+
+--
+
+Improv at [The Nest Theatre](https://nesttheatre.com/) on Broad St.
+
+---
+
+## What happens if you do X?
+
+- Does employment decrease if you raise the minimum wage?
+
+- Does investing in stem cell research actually lead to more research?
+
+- Will running an advertising campaign raise revenue?
+
+--
+
+These are questions about **causation**
+
+---
+
+## Estimating causal effects is the bread and butter of many economists
+
+Provide intuition for how economists and social scientists have approached this problem
+
+Inspiration for ways you might apply this in other contexts
+
+---
+
+# Caveats
+
+Lots of advances in methodology have come from other fields including political science, epidemiology, statistics, computer science
+
+Only one part of econometrics and economics
+
+---
+
+class: inverse, middle
+
+## Why is estimating causal effects hard?
+
+---
+
+## Eating chocolate wins Nobel Prizes?
+
+&lt;img src="img/chocolate_nobel.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## .large[$$y = D\beta+ X\gamma + u$$]
+
+- `\(y\)` is an outcome we care about (e.g. wages)
+- `\(D\)` is an indicator for a "treatment" (e.g. going to college)
+- `\(X\)` are some characteristics we observe ("observables")
+- `\(u\)` is stuff we don't observe ("unobservables")
+
+--
+
+### Why can't we just run a regression and call it a day?
+
+---
+
+## People don't make choices randomly
+
+People who go to college are different than people who don't go to college 
+
+- Different social networks
+- Different aptitudes
+
+--
+
+### Many of these differences are *unobserveable* and could directly affect wages
+
+---
+
+## The effect of `\(U\)` on `\(Y\)` is wrongly attributed as the effect of D on Y
+
+&lt;img src="img/ovb.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Usual Solution? Randomized Control Trials (RCTs)
+
+- If we randomly assign the treatment, then the treatment and control groups have similar unobservables (on average)
+
+---
+
+## But RCTs are not always feasible
+
+- Some things can't be A/B tested (e.g. TV ads)
+- Expense
+- Internal resistance
+- Ethics (randomly assign lead poisoning)
+
+---
+
+class: inverse, middle
+
+## Quasi-experiments can be helpful here
+
+---
+
+## Quasi-experimental designs
+
+- Instrumental variables
+- Difference-in-differences 
+- Synthetic control 
+- Regression discontinuity
+
+
+---
+
+## Focus is on Research Design, less on methods
+
+- Focuses discussion on credibility of research design
+
+- Estimation is often done with linear regression
+
+---
+
+class: middle, inverse
+
+## Instrumental variables
+
+---
+
+## Intuition
+
+Problem: College attendance and wages are both related to unobserved characteristics
+
+An *instrument* is something that affects college attendance but NOT wages
+
+---
+
+## What makes a good instrument?
+
+1. Relevant: Has an effect on the intervention ( `\(Z\)` affects `\(D\)`)
+
+2. Exclusion restriction: Only related to the outcome through its effect on intervention ( `\(Z\)` only affects `\(Y\)` through `\(D\)`) 
+
+---
+
+## The exclusion restriction is untestable
+
+&lt;img src="img/iv_dag.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Finding clever instruments is an entire industry...
+
+- Gender of children as instrument for family size
+- Quarter-of-birth for years spent in school
+- Muslim holidays as for number of drivers on the road
+
+---
+
+## ...but *randomization* is a great instrument!  
+
+- Oregon Medicaid Lottery
+
+- If you have A/B tests, you have instruments!
+
+---
+
+## Do referrals increase retention?
+
+- Problem: people who already refer more friends are probably more invested in the product
+
+- Solution: find an A/B test that successfully increased referrals (e.g. an email campaign) and you have a ready-made instrument
+
+---
+
+class: inverse, middle
+
+## Difference-in-differences
+
+---
+
+## Example
+
+- Say you want to know how an increase in the Ohio state minimum wage changed employment
+
+- If employment decreased after the minimum wage increased, does that mean the causal effect of the minimum wage was to decrease employment?
+
+---
+
+## Intuition
+
+- Use a control group to account for underlying time trends 
+
+- E.g. find a state that had similar trends in employment to Ohio before the minimum wage increase happened
+
+---
+
+## Similar trends, different levels
+
+&lt;img src="econ_toolkit_2019-06-19_files/figure-html/dd_plots-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Control and Treated groups both increased
+
+&lt;img src="econ_toolkit_2019-06-19_files/figure-html/unnamed-chunk-4-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Take the difference before and after treatment for the treatment and contrl groups
+
+&lt;img src="econ_toolkit_2019-06-19_files/figure-html/unnamed-chunk-5-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Take the difference of those differences
+
+&lt;img src="econ_toolkit_2019-06-19_files/figure-html/unnamed-chunk-6-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Difference-in-differences relies on the parallel trend assumption
+
+Without the intervention, the treatment and control groups would have experienced the same time trends
+
+---
+## arallel trend assumption
+
+&lt;img src="econ_toolkit_2019-06-19_files/figure-html/unnamed-chunk-7-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Example: Ineffectiveness of Paid search 
+
+&lt;img src="img/ebayad.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Randomization + Difference-in-differences
+
+- Randomly selected cities to turn off paid search
+
+- Selected control cities with similar trends in sales
+
+- Estimated little to no effect of paid search on sales
+
+---
+
+&lt;img src="img/ebay_dd.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Validity checks
+
+- Statistical and graphical checks that trends are similar before the intervention
+
+- Contextual knowledge: knowing what else is changing at the same time
+
+
+---
+
+class: inverse, middle
+
+## Synthetic Control
+
+---
+
+## Synthetic Control is a close cousin of difference-in-differences
+
+Used in comparative case studies - how did an event affect aggregate outcomes of a single unit (e.g. country, state)?
+
+Example: What was the economic impact of reunification on West Germany?
+
+---
+
+## Synthetic control finds the weighted combination of countries that are most similar to Germany
+
+- Minimize the distance between West Germany and potential control countries based on a set of pre-unification variables (e.g. GDP per capita, trade openness, inflation rate)
+
+---
+
+## West Germany looks different from the rest of the OECD
+
+&lt;img src="img/beforesynth.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## West Germany and Synthetic West Germany look similar pre-reunification
+&lt;img src="img/aftersynth.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Synthetic Control: How can you measure the impact of TV advertising?
+
+- Can't randomly assign TV ads to individual users
+- Instead, randomly assign treatment to cities 
+
+---
+
+## Two issues with randomizing by geographic area
+
+1. There are a limited number of cities and they are very different from each other
+2. If you divide up the US into treatment and control, then you can't estimate the effect for *entire* US
+
+---
+
+## Create synthetic US for both treated *and* control cities
+
+.center2[
+&lt;img src="img/wayfair_syntheticcontrol.png" width="85%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Regression discontinuity
+
+- Compare units just above or below an arbitrary/random cutoff 
+- E.g. test scores to get a scholarship
+
+---
+
+&lt;img src="econ_toolkit_2019-06-19_files/figure-html/unnamed-chunk-12-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Do online reviews affect consumer demand?
+
+Yelp rounds online ratings to the nearest half-star (3.24 -&gt; 3, 3.25 -&gt; 3.5)
+
+Compared difference in revenue between firms around the rounding thresholds
+
+---
+
+## 1-star increase leads to 5-9% increase in revenue
+&lt;img src="img/luca_yelp.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Regression discontinuity doesn't work if units around threshold are not randomly assigned
+
+- There could be manipulation around the threshold e.g. influential parents lobby to get their children extra points if they're just below the threshold
+
+---
+
+## Validity Checks
+
+1. Look at distribution of units around the threshold
+
+2. Look at distribution of observables around the threshold
+
+---
+
+## #Units above threshold `\(\approx\)` #Units below threshold
+
+&lt;img src="econ_toolkit_2019-06-19_files/figure-html/unnamed-chunk-14-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="econ_toolkit_2019-06-19_files/figure-html/unnamed-chunk-15-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Observables should not be "affected" by the discontinuity
+
+In scholarship example, if we observe a jump in parental income at the discontinuity, then something is wrong
+
+
+---
+
+## What can't quasi-experiments do: Local average treatment effects
+
+Often, we don't get to randomize across the whole population
+
+E.g. in regression discontinuity, we're estimating the causal effect for people *around the threshold* and ignoring those far away from the threshold
+
+This may still be relevant! Interventions often occur at the margin
+
+---
+
+## What can't quasi-experiments do: external validity
+
+Effects may change as interventions are scaled up
+
+---
+
+# Resources 
+
+- Mostly Harmless Econometrics or Mastering 'Metrics
+- [What's the Science in Data Science? - Skipper Seabold](https://youtu.be/kTo16ieMCi8)
+- [Teconomics](https://medium.com/teconomics-blog/)
+- [Wayfair Tech Blog](https://tech.wayfair.com/data-science/2017/08/using-geographic-splitting-optimization-techniques-to-measure-marketing-performance/)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
