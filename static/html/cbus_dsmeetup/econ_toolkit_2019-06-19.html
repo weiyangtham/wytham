@@ -59,7 +59,7 @@ Inspiration for ways you might apply this in other contexts
 
 ---
 
-# Caveats
+## Caveats
 
 Lots of advances in methodology have come from other fields including political science, epidemiology, statistics, computer science
 
@@ -82,13 +82,20 @@ class: inverse, middle
 ## .large[$$y = D\beta+ X\gamma + u$$]
 
 - `\(y\)` is an outcome we care about (e.g. wages)
-- `\(D\)` is an indicator for a "treatment" (e.g. going to college)
+
+- `\(D\)` is an indicator for a treatment/intervention (e.g. going to college)
+
 - `\(X\)` are some characteristics we observe ("observables")
+
 - `\(u\)` is stuff we don't observe ("unobservables")
 
 --
 
-### Why can't we just run a regression and call it a day?
+#### The goal is estimate `\(\beta\)`, the effect of `\(D\)` on `\(y\)`
+
+--
+
+###  Why can't we just run a regression and call it a day?
 
 ---
 
@@ -113,6 +120,8 @@ People who go to college are different than people who don't go to college
 
 ## Usual Solution? Randomized Control Trials (RCTs)
 
+- Naive regression ends up comparing people with different unobservables 
+
 - If we randomly assign the treatment, then the treatment and control groups have similar unobservables (on average)
 
 ---
@@ -131,6 +140,11 @@ class: inverse, middle
 ## Quasi-experiments can be helpful here
 
 ---
+class: middle
+
+### Sometimes experiments pop up "in the wild" because of arbitrary decisions or events
+
+---
 
 ## Quasi-experimental designs
 
@@ -142,9 +156,9 @@ class: inverse, middle
 
 ---
 
-## Focus is on Research Design, less on methods
+## Focus is on credibility of Research Design, less on methods
 
-- Focuses discussion on credibility of research design
+- To what extent does this approximate an actual randomized experiment?
 
 - Estimation is often done with linear regression
 
@@ -153,6 +167,16 @@ class: inverse, middle
 class: middle, inverse
 
 ## Instrumental variables
+
+---
+
+## Cool origin story
+
+- First appears in appendix of a book on animal and vegetable oil tariffs
+
+- Unclear if idea came from the author, economist Philip Wright, or his son, a geneticist 
+
+- Text analysis shows the writing style most closely matched Philip's 
 
 ---
 
@@ -202,9 +226,23 @@ An *instrument* is something that affects college attendance but NOT wages
 
 ---
 
+## Validity checks
+
+There are statistical tests for relevance of an instrument
+
+Exclusion restriction is usually justified based on institutional knowledge
+
+Check that there is balance across observables - e.g. if instrument is binary, then check that units exposed to instrument look similar to units not exposed to instrument
+
+---
+
 class: inverse, middle
 
 ## Difference-in-differences
+
+---
+
+### If you use quasi-experimental designs, you will almost certainly use difference-in-differences
 
 ---
 
@@ -253,7 +291,7 @@ class: inverse, middle
 Without the intervention, the treatment and control groups would have experienced the same time trends
 
 ---
-## arallel trend assumption
+## Parallel trend assumption
 
 &lt;img src="econ_toolkit_2019-06-19_files/figure-html/unnamed-chunk-7-1.png" width="85%" style="display: block; margin: auto;" /&gt;
 
@@ -283,8 +321,11 @@ Without the intervention, the treatment and control groups would have experience
 
 - Statistical and graphical checks that trends are similar before the intervention
 
-- Contextual knowledge: knowing what else is changing at the same time
+- Even if trends are similar, need to justify why *levels* are different
 
+- Contextual knowledge: knowing what else is changing at the same time as the intervention
+
+- Placebo test: an intervention on 6th graders should have no effect 8th graders
 
 ---
 
@@ -322,6 +363,7 @@ Example: What was the economic impact of reunification on West Germany?
 ## Synthetic Control: How can you measure the impact of TV advertising?
 
 - Can't randomly assign TV ads to individual users
+
 - Instead, randomly assign treatment to cities 
 
 ---
@@ -344,9 +386,12 @@ Example: What was the economic impact of reunification on West Germany?
 ## Regression discontinuity
 
 - Compare units just above or below an arbitrary/random cutoff 
+
 - E.g. test scores to get a scholarship
 
 ---
+
+## Causal effect is difference between points "close" to the threshold
 
 &lt;img src="econ_toolkit_2019-06-19_files/figure-html/unnamed-chunk-12-1.png" width="85%" style="display: block; margin: auto;" /&gt;
 
@@ -361,7 +406,7 @@ Compared difference in revenue between firms around the rounding thresholds
 ---
 
 ## 1-star increase leads to 5-9% increase in revenue
-&lt;img src="img/luca_yelp.png" width="85%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/luca_yelp.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -395,9 +440,15 @@ Compared difference in revenue between firms around the rounding thresholds
 In scholarship example, if we observe a jump in parental income at the discontinuity, then something is wrong
 
 
+Placebo test works here: there should be no effect on an unrelated outcome
+
 ---
 
-## What can't quasi-experiments do: Local average treatment effects
+### Even if we are satisfied with our quasi-experiment (internally valid), how do we know it will accurately predict effects of a future action?
+
+---
+
+## Local average treatment effects
 
 Often, we don't get to randomize across the whole population
 
@@ -407,18 +458,29 @@ This may still be relevant! Interventions often occur at the margin
 
 ---
 
-## What can't quasi-experiments do: external validity
+## Equilibrium effects
 
-Effects may change as interventions are scaled up
+Scaling up an intervention can have substantial effects on how people interact
+
+E.g. Retaining sellers on an online marketplace could affect revenue gains due to competition
+
+---
+
+## Causal inference things I haven't covered
+
+- Directed Acyclic Graphs (DAGs)
+
+- Machine learning + causal inference
 
 ---
 
 # Resources 
 
-- Mostly Harmless Econometrics or Mastering 'Metrics
+- Mostly Harmless Econometrics or Mastering 'Metrics by Angrist and Pischke
+- [Causal Inference: The Mixtape](http://scunning.com/cunningham_mixtape.pdf)
 - [What's the Science in Data Science? - Skipper Seabold](https://youtu.be/kTo16ieMCi8)
 - [Teconomics](https://medium.com/teconomics-blog/)
-- [Wayfair Tech Blog](https://tech.wayfair.com/data-science/2017/08/using-geographic-splitting-optimization-techniques-to-measure-marketing-performance/)
+- [Structural models](https://towardsdatascience.com/the-holy-grail-of-econometrics-3a45a2295ce5) and [here as well](http://noahpinionblog.blogspot.com/2017/05/how-should-theory-and-evidence-relate.html)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
