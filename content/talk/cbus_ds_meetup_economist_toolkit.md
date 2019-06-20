@@ -7,7 +7,7 @@ time_end = 2019-06-19T00:00:00
 abstract = ""
 abstract_short = "Intro to quasi-experimental methods"
 event = "Columbus Data Science Meetup"
-event_url = "https://github.com/weiyangtham/methods_workshop"
+event_url = "https://www.meetup.com/Columbus-Data-Science/events/262020924/"
 location = ""
 
 # Is this a selected talk? (true/false)
