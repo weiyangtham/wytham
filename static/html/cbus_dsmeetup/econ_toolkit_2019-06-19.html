@@ -4,7 +4,7 @@
     <title>The Applied Economist’s Toolkit</title>
     <meta charset="utf-8" />
     <meta name="author" content="Wei Yang Tham weiyang.tham@gmail.com Twitter: @wytham88" />
-    <meta name="date" content="2019-06-19" />
+    <meta name="date" content="2019-06-20" />
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
@@ -13,7 +13,7 @@ class: center, middle, inverse, title-slide
 
 # The Applied Economist’s Toolkit
 ### Wei Yang Tham<br><span style="font-size: 70%;"><a href="mailto:weiyang.tham@gmail.com">weiyang.tham@gmail.com</a></span><br><span style="font-size: 70%;">Twitter: <span class="citation">@wytham88</span></span>
-### 2019-06-19
+### 2019-06-20
 
 ---
 
@@ -185,6 +185,8 @@ class: middle, inverse
 Problem: College attendance and wages are both related to unobserved characteristics
 
 An *instrument* is something that affects college attendance but NOT wages
+
+Roughly, we are using the instrument to "purge" the part of college attendance that is explained by unobservables
 
 ---
 
@@ -468,19 +470,30 @@ E.g. Retaining sellers on an online marketplace could affect revenue gains due t
 
 ## Causal inference things I haven't covered
 
+- Matching 
+
 - Directed Acyclic Graphs (DAGs)
 
 - Machine learning + causal inference
 
 ---
 
-# Resources 
+### Resources 
 
-- [Mostly Harmless Econometrics](https://www.amazon.com/Mostly-Harmless-Econometrics-Empiricists-Companion/dp/0691120358) or [Mastering 'Metrics](https://www.amazon.com/Mastering-Metrics-Path-Cause-Effect-ebook/dp/B00MZG71MC) by Angrist and Pischke
-- [Causal Inference: The Mixtape](http://scunning.com/cunningham_mixtape.pdf)
+.small[
+#### Books
+- [Mostly Harmless Econometrics](https://www.amazon.com/Mostly-Harmless-Econometrics-Empiricists-Companion/dp/0691120358) or [Mastering 'Metrics (less technical)](https://www.amazon.com/Mastering-Metrics-Path-Cause-Effect-ebook/dp/B00MZG71MC) by Angrist and Pischke
+- [Causal Inference: The Mixtape (free)](http://scunning.com/cunningham_mixtape.pdf)
+
+#### Many ideas for this presentation were borrowed liberally from: 
 - [What's the Science in Data Science? - Skipper Seabold](https://youtu.be/kTo16ieMCi8)
 - [Teconomics](https://medium.com/teconomics-blog/)
-- [Structural models](https://towardsdatascience.com/the-holy-grail-of-econometrics-3a45a2295ce5) and [here as well](http://noahpinionblog.blogspot.com/2017/05/how-should-theory-and-evidence-relate.html)
+- [Wayfair example on synthetic control](https://tech.wayfair.com/data-science/2017/08/using-geographic-splitting-optimization-techniques-to-measure-marketing-performance/)
+
+#### Structural models are sometimes proposed as a way of overcoming external validity challenge
+- [A light intro](https://towardsdatascience.com/the-holy-grail-of-econometrics-3a45a2295ce5) 
+- [Big picture discussion of their role in research](http://noahpinionblog.blogspot.com/2017/05/how-should-theory-and-evidence-relate.html)
+]
 
 ---
 class: inverse, middle
