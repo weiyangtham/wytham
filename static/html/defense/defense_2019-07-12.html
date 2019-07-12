@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Essays in the Economics of Science and Innovation</title>
+    <meta charset="utf-8" />
+    <meta name="date" content="2019-07-12" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Essays in the Economics of Science and Innovation
+## Dissertation Defense of Wei Yang Tham
+### 2019-07-12
+
+---
+
+
+
+
+
+
+
+
+## Ideas -&gt; Technology -&gt; Growth
+
+--
+
+### Using applied econometrics to understand where ideas come from and the role of policy in generating knowledge
+
+---
+
+## Three papers
+
+- The Effect of Temporary Colocation on Knowledge Flows: Evidence from NIH Study Sections
+
+- The Effect of Targeted Increases in Science Funding: Stem Cell Research in California
+
+- Science, Interrupted: How Disruptions to Funding Affect Innovation
+
+---
+
+class: inverse, middle
+
+## The Effect of Temporary Colocation on Knowledge Flows: Evidence from NIH Study Sections
+
+---
+
+## Discovery of The Double Helix
+
+Central figures: Watson, Crick, Wilkins, and Franklin 
+
+**In 1951, Watson saw Wilkins present at a conference in Naples**
+
+This encounter prompted Watson to move to Cambridge and change the direction of his research
+
+---
+
+## Research Question
+
+Vast literature on spillovers, long-term interactions
+
+"Cricket spills over into business" - Enrico Moretti's *The New Geography of Jobs*
+
+--
+
+What is the effect of short-term interactions on collaboration and knowledge diffusion?
+
+---
+
+## Empirical challenges
+ 
+Data on short-term interactions is hard to find
+
+Endogeneity of colocation - people aren't randomly in the same place
+
+Measurement
+
+---
+
+## Related work
+
+Boudreau et al (2017): scientists randomly assigned to breakout sessions more likely to apply for grant together
+
+Campos, Leon, McQuillin (2018): Cancellation of major political science meeting due to hurricane led to reduction in coauthoring
+
+Chai (2014): effect of conferences
+
+Andrews (2019): Patenting decreased after prohibition
+
+---
+
+## My approach
+
+Quasi-experimental
+
+Repeated interactions
+
+Long-term outcomes
+
+---
+
+class: inverse, middle, center
+
+## Setting
+
+---
+
+## NIH study sections
+
+NIH panels that evaluate grant applications 
+
+Convened by a Scientific Review Officer from the NIH
+
+Organized around topics e.g. "Acute Neural Injury and Epilepsy", "Cellular Signaling and Regulatory Systems"
+
+---
+
+## Criteria for reviewer selection
+
+1. Expertise 
+
+1. Study section must have enough breadth to cover its scientific area 
+
+---
+
+## Permanent vs. Temporary Members
+
+Permanent members serve 4-year terms, 3 meetings a year
+
+Temporary members are recruited on an ad hoc basis
+
+Temporary memberships are sometimes used as tryouts for permanent membership
+
+&lt;!-- Each meeting has on average 17 permanent and 13 temporary reviewers 
+--&gt;
+
+---
+
+## What happens in a study section?
+
+Each application is assigned 3 reviewers
+
+Reviewers present their assessment of the application and discussion opens up to rest of panel
+
+--
+
+**What potential is there for knowledge diffusion?** What do reviewers actually talk about?
+
+---
+
+## Are reviewers different enough?
+
+"I was always a minority, a clinical cardiologist, not an engineer. **So it was my job to defend cardiology science and explain it**" - Dr. David Sahn, Oregon Health Sciences University
+
+---
+
+## Do they learn from each other?
+
+"I've come away grateful for the opportunity and consciously aware that **I learned some new science** and developed skills to **interact with people with different attitudes and opinions**" - Dr. Alice Clark, University of Mississippi
+
+???
+
+Suggests
+
+1. reviewers are not entirely familiar with each other's fields
+1. there are learning opportunities within the reviewing process
+
+---
+
+## Intellectual similarity
+
+If scientists are too similar, may already be familiar with each other's work
+
+If scientists are too distant, may be harder to use each other's knowledge
+
+--
+
+Effects may vary by intellectual similarity and could be non-monotonic
+
+---
+
+class: center, middle, inverse
+
+# Data
+
+---
+
+## Study section rosters
+
+List of reviewers who attended a particular meeting for a particular study section
+
+---
+
+## Author-ity
+
+Dataset of disambiguated author names ("John Smith" problem)
+
+Derived from MEDLINE, repository for biomedical literature
+
+---
+
+## Citations
+
+Clarivate Analytics Web of Science 
+
+---
+
+## Setup
+
+Scientist pair (not ordered): `\((i, j) \equiv (j, i)\)`
+
+Pair-year panel
+
+---
+
+## Sample
+
+
+
+Over 14000 individuals matched out of 19000
+
+235 study sections
+
+Each panel has 29 members on average
+
+Time period: 1992 to 2010, but most meetings observed are in 2006 or earlier
+
+---
+
+class: inverse, middle, center
+
+# Estimation
+
+---
+
+## Identification
+
+Limit to permanent members of study sections
+
+Make use of fixed 4-year terms (imputed)
+
+---
+
+## Identification 
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Treatment intensity
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Identifying assumption
+
+Use reviewer-pairs who served within 3 years of each other 
+
+If scientists `\(i\)` and `\(j\)` served on a study section, *when* they were on the study section is exogenous
+
+---
+
+## Average citations (no controls)
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+class: middle, center, inverse
+
+## Results
+
+---
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Event study by similarity
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-8-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## DD by similarity
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Coauthorships (no controls)
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Time and pair FE
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Discussion
+
+Repeated interactions matter - familiarity matters, not just awareness
+
+Effects may be persistent
+
+---
+
+## Conclusions and future work
+
+Repeated short-term interactions matter
+
+Citations may not always capture knowledge recombination
+
+Future work - other outcome variables, esp coauthorships
+
+
+---
+
+class: inverse, middle
+
+# The Effect of Targeted Increases in Science Funding: Stem Cell Research in California
+
+---
+
+## Background
+- In 2004, California allocated &lt;span style="color:#D13434"&gt; $3 billion over 10 years &lt;/span&gt; towards stem cell research
+- What is the effect of a large, targeted intervention on a specific area of science?
+
+---
+
+## Research Question
+
+1. Did stem cell research in California increase? 
+1. What were the effects of this increase in funding in equilibrium? 
+    - How were other fields in biomedical science affected?
+    - How did this new source of funding affect competition for NIH funding?
+    - Did this affect scientists' location decisions? 
+    
+---
+
+## Findings
+- Use synthetic control method to compare scientific output of California against other states
+- Led to increase of over 800 publications in stem cell research relative to control state
+- No evidence of change in quality or novelty of average California paper
+
+---
+
+## Stem cells: a quick primer
+- Can renew themselves and develop into specialized cells
+- Human embryonic stem cells are *pluripotent*, that is, they can give rise to **any** type of cell
+- Huge potential as research tool and for regenerative medicine, but...
+- controversial due to use of human embryos in research 
+
+---
+
+## Timeline
+
+&lt;img src="img/sc_events.gif" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Effects of Bush 2001 restrictions
+
+- Furman et al (2012)
+- U.S. stem cell research ⬇️ 
+- But scientists at more prestigious institutions eventually recover by collaborating with overseas researchers
+- Outcome variable: citations to core set of human embryonic stem cell articles
+- Analysis ends slightly after California begins distributing funds
+
+---
+
+## State stem cell research funding programs
+
+
+|  State|  First Grants Awarded|  Total Funding| Funding per year |
+|--:| --:|--:|--:|
+| California|  2006| $3b |$300m|
+|  New York|  2008|  $600m|$55m|
+| Maryland| 2007| (determined yearly)| $10-23 million|
+| Connecticut | 2006 |$100m|$10m|
+
+
+- NIH yearly funding of stem cell research is $1.2b to $1.5bn (fiscal years 2013 to 2017)
+
+---
+
+## Other work on impact of state programs
+
+- Alberta et al (2015) look at publication trends in states with stem cell programs
+
+---
+
+## What did CIRM (California Institute of Regenerative Medicine) fund? 
+
+- Basic science, infrastructure, applied research, clinical trials
+
+&lt;!--
+- $3 billion over 10 years, or \$300 million per year on average
+- NIH estimates that it spends \$1.2 to \$1.4 billion per year on stem cell research 
+--&gt;
+
+---
+
+## Data
+- MEDLINE: repository of articles in the biomedical sciences
+&lt;!--- Author-ity [@torvik2009]: links authors to publications --&gt;
+- MapAffil (Torvik 2015): infers author location on MEDLINE articles
+- Web of Science for article citations
+&lt;!-- - Patent citations for patent citations --&gt;
+
+---
+
+## Defining stem cell publications: MeSH terms
+- Extensive controlled vocabulary used to index MEDLINE database
+- Articles are assigned MeSH terms by the National Library of Medicine
+
+---
+
+## Defining stem cell publications
+- Hierarchical structure (up to 13 levels)
+- All publications tagged with MeSH terms under "Stem Cell"
+
+![](img/mesh_stemcell.png)
+
+---
+
+## Assigning states to publications
+
+- MapAffil infers author location based on address listed on publication 
+
+- This is typically the first author's address
+
+- In biomedical sciences, first author has primary responsibility for the work
+
+- We define a publication's state as the state of its first author's address
+
+---
+
+## Empirical strategy
+- Use other states as control units for California
+
+- Synthetic control method: use weighted average of non-California states to construct a "synthetic" California
+
+- Variables used to construct weights: lagged outcomes averaged over 1995 to 1998, 1999 to 2002, and 2003 to 2006
+
+---
+
+## California systematically larger than other states
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Synthetic control assumptions
+
+Synthetic control usually restricts synthetic California to be a **convex** combination of control states
+
+---
+
+## We relax those assumptions 
+
+Doudchenko and Imbens: 
+
+1. Allows for an intercept
+1. Does not force weights to sum up to one
+1. Allows weights to be negative
+
+---
+
+## Did California production of stem cell research increase?
+
+- Publication counts 
+- Citations by other articles
+
+---
+
+## Synthetic California
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Inference for synthetic control: Placebo test
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Non-stem cell publications as placebo
+- Could scientific productivity in California be increasing in general and not just for stem cell research?
+- Should NOT expect to see similar "effects" for non-stem cell research
+
+---
+
+## No evidence of "effect" on non-stem cell research
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-17-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Citations by other publications
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Did CIRM fund more impactful/novel research?
+- Purpose of state funding was to support research that federal funding could not
+- We look at
+    + "Birth" of new concepts
+    + &lt;span style="color:grey"&gt; Adoption of new concepts &lt;/span&gt;
+    + Citation count of average paper
+    
+---
+
+## Average CA publication not more likely to have new concepts
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Average CA stem cell publication did not have more citations
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-20-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Implied marginal product
+
+- 0.5 to 0.7 papers per $1 million
+
+- For comparison, Sattari and Weinberg (2017) estimate 2 papers per $1 million for NIH researchers
+
+- CIRM funding does not always go directly to research projects
+
+---
+
+## Conclusions and future work
+
+- Higher volume of publications from California, no change in impact of the average paper
+
+- Finer categorizations of stem cell research
+
+- Identify control fields
+
+---
+
+class: inverse, middle
+
+# Science, Interrupted: How Disruptions to Funding Affect Innovation
+
+---
+
+## My contribution
+
+Federal funding supports a lot of economic activity
+
+--
+
+1. Innovation sector - NIH-funded biomedical research
+
+--
+
+1. Focus on *funding interruptions* as channel for uncertainty to affect innovative activity 
+
+1. Transaction-level data - can observe activity at unusual level of detail
+
+---
+
+## Projects that experienced interrupted funding:
+
+--
+
+1. Spend 40-50% less per month in the last year of the project 
+
+--
+
+1. Spend 80-90% less in the first month after renewal, but catch up within 2 months
+
+--
+
+1. Spending unaffected in labs with multiple grants 
+
+---
+
+class: inverse, middle
+
+## Background: Scientist perspective
+
+---
+
+## R01 grant mechanism
+
+R01 grant is needed to sustain an independent lab
+
+Usually last 4-5 years
+
+Can be extended an additional year if you didn't spend all your money
+
+---
+
+## What happens when an R01 ends?
+
+Have to renew the project
+
+---
+
+## Fail to renew
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-21-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewed and funded continuously
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-22-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewed with interrupted funding
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-23-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Continuous vs. interrupted
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-24-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewal timeline (no hiccups)
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-25-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewal timeline
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-26-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, middle, center
+
+## Background: NIH perspective
+
+---
+
+## Budgeting process
+
+NIH budget is determined every fiscal year
+
+Has to be approved by Congress
+
+--
+
+NIH is made up of 27 Institutes and Centers (ICs), organized by disease or body system (e.g. National Cancer Institute, National Heart, Lung, and Blood Institute)
+
+Each IC manages its own budget
+
+---
+
+## Why are there interruptions?
+
+There would be **no interruptions** if an IC knows 
+
+1. Budget 
+
+2. Quantity and "quality" of projects available to be funded   
+
+---
+
+## Why are there interruptions?
+
+Uncertainty over:
+
+--
+
+#### Budget
+
+Congressional stalemate over federal budget
+
+--
+
+#### Quality and quantity of projects
+
+Multiple review cycles throughout the year
+
+--
+
+#### Both
+
+IC risk-aversion towards spending too early
+
+---
+
+## Why might interruptions matter?
+
+--
+
+**Uncertainty** about whether or when funding will resume
+
+--
+
+Work may be **disrupted** even when funding resumes
+
+---
+
+
+## Interruptions over time
+
+Data: NIH ExPorter
+
+Public record of NIH-funded projects, including dates that projects were funded
+
+Sample: R01s that expired and were renewed in the same fiscal year
+
+A project is "interrupted" if its budget was renewed more than 30 days after expiry
+
+---
+
+## Interruptions over time
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-27-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## FY 1990 - 16% interrupted
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-28-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## FY 1996 - Government Shutdown
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-29-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Interruptions increasing over time
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-30-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## When budget was passed vs. % interrupted projects
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-31-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Budget passed 50 days into FY
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-32-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Later budgets correlate with more interruptions
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-33-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, middle, center
+
+## Data and Empirical Strategy
+
+---
+
+## UMETRICS data
+
+Transaction-level data on expenditures by sponsored projects 
+
+Contemporaneous measure of research activity
+
+26 universities
+
+Coverage starts from 2001, heaviest from late 2000s onward
+
+---
+
+## Sample
+
+Project-month panel
+
+--
+
+R01 projects
+
+Awarded for 1 to 5 year terms - may extend
+
+--
+
+Monthly spending (transformed by inverse hyperbolic sine); approximate log differences
+ 
+---
+
+## How do projects spend funds?
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-34-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## First year of 3-year project
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-35-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Ramp up in year 1
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-36-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Peak spending in middle years
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-37-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Ramp down
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-38-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Measuring disruption
+
+Diff-in-diff: 
+
+1. How does spending change relative to plateau?
+
+--
+
+1. Projects with continuous funding vs. interrupted funding (~2000 projects)
+
+--
+
+Focus on spending 12 months before and after renewal
+
+---
+
+## Plateau
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-39-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## 1st Diff: Decline relative to plateau
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-40-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## 1st Diff: Ramp up relative to plateau
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-41-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## 2nd diff
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-42-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Project expires at Month 0
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-43-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## No deviation from peak spending
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-44-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Continuous funding
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-45-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Interrupted funding
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-46-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Interrupted funding
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-47-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Length of funding gap varies
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-48-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Length of funding gap may matter
+
+Allow response to interruption to vary linearly by length of gap, in terms of 30-day intervals ("months")
+
+---
+
+## Continuous DiD model
+
+`$$\begin{align} &amp; ihs(spending_{p,m}) = \\ &amp; \sum_{m = 1}^{12} \beta_{m}\textbf{1}(M_{p,m} = m)\color{#bb1200}{\textbf{1}(Gap_{p} &gt; 30 days)Gap_p} +  \\  &amp; \delta_{p} +  \epsilon_{p,m} \end{align}$$` 
+
+
+`\(\textbf{1}(Gap_{p} &gt; 30 days)\)` - interrupted project
+
+`\(Gap_p\)` - number of (calendar) days between expiring and renewed budget
+
+---
+
+## No difference in spending for interrupted *relative* to continuously funded
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-49-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## 1 month gap -&gt; 25% decrease in spending 
+
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-50-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+---
+
+## Continuous diff-in-diff
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-51-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## What if a lab has multiple grants?
+
+Labs may be able to offset disruption by using funds from other grants
+
+--
+
+Similar exercise with 
+
+1. project-lab observations
+
+1. Overall lab expenditure as outcome variable
+
+--
+
+How did spending by a lab change in response to a given R01 being interrupted?
+
+---
+### PIs with one R01
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-52-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### No decrease leading up to expiry
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-53-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Higher spending after renewal
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-54-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Does this affect productivity?
+
+Look at publication counts, 5 years before and after R01 renewal
+
+---
+## No Controls
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-55-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## PI + Year FE
+
+&lt;img src="defense_2019-07-12_files/figure-html/unnamed-chunk-56-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Conclusions and future work
+
+- Interruptions affect spending
+
+- How does spending affect workers? Do employees return to a PI's lab if they had to be "let go" during interruption?
+
+- More publications after interruption? "Setback" hypothesis
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
