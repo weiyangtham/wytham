@@ -35,6 +35,6 @@ weight = 5
 
 # Biography
 
-I am a Ph.D. Candidate in economics at The Ohio State University. My research lies at the intersection of labor economics and innovation, with implications for urban and public economics. I am also an R enthusiast.
+I am a postdoc at the [Laboratory for Innovation Science at Harvard (LISH)](https://lish.harvard.edu/). My research lies at the intersection of labor economics and innovation, with implications for urban and public economics. I am also an R enthusiast.
 
-You can find my CV [here](/pdf/wytham_cv_web.pdf) and my job market paper [here](/pdf/uncertainty.pdf).
+You can find my CV [here](/pdf/wytham_cv_web.pdf).
