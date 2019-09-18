@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Wei Yang 101</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Wei Yang Tham" />
+    <meta name="date" content="2019-09-18" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Wei Yang 101
+## LISH Research Meeting
+### Wei Yang Tham
+### 2019-09-18
+
+---
+
+
+
+
+
+
+class: middle, center
+
+&lt;img src="https://thumbs.gfycat.com/UnlawfulHeartyChanticleer-size_restricted.gif" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: center, middle
+
+### Singapore &amp;#8594; Rice University (Houston) &amp;#8594; The Ohio State University (PhD in Economics)
+
+### &amp;#8595;
+
+### LISH Postdoc - Scientific Production Function
+
+---
+
+## Applied microeconomist
+
+Economics of Science and Innovation
+
+Quasi-experimental methods, causal inference
+
+--
+
+R
+
+---
+
+## "Old" Projects
+
+Disruptions to funding in research labs
+
+Knowledge diffusion through informal interactions
+
+Effects of large, state-level investment in stem cell research
+
+---
+
+### What else is on my mind?
+
+&lt;img src="https://static.tvtropes.org/pmwiki/pub/images/janet_prism.jpg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Interests
+
+.pull-left[
+
+### Economics of Science
+
+How scientists respond to uncertainty
+
+Measuring uncertainty
+
+Management practices in science
+
+]
+
+--
+
+.pull-right[
+
+### Newer Stuff
+
+Open Source
+
+Bayesian stats
+
+
+]
+
+---
+
+class: inverse, middle, center
+
+## THE EFFECT OF TEMPORARY COLOCATION ON KNOWLEDGE FLOWS
+
+---
+
+&lt;img src="https://66.media.tumblr.com/b016c045f97407f67d070e9495866109/tumblr_phe8o8ah5Y1waors8o3_1280.jpg" width="50%" style="display: block; margin: auto;" /&gt;&lt;img src="https://66.media.tumblr.com/78b4c5ed0c472eeaf26b116c80bb08c3/tumblr_phe8o8ah5Y1waors8o1_1280.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Discovery of The Double Helix
+
+Central figures: Watson, Crick, Wilkins, and Franklin 
+
+**In 1951, Watson saw Wilkins present at a conference in Naples**
+
+This encounter prompted Watson to move to Cambridge and change the direction of his research
+
+---
+
+class: middle
+
+## What is the effect of short-term interactions on collaboration and knowledge diffusion?
+
+---
+
+## Challenges
+
+Data on short-term interactions is hard to find
+
+Endogeneity of colocation - people aren't randomly in the same place
+
+---
+
+## My approach: NIH study sections
+
+NIH panels that evaluate grant applications 
+
+20-30 people in each panel
+
+Convened by a Scientific Review Officer from the NIH
+
+Organized around topics e.g. "Acute Neural Injury and Epilepsy", "Cellular Signaling and Regulatory Systems"
+
+---
+
+## Identification strategy
+
+Reviewers serve 4-year terms i.e. ~ a quarter will rotate off every year
+
+Treatment: serving together on a study section
+
+Control: Just missed serving together on a study section
+
+---
+
+## Data setup
+
+Yearly panel of scientist-pairs
+
+Outcome variable - Number of times a scientist-pair cite each other in a year
+
+---
+
+## Wilkins-Watson treated with "dose" of 1 year 
+
+&lt;img src="intro_at_lish_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Watson-Crick treated with "dose" of 2 years
+
+&lt;img src="intro_at_lish_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="intro_at_lish_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### With 95% confidence intervals
+
+&lt;img src="intro_at_lish_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Next steps
+
+Get more data by matching more reviewers to publications
+
+---
+
+class: inverse, middle
+
+# The Effect of Targeted Increases in Science Funding: Stem Cell Research in California 
+### w/Joseph Staudt
+
+---
+
+## Background
+
+- Bush administration instituted federal restrictions on funding for stem cell research
+- In 2004, California allocated &lt;span style="color:#D13434"&gt; $3 billion over 10 years &lt;/span&gt; towards stem cell research
+- What is the effect of a large, targeted intervention on a specific area of science?
+
+---
+
+## Timeline
+
+&lt;img src="img/sc_events.gif" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Research Question
+
+1. Did stem cell research in California increase?
+
+1. How did the quality of research change?
+
+### Other questions we haven't answered
+
+Did this affect scientists' location decisions? 
+
+How did this new source of funding affect competition for NIH funding?
+
+---
+
+## State stem cell research funding programs
+
+
+|  State|  First Grants Awarded|  Total Funding| Funding per year |
+|--:| --:|--:|--:|
+| California|  2006| $3b |$300m|
+|  New York|  2008|  $600m|$55m|
+| Maryland| 2007| (determined yearly)| $10-23 million|
+| Connecticut | 2006 |$100m|$10m|
+
+
+- NIH yearly funding of stem cell research is $1.2b to $1.5bn (fiscal years 2013 to 2017)
+
+---
+
+## Estimation
+
+Synthetic control method - often used for case studies 
+
+Construct a weighted combination of non-California states that look like California before the policy took effect
+
+---
+
+&lt;img src="intro_at_lish_files/figure-html/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Average CA publication not more/less likely to have new concepts
+
+&lt;img src="intro_at_lish_files/figure-html/unnamed-chunk-11-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## No change in citations for the average CA stem cell publication 
+&lt;img src="intro_at_lish_files/figure-html/unnamed-chunk-12-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Takeaways
+
+Increase in volume of research
+
+No change in quality, novelty of research
+
+---
+
+## Next steps
+
+Scientist-level analysis - create matched controls for scientists based in CA when the policy was implemented
+
+Control groups: Stem cell researchers outside California; Non-stem cell researchers in California
+
+Dig into scientist migration patterns 
+
+---
+
+## Random future ideas
+
+Science of science: Constructing an uncertainty index for scientific research; estimating the effect of uncertainty on scientists' choice of projects; understanding entry/exit into the scientific labor force in response to funding shocks (different responses by gender, scientist "type")
+
+Open source: how to value and sustain "infrastructure" in science
+
+Bayesian stats: connecting treatment effects to a loss function that we can use to make decisions
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
