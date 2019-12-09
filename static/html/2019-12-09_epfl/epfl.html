@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Science, Interrupted: How Scientists Respond to Funding Disruptions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Wei Yang Tham Laboratory for Innovation Sciences at Harvard" />
+    <meta name="date" content="2019-12-09" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, middle, title-slide
+
+# Science, Interrupted: How Scientists Respond to Funding Disruptions
+## MTEI Seminar
+### Wei Yang Tham<br><span style="font-size: 70%;">Laboratory for Innovation Sciences at Harvard</span>
+### December 09, 2019
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+class: inverse, middle
+
+## Government funds a lot of science
+
+--
+
+## Government can be messy
+
+--
+
+## Example: US fiscal policy
+
+---
+
+class: middle
+
+### The last time the US Congress passed an entire federal budget before the Fiscal Year began?
+
+--
+
+### 1997
+
+---
+
+## Science funding agencies feel it 
+
+&gt; "...it feels strange to be writing in early November to announce preliminary funding lines for the year. **We really, really do have a full-year budget, for the first time in 22 years**" - Dr. Robin Barr, Director, Division of Extramural Activities for NIA
+
+--
+
+&gt; "The uncertainty that the NIH feels reflects itself in my willingness to hire" - [David Cheresh, UCSD cancer researcher (Jan 2018)](http://www.sandiegouniontribune.com/business/biotech/sd-me-shutdown-research-20180122-story.html)
+
+---
+
+## What I do
+
+1. **Funding interruptions** - delays in when projects are funded
+
+1. NIH-funded research
+
+1. Transaction-level data - can observe research activity at high frequency and level of detail
+
+---
+
+## Labs that experienced interrupted funding:
+
+1. Spend about 50% less in the year that funding is expiring
+
+1. Spend about 90% less in the first month after funding resumes
+
+1. Having additional grants cushions impact on spending
+
+1. Interruptions lead to a 1.7% decrease in publication counts for labs with less grant support
+
+---
+
+## Related literature
+
+### Public
+
+Expiring budgets lead to spikes in year-end spending that are potentially wasteful (Liebman and Mahoney 2017)
+
+--
+
+### Innovation
+
+How does uncertainty affect scientists' willingness to take risks (Azoulay, Graff-Zivin, Manso 2009)?
+
+--
+
+### Macro
+
+Estimating the effect of uncertainty on firm activity (Baker, Bloom, Davis 2016)
+
+
+
+---
+
+class: middle, inverse
+
+## Background: Scientist perspective
+
+---
+
+## R01 grant mechanism
+
+R01 grant is needed to sustain an independent lab
+
+Usually last 4-5 years
+
+--
+
+No-cost extension: Can be extended an additional year if you didn't spend all your money
+
+---
+
+## What happens when an R01 ends?
+
+Have to renew the project
+
+---
+
+
+## Fail to renew
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewed and funded continuously
+&lt;img src="epfl_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewed with interrupted funding
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewal timeline (no hiccups)
+
+&lt;img src="epfl_files/figure-html/renewal-timeline-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewal timeline
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Continuous vs. interrupted
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+---
+class: inverse, middle, center
+
+## Background: NIH perspective
+
+---
+
+## Budgeting process
+
+NIH budget is determined every fiscal year
+
+Has to be approved by Congress
+
+--
+
+NIH is made up of 27 Institutes and Centers (ICs), organized by disease or body system (e.g. National Cancer Institute, National Heart, Lung, and Blood Institute)
+
+Each IC manages its own budget
+
+---
+
+## Why are there interruptions?
+
+There would be **no interruptions** if an IC knows 
+
+1. Budget 
+
+2. Quantity and "quality" of projects available to be funded   
+
+---
+
+## Interruptions arise because of uncertainty over: 
+
+--
+.pull-left[
+### Budget
+
+Congressional stalemate over federal budget
+]
+
+.pull-right[
+### Quality/quantity of projects
+
+Multiple review cycles throughout the year
+]
+--
+
+Both factors are amplified by IC risk-aversion towards spending too early
+
+---
+
+## Why might interruptions matter?
+
+Funds have to last longer than originally intended 
+
+Uncertainty about whether or when funding will resume
+
+Research may be disrupted even when funding resumes (frictions to acquiring inputs)
+
+---
+
+class: inverse, middle, center
+
+# Data
+
+---
+
+## Transaction data from UMETRICS
+
+Captures transactions from sponsored projects
+
+31 universities
+
+Coverage from 2001 to 2018 (heaviest from late 2000s onward)
+
+---
+
+## What we can see in UMETRICS
+
+Total direct expenditure
+
+Payments to vendors, subawards
+
+Who is paid by a grant and their occupation
+
+Do not observe how much each person is paid, but can back out total payments to labor
+
+---
+
+## NIH ExPorter
+
+Publicly available data on awards made including project start and end dates, budget size
+
+Each project has at least one Principal Investigator (PI)
+
+---
+
+## Two levels of data
+
+.pull-left[
+### Inputs
+
+- UMETRICS + ExPorter
+- Monthly
+
+]
+
+.pull-right[
+### Outputs 
+
+- ExPorter + PubMed 
+- Yearly
+- How do interruptions affect productivity?
+]
+
+---
+
+## Data setup
+
+Identify all R01s that were renewed within the same fiscal year
+
+Stack all R01-PIs to create panel 
+
+In a unit-time panel, unit is an R01 renewal-PI
+
+---
+
+class: inverse, middle
+
+# Empirical strategy
+
+---
+
+## Some definitions:
+
+- An R01 is *interrupted* if the time between expiry and renewal was greater than 30 calendar days
+
+--
+
+- Count number of R01-equivalent grants between 1 year before expiry and one year after renewal
+
+- Create two subsets: PIs with one R01 and PIs with multiple R01-equivalents
+
+---
+# Event study for inputs
+
+Project's budget could change after being renewed
+
+--
+
+Event study *within* budget `\(\implies\)` Estimate expiring and renewed periods separately
+
+---
+
+## Baseline Specification (expiring period)
+
+`$$y_{iRt} = \sum_{j=-22}^{0} \beta_j \textbf{1}(j = t - t_{expiry})\textbf{1}(Interrupted) + \delta_{iR} + \gamma_{t - t_{expiry}} + \epsilon_{iRtm}$$`
+
+- `\(t-t_{expiry} = -23, -22, \dots, -1, 0\)`
+--
+- `\(y_{iRt}=\)` total PI spending (inverse hyperbolic sine)
+--
+- `\(\delta_{iR}\)` = R01-PI fixed effects
+- `\(\gamma_{t - t_{expiry}}\)` = month from expiry fixed effects
+--
+- `\(\beta_j\)` = spending relative to non-interrupted projects; excluded `\(t-t_{expiry} = -23\)`
+--
+- `\(\epsilon_{iRtm}\)` = error term
+
+---
+
+# Threats to identification
+
+Interrupted and non-interrupted projects have differential trends in spending unrelated to being interrupted
+
+--
+
+Control for time since beginning of project
+
+---
+
+## Augmented specification
+
+`$$y_{iRt} = \sum_{j=-22}^{0} \beta_j \textbf{1}(j = t - t_{expiry})\textbf{1}(Interrupted) + \delta_{iR} + \gamma_{t - t_{expiry}} + f(t - t_{R,start}) + \epsilon_{iRtm}$$`
+.pull-left[
+- `\(t-t_{expiry} = -23, -22, \dots, -1, 0\)`
+- `\(y_{iRt}=\)` spending (inverse hyperbolic sine)
+- `\(\beta_j\)` = spending relative to non-interrupted projects; excluded `\(t-t_{expiry} = -23\)`
+- `\(\delta_{iR}\)` = R01-PI fixed effects
+- `\(\gamma_{t - t_{expiry}}\)` = month from expiry fixed effects
+- `\(\epsilon_{iRtm}\)` = error term]
+
+--
+
+.pull-right[
+- `\(t - t_{R,start}\)` = time since project start
+- `\(f(t-t_{R,start})\)` = quarters since start fixed effects
+]
+
+---
+
+class: inverse, middle, left
+
+# Descriptives
+
+---
+
+## Distribution of funding gaps
+&lt;img src="epfl_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Interruptions over time
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Interrupted projects are similarly funded before renewal
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-8-1.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Interrupted projects tend to have lasted longer
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Why are interrupted projects longer?
+
+Possible answer: PIs using no-cost extensions to avoid uncertainty of waiting for a renewal decision
+
+---
+
+## Concern: Differential spending trends for awards of different lengths
+
+*Especially* when an award lasts for longer than it was supposed to
+
+--
+
+Spending patterns of a 5-year project are different than for a "4 + 1"-year project
+
+---
+
+## Spending trajectory of projects
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+&lt;!-- --- --&gt;
+
+&lt;!-- ## Spending trajectory of projects --&gt;
+
+&lt;!-- ```{r} --&gt;
+
+&lt;!-- plot_spending_trajectory +  --&gt;
+&lt;!--   labs(subtitle = "highlight") --&gt;
+
+&lt;!-- ``` --&gt;
+
+---
+
+class: middle, inverse
+
+# Results
+
+---
+
+## Total spending decreases during expiry
+
+
+
+&lt;img src="epfl_files/figure-html/totalpispending-eventstudy-left-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Spending recovers in 3-4 months
+
+&lt;img src="epfl_files/figure-html/totalpispending-eventstudy-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# No change in spending during expiry
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-11-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## After renewal, spending recovers more gradually
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-12-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Multiple R01s cushion spending impact
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Do these patterns look different for different spending components?
+
+Repeat for labor and vendor payments
+
+---
+
+## Labor spending looks similar (One R01)
+
+
+
+&lt;img src="epfl_files/figure-html/laborspend-eventstudy-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Labor spending looks similar (Multiple R01s)
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-14-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Vendor spending recovers more slowly (One R01)
+
+
+
+
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-15-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Vendor spending recovers more slowly (One R01)
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-16-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Vendor spending (multiple R01s)
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-17-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Vendor spending (multiple and one R01)
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-18-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Number of personnel paid by PI (one R01)
+
+
+
+
+&lt;img src="epfl_files/figure-html/plot-laborcount-eventstudy-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Number of personnel paid by PI (multiple R01s)
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+class: inverse, middle
+
+## Results: How are lab personnel affected?
+
+---
+
+## Questions
+
+- How are personnel in interrupted projects affected (e.g. graduate students may have to graduate early)?
+
+- Personnel-PI separations could deplete team-specific capital
+
+---
+
+## Setup
+
+Find all employees paid by a PI from months -23 to -18
+
+Stack employee-R01-PIs
+
+Track from month -17 onwards
+
+Limit to employees on projects that could be observed in the renewal period as well
+
+Outcome variables: 
+
+- Paid by any NIH grants
+- Paid by the same PI
+
+---
+
+## Grad students less likely to be on any NIH grant
+
+
+
+
+&lt;img src="epfl_files/figure-html/plot-turnover-emp-gradstudent-1.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Grad student less likely to stay with PI
+
+
+
+
+&lt;img src="epfl_files/figure-html/plot-turnover-empbypi-gradstudent-1.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+## Post graduate researchers seem less affected
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-20-1.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+## Post graduate researchers seem less affected
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-21-1.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Non-faculty research
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-22-1.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Faculty
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-23-1.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, middle
+
+## Results: Research productivity
+
+---
+
+## Setup
+
+Renewed R01-PI year panel, 5 years before and after renewal
+
+Estimate a variant of the two-way FE estimator
+
+---
+
+## Problem with Two-way Fixed Effects
+
+Traditional two-way FE would have R01-PI and year FE
+
+.pull-left[
+### Problem
+
+- Uses variation across "treatment cohorts"]
+
+.pull-right[
+### Solution
+
+- Year-by-treatment cohort FE 
+- I.e. give each treatment cohort its own set of year FE
+- We know the "treatment" date for the control group
+]
+
+---
+## Publications
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-24-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## PIs with one R01 more affected
+&lt;img src="epfl_files/figure-html/unnamed-chunk-25-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## How big is 1.7%?
+
+Loss of a "superstar" collaborator leads to 5-8% decrease in quality-adjusted publiations (Azoulay, Graff-Zivin, Wang 2010)
+
+Not an apples-to-apples comparison - AGW estimate average effect over 15 years
+
+---
+
+class: inverse, middle
+
+# Discussion
+
+---
+## Delayed funding has costs
+
+What this paper doesn't say: optimal level of funding delays
+
+To the extent that at least some interruptions are the result of macro factors (e.g. shutdown, delayed budget due to unrelated policy disputes), current levels are unlikely to be optimal
+
+---
+
+## Interruptions are (to some extent) a policy choice
+
+National Institute for Allergies and Infectious Diseases (NIAID) prioritizes funding projects in time
+
+&gt; *If NIAID is operating under a CR, that won’t necessarily delay your award...we are assiduous about issuing awards* using funds from the CR. For example, by December 21, 2016, NIAID had already issued more than twice as many competing fiscal year 2017 grants as any other institute.
+
+---
+
+## NIAID being assiduous
+
+&lt;img src="epfl_files/figure-html/unnamed-chunk-26-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+# Conclusion
+
+Understanding interaction of uncertainty and innovation is important
+
+With high-frequency data, can observe effects of funding interruptions in "real time" and unpack how scientific production function responds
+
+Transaction data suggests interruptions are disruptive; publication data suggest this can in turn hurt research productivity
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

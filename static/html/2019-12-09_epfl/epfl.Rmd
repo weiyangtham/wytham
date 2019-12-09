@@ -1,0 +1,1356 @@
+---
+title: "Science, Interrupted: How Scientists Respond to Funding Disruptions"
+subtitle: "MTEI Seminar"  
+author: "Wei Yang Tham<br><span style = 'font-size: 70%;'>Laboratory for Innovation Sciences at Harvard</span>"
+date: "December 09, 2019"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      titleSlideClass: [left, middle]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300, echo = FALSE, cache = F,
+  fig.align = "center", out.width = "80%", fig.asp = 0.618)
+
+```
+
+```{r packages}
+
+library(tidyverse)
+library(magrittr)
+library(here)
+library(colorspace)
+library(patchwork)
+
+source(here("scripts/functions.R"))
+```
+
+
+```{r xaringan-themer, include=FALSE}
+library(xaringanthemer)
+
+duo(
+  primary_color = "#fcedd1",
+  secondary_color = "#2a488e",
+  # secondary_color = "#4671d6",
+  # text_color = "#2C3E50",
+  header_font_google = google_font("Josefin Sans"),
+  text_font_google   = google_font("Montserrat", "300", "300i"),
+  code_font_google   = google_font("Droid Mono"),
+  text_font_size = "25px", 
+  text_slide_number_font_size = "0.0em"
+)
+
+
+
+```
+
+```{r plots-setup}
+
+theme_wyt <- function(base_size = 11, base_family = "", base_line_size = base_size/22, base_rect_size = base_size/22){
+  # theme_light() %+replace%
+  ggthemes::theme_fivethirtyeight(base_size = base_size,
+                                  base_family = base_family) %+replace%
+    theme(
+      plot.background = element_rect(fill = "#fcedd1", colour = "#fcedd1"),
+      panel.background = element_rect(fill = "#fcedd1", colour = "#fcedd1"),
+      title = element_text(colour = "black"),
+      axis.title = element_text(), 
+      legend.background = element_rect(fill = "#fcedd1"), 
+      legend.key = element_rect(fill = "#fcedd1")
+    )
+}
+
+theme_set(theme_wyt(base_size = 16))
+
+lab.y = "~log points"
+lab.x = "Month"
+lab.x.year = "Years since renewal"
+
+scale_colour_discrete <- function(...) scale_color_discrete_qualitative(palette="Dark 3")
+scale_fill_discrete <- function(...) scale_fill_discrete_qualitative(palette="Dark 3")
+
+```
+
+
+class: inverse, middle
+
+## Government funds a lot of science
+
+--
+
+## Government can be messy
+
+--
+
+## Example: US fiscal policy
+
+---
+
+class: middle
+
+### The last time the US Congress passed an entire federal budget before the Fiscal Year began?
+
+--
+
+### 1997
+
+---
+
+## Science funding agencies feel it 
+
+> "...it feels strange to be writing in early November to announce preliminary funding lines for the year. **We really, really do have a full-year budget, for the first time in 22 years**" - Dr. Robin Barr, Director, Division of Extramural Activities for NIA
+
+--
+
+> "The uncertainty that the NIH feels reflects itself in my willingness to hire" - [David Cheresh, UCSD cancer researcher (Jan 2018)](http://www.sandiegouniontribune.com/business/biotech/sd-me-shutdown-research-20180122-story.html)
+
+---
+
+## What I do
+
+1. **Funding interruptions** - delays in when projects are funded
+
+1. NIH-funded research
+
+1. Transaction-level data - can observe research activity at high frequency and level of detail
+
+---
+
+## Labs that experienced interrupted funding:
+
+1. Spend about 50% less in the year that funding is expiring
+
+1. Spend about 90% less in the first month after funding resumes
+
+1. Having additional grants cushions impact on spending
+
+1. Interruptions lead to a 1.7% decrease in publication counts for labs with less grant support
+
+---
+
+## Related literature
+
+### Public
+
+Expiring budgets lead to spikes in year-end spending that are potentially wasteful (Liebman and Mahoney 2017)
+
+--
+
+### Innovation
+
+How does uncertainty affect scientists' willingness to take risks (Azoulay, Graff-Zivin, Manso 2009)?
+
+--
+
+### Macro
+
+Estimating the effect of uncertainty on firm activity (Baker, Bloom, Davis 2016)
+
+```{r my-contribution, eval = FALSE}
+df = tibble(
+  y = c(3, 2, 1),
+  x = 1,
+  words = c("Get money", "Choose projects", "Do science"))
+
+df %>%
+  ggplot(aes(x, y, label = words)) +
+  geom_label(size = 10) +
+  annotate("segment", x = 1, xend = 1, y = 2.9, yend = 2.1, arrow = arrow()) +
+  annotate("segment", x = 1, xend = 1, y = 1.9, yend =1.1, arrow = arrow(), linetype = 2) +
+  xlim(c(0, 2)) +
+  annotate("label", x = 1.5, y = 1.6, label = "Distribute funds", size = 10, fill = "#fefd11") +
+  theme_void() +
+  theme(
+      plot.background = element_rect(fill = "#fcedd1", colour = "#fcedd1"),
+      panel.background = element_rect(fill = "#fcedd1", colour = "#fcedd1"))
+```
+
+---
+
+class: middle, inverse
+
+## Background: Scientist perspective
+
+---
+
+## R01 grant mechanism
+
+R01 grant is needed to sustain an independent lab
+
+Usually last 4-5 years
+
+--
+
+No-cost extension: Can be extended an additional year if you didn't spend all your money
+
+---
+
+## What happens when an R01 ends?
+
+Have to renew the project
+
+---
+
+
+## Fail to renew
+
+```{r}
+scenarios = tribble(
+  ~left, ~right, ~type, ~height, ~line,
+  -2,    0,      "fail",     1,       1, 
+   0,    2,     "fail",      1,       2, 
+  -2,    0,      "cont",     2,       3, 
+   0,    2,      "cont",     2,       5, 
+  -2,    0,      "interr",   3,       6, 
+   2,    4,    "interr",     3,       7
+)
+
+scenarios %<>% mutate(type = fct_relevel(type, c("fail", "cont", "interr")))
+
+plot_scenario = scenarios %>% 
+  ggplot() + 
+  aes(alpha = type) +
+  geom_errorbar(aes(group = line, x = height, ymin = left, ymax = right), size = 1.5) + 
+  coord_flip()  + 
+  geom_blank() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        axis.title = element_blank(), 
+        axis.text = element_blank(), 
+        legend.background = element_blank()) 
+
+plot_scenario = plot_scenario + 
+  # Big Red Cross
+  geom_line(data = tibble(height = c(1.45, 0.55), y = c(0, 2), type = "fail"), 
+            aes(height, y), 
+            colour = "red", size = 2) + 
+  geom_line(data = tibble(height = c(1.45, 0.55), y = c(2, 0), type = "fail"), 
+            aes(height, y), 
+            colour = "red", size = 2) + 
+  # interrupted line
+  geom_line(data = tibble(height = c(2.5, 3.5), y = 1, type = "interr"), 
+            aes(height, y),
+            colour = "red", size = 2, linetype = 2) +
+  scale_alpha_manual(values = c(1, 0, 0), guide = F) + 
+  NULL
+
+plot_scenario 
+
+```
+
+---
+
+## Renewed and funded continuously
+```{r}
+plot_scenario + 
+  scale_alpha_manual(values = c(0.2, 1, 0), guide = F) 
+```
+
+---
+
+## Renewed with interrupted funding
+
+```{r}
+plot_scenario + 
+  scale_alpha_manual(values = c(0.2, 0.2, 1), guide = F) 
+```
+
+---
+
+## Renewal timeline (no hiccups)
+
+```{r renewal-timeline}
+
+renewline = tibble(
+  y = 0.5, 
+  month = c(5, 30, 60, 80), 
+  event = c("Apply", " Scientific Review", "Funding Decision", "Funding Starts"),
+  funding = c(F, F, T, T), 
+  monthlbl = c("0", "4", "7", "8"), 
+  y_month = 0.475
+)
+
+p_renewline = renewline %>% 
+  ggplot(aes(month, y, label = str_wrap(event, 10))) + 
+  annotate(geom = "segment", x = 0, xend = 90, y = 0.5, yend = .5) + 
+  geom_label(size = 6) + 
+  geom_text(aes(label = monthlbl, y = y_month), size = 7) + 
+  theme(axis.title.y = element_blank(), 
+        axis.text = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank()
+        ) + 
+  ylim(0.44, 0.534) + 
+  annotate(geom = "text", x = 45, y = 0.46, label = "Month", 
+           size = 7) + 
+  labs(x = "")
+
+
+p_renewline 
+```
+
+---
+
+## Renewal timeline
+
+```{r}
+# renewline %>% 
+#   ggplot(aes(month, y, label = str_wrap(event, 10))) + 
+#   annotate(geom = "segment", x = 0, xend = 90, y = 0.5, yend = .5) + 
+#   geom_label(size = 6) + 
+#   geom_label(size = 6, data = renewline %>% filter(funding), fill = "#add8f4") + 
+#   geom_text(aes(label = monthlbl, y = y_month), size = 5) + 
+#   theme(axis.title.y = element_blank(), 
+#         axis.text = element_blank(),
+#         panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         legend.position = "none") + 
+#   ylim(0.45, 0.55) + 
+#   labs(x = "Month")
+
+p_renewline + 
+    geom_label(size = 6, data = renewline %>% filter(funding), fill = "#add8f4")
+  
+```
+
+---
+
+## Continuous vs. interrupted
+
+```{r}
+plot_scenario + 
+  scale_alpha_manual(values = c(0, 1, 1), guide = F) 
+```
+---
+class: inverse, middle, center
+
+## Background: NIH perspective
+
+---
+
+## Budgeting process
+
+NIH budget is determined every fiscal year
+
+Has to be approved by Congress
+
+--
+
+NIH is made up of 27 Institutes and Centers (ICs), organized by disease or body system (e.g. National Cancer Institute, National Heart, Lung, and Blood Institute)
+
+Each IC manages its own budget
+
+---
+
+## Why are there interruptions?
+
+There would be **no interruptions** if an IC knows 
+
+1. Budget 
+
+2. Quantity and "quality" of projects available to be funded   
+
+---
+
+## Interruptions arise because of uncertainty over: 
+
+--
+.pull-left[
+### Budget
+
+Congressional stalemate over federal budget
+]
+
+.pull-right[
+### Quality/quantity of projects
+
+Multiple review cycles throughout the year
+]
+--
+
+Both factors are amplified by IC risk-aversion towards spending too early
+
+---
+
+## Why might interruptions matter?
+
+Funds have to last longer than originally intended 
+
+Uncertainty about whether or when funding will resume
+
+Research may be disrupted even when funding resumes (frictions to acquiring inputs)
+
+---
+
+class: inverse, middle, center
+
+# Data
+
+---
+
+## Transaction data from UMETRICS
+
+Captures transactions from sponsored projects
+
+31 universities
+
+Coverage from 2001 to 2018 (heaviest from late 2000s onward)
+
+---
+
+## What we can see in UMETRICS
+
+Total direct expenditure
+
+Payments to vendors, subawards
+
+Who is paid by a grant and their occupation
+
+Do not observe how much each person is paid, but can back out total payments to labor
+
+---
+
+## NIH ExPorter
+
+Publicly available data on awards made including project start and end dates, budget size
+
+Each project has at least one Principal Investigator (PI)
+
+---
+
+## Two levels of data
+
+.pull-left[
+### Inputs
+
+- UMETRICS + ExPorter
+- Monthly
+
+]
+
+.pull-right[
+### Outputs 
+
+- ExPorter + PubMed 
+- Yearly
+- How do interruptions affect productivity?
+]
+
+---
+
+## Data setup
+
+Identify all R01s that were renewed within the same fiscal year
+
+Stack all R01-PIs to create panel 
+
+In a unit-time panel, unit is an R01 renewal-PI
+
+---
+
+class: inverse, middle
+
+# Empirical strategy
+
+---
+
+## Some definitions:
+
+- An R01 is *interrupted* if the time between expiry and renewal was greater than 30 calendar days
+
+--
+
+- Count number of R01-equivalent grants between 1 year before expiry and one year after renewal
+
+- Create two subsets: PIs with one R01 and PIs with multiple R01-equivalents
+
+---
+# Event study for inputs
+
+Project's budget could change after being renewed
+
+--
+
+Event study *within* budget $\implies$ Estimate expiring and renewed periods separately
+
+---
+
+## Baseline Specification (expiring period)
+
+$$y_{iRt} = \sum_{j=-22}^{0} \beta_j \textbf{1}(j = t - t_{expiry})\textbf{1}(Interrupted) + \delta_{iR} + \gamma_{t - t_{expiry}} + \epsilon_{iRtm}$$
+
+- $t-t_{expiry} = -23, -22, \dots, -1, 0$
+--
+- $y_{iRt}=$ total PI spending (inverse hyperbolic sine)
+--
+- $\delta_{iR}$ = R01-PI fixed effects
+- $\gamma_{t - t_{expiry}}$ = month from expiry fixed effects
+--
+- $\beta_j$ = spending relative to non-interrupted projects; excluded $t-t_{expiry} = -23$
+--
+- $\epsilon_{iRtm}$ = error term
+
+---
+
+# Threats to identification
+
+Interrupted and non-interrupted projects have differential trends in spending unrelated to being interrupted
+
+--
+
+Control for time since beginning of project
+
+---
+
+## Augmented specification
+
+$$y_{iRt} = \sum_{j=-22}^{0} \beta_j \textbf{1}(j = t - t_{expiry})\textbf{1}(Interrupted) + \delta_{iR} + \gamma_{t - t_{expiry}} + f(t - t_{R,start}) + \epsilon_{iRtm}$$
+.pull-left[
+- $t-t_{expiry} = -23, -22, \dots, -1, 0$
+- $y_{iRt}=$ spending (inverse hyperbolic sine)
+- $\beta_j$ = spending relative to non-interrupted projects; excluded $t-t_{expiry} = -23$
+- $\delta_{iR}$ = R01-PI fixed effects
+- $\gamma_{t - t_{expiry}}$ = month from expiry fixed effects
+- $\epsilon_{iRtm}$ = error term]
+
+--
+
+.pull-right[
+- $t - t_{R,start}$ = time since project start
+- $f(t-t_{R,start})$ = quarters since start fixed effects
+]
+
+---
+
+class: inverse, middle, left
+
+# Descriptives
+
+---
+
+## Distribution of funding gaps
+```{r}
+renewed_r01s = read_csv(here::here("data/renewed_r01s_balance.csv"), col_types = cols())
+
+renewed_r01s %>% 
+  ggplot(aes((days2renew_nextperiod))) + 
+  geom_histogram(aes(y=..count../sum(..count..)), binwidth = 30) + 
+  labs(y = "Proportion", 
+       x = "Length of funding gap (calendar days)", 
+       subtitle = "Binwidth = 30", 
+       caption = str_wrap("Expiring R01 project periods that lasted 2-6 years and were renewed within the same fiscal year. Source: NIH ExPorter", width = 50))
+```
+
+---
+
+## Interruptions over time
+
+```{r}
+
+gap_summary = renewed_r01s %>% 
+  filter(expiry_fy >= 1990, 
+         expiry_fy <= 2014,
+         renewed_nextperiod_after_nfy <= 0,
+         TRUE) %>% 
+  group_by(expiry_fy) %>% 
+  summarise(n = n(),
+            mean_gap = mean(days2renew_nextperiod, na.rm = TRUE),
+            pct_gap = mean(days2renew_nextperiod > 30, na.rm = TRUE) * 100) 
+
+plot_pctgap = gap_summary %>% 
+  ggplot(aes(expiry_fy, pct_gap)) + 
+  geom_point(size = 4) + 
+  geom_line() + 
+  geom_vline(xintercept = 1996, linetype = 2) + 
+  annotate(geom = "label", x = 1996, y = 24, label = "Shutdown", size = 5) + 
+  labs(x = "Fiscal Year", y = "Percent (%)",
+       # subtitle = "Sample - R01s that expired and renewed in the same FY", 
+       caption = "Source: NIH ExPorter")
+
+plot_pctgap
+
+```
+
+
+---
+
+## Interrupted projects are similarly funded before renewal
+
+```{r, out.width='95%', fig.asp=0.5}
+renewed_r01s %<>% 
+  mutate(interrupted_label = if_else(interrupted, "Interrupted", "Continuous"))
+
+totalcost_balance = renewed_r01s %>% 
+  ggplot(aes(log(total_period_cost))) + 
+  geom_density(aes(fill = interrupted_label), alpha = 1/2) + 
+  scale_fill_discrete_diverging(palette = "Tropic")  + 
+  labs(fill = "", 
+       x = "Total R01 project period funding") + 
+  theme(legend.position = c(0.9, 0.75), 
+        legend.direction = "vertical", 
+        legend.background = element_rect(fill = "transparent"), 
+        axis.title.x = element_text(size = 13))
+
+yearlycost_balance = renewed_r01s %>% 
+  ggplot(aes(log(yearly_period_cost))) + 
+  geom_density(aes(fill = interrupted_label), alpha = 1/2) + 
+  scale_fill_discrete_diverging(palette = "Tropic")  + 
+  labs(fill = "",
+       y = "",
+       x = "Yearly R01 project period funding") + 
+  theme(legend.position = "none", 
+        axis.title.x = element_text(size = 13)) 
+
+totalcost_balance | yearlycost_balance 
+
+```
+
+---
+
+## Interrupted projects tend to have lasted longer
+
+```{r}
+
+projperiodlength_balance = renewed_r01s %>% 
+  count(interrupted, interrupted_label, projperiod_length_round) %>% 
+  group_by(interrupted, interrupted_label) %>% 
+  mutate(p = n/sum(n)) %>% 
+  ggplot(aes(projperiod_length_round)) + 
+  geom_col(aes(y = p, fill = interrupted_label), 
+                 alpha = 1/2, 
+                 position = "identity") + 
+  scale_fill_discrete_diverging(palette = "Tropic")  + 
+  labs(fill = "", 
+       x = "Length of R01 project period", 
+       y = "Proportion") + 
+  theme(legend.position = c(0.2, 0.95), 
+        legend.direction = "vertical", 
+        # legend.background = element_rect(fill = "transparent"), 
+        legend.text = element_text(size = 16))
+
+projperiodlength_balance
+```
+
+---
+
+# Why are interrupted projects longer?
+
+Possible answer: PIs using no-cost extensions to avoid uncertainty of waiting for a renewal decision
+
+---
+
+## Concern: Differential spending trends for awards of different lengths
+
+*Especially* when an award lasts for longer than it was supposed to
+
+--
+
+Spending patterns of a 5-year project are different than for a "4 + 1"-year project
+
+---
+
+## Spending trajectory of projects
+
+```{r}
+
+coefs_spending_trajectory = read_csv(here("results/coefs_r01_spending_trajectory_periodfe.csv")) 
+
+plot_spending_trajectory = coefs_spending_trajectory %>% 
+  filter(projperiod_length_round %in% 3:6) %>% 
+  mutate(projlen_text = 
+           str_c(projperiod_length_round, "years", sep = " ")) %>% 
+  ggplot(aes(months_since_period_start, estimate)) + 
+  geom_line() + 
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 1/2) + 
+  scale_x_continuous(breaks = c(1, 12, 24, 36, 48, 60)) + 
+  theme(strip.background = element_rect(fill = "#4671d6"), 
+        strip.text.x = element_text(colour = "beige"), 
+        plot.subtitle = element_text(size = 13), 
+        panel.grid.minor.x = element_blank()) + 
+  facet_wrap(~projlen_text) + 
+  labs(subtitle = "Spending relative to first month", 
+       y = lab.y, 
+       x = "Months into project period") 
+
+plot_spending_trajectory
+
+```
+
+<!-- --- -->
+
+<!-- ## Spending trajectory of projects -->
+
+<!-- ```{r} -->
+
+<!-- plot_spending_trajectory +  -->
+<!--   labs(subtitle = "highlight") -->
+
+<!-- ``` -->
+
+---
+
+class: middle, inverse
+
+# Results
+
+---
+
+## Total spending decreases during expiry
+
+```{r read-totalspend-coefs}
+
+spend_lastyear = read_csv(here::here("results/coefs_expiring_diffascoefs_by_nr01s.csv"), col_types = cols()) 
+spend_firstyear = read_csv(here::here("results/coefs_renewed_diffsascoefs_by_n01s.csv"), col_types= cols())
+
+spend_lastyear %<>% rename(month = months_from_period_expiry)
+spend_firstyear %<>% rename(month = months_since_period_start)
+
+spend_all = bind_rows(spend_lastyear, spend_firstyear)  
+
+spend_all %<>% bind_rows(tibble(estimate = 0, multiple_r01equiv = c(F, T, T, F), month = c(-23, 24, -23, 24)))
+```
+
+```{r totalpispending-eventstudy-left}
+
+plot_totalspend_oner01_left = spend_all %>%
+  filter(!multiple_r01equiv, month <= 0) %>% 
+  ggplot(aes(month, estimate)) +
+  geom_point(colour = "#E16A86") +
+  geom_line(colour = "#E16A86") +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
+              alpha = 1/2, 
+              colour = "#E16A86", 
+              fill = "#E16A86") + 
+  geom_hline(yintercept = 0, linetype = 2) +
+  aes(group = month > 0) + 
+  labs(y = lab.y,
+       x = lab.x, 
+       subtitle = "One R01"
+       ) +
+  scale_x_continuous(breaks = c(seq(-23, 0, 4), seq(1, 24, 4), 0), 
+                     limits = c(-23, 24)) + 
+  annotate(geom = "label", x = -15.5, y = -2,  label = "Expiring", size = 5) +
+  annotate(geom = "label", x = 10, y = -2, label = "Renewed", size = 5) +
+  geom_vline(xintercept = 0.5, linetype = 5) +
+  theme(legend.position = "bottom", strip.background = element_rect(fill = "grey85")) +
+  guides(colour = FALSE) 
+
+plot_totalspend_oner01_left 
+  
+
+```
+
+---
+
+## Spending recovers in 3-4 months
+
+```{r totalpispending-eventstudy}
+
+plot_totalspend_oner01 = plot_totalspend_oner01_left %+% 
+  (spend_all %>% filter(!multiple_r01equiv))
+
+plot_totalspend_oner01
+
+```
+
+---
+
+# No change in spending during expiry
+
+```{r}
+
+plot_totalspend_multir01_left = spend_all %>%
+  filter(multiple_r01equiv, month <= 0) %>% 
+  ggplot(aes(month, estimate)) +
+  geom_point(colour = "#00AD9A") +
+  geom_line(colour = "#00AD9A") +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
+              alpha = 1/2, 
+              colour = "#00AD9A", 
+              fill = "#00AD9A") + 
+  geom_hline(yintercept = 0, linetype = 2) +
+  aes(group = month > 0) + 
+  labs(y = lab.y,
+       x = lab.x, 
+       subtitle = "Multiple R01s"
+       ) +
+  scale_x_continuous(breaks = c(seq(-23, 0, 4), seq(1, 24, 4), 0), 
+                     limits = c(-23, 24)) + 
+  annotate(geom = "label", x = -15.5, y = -2,  label = "Expiring", size = 5) +
+  annotate(geom = "label", x = 10, y = -2, label = "Renewed", size = 5) +
+  geom_vline(xintercept = 0.5, linetype = 5) +
+  theme(legend.position = "bottom", strip.background = element_rect(fill = "grey85")) +
+  guides(colour = FALSE) 
+
+plot_totalspend_multir01_left
+  
+```
+
+---
+
+## After renewal, spending recovers more gradually
+
+```{r}
+plot_totalspend_multir01 = plot_totalspend_multir01_left %+%
+  (spend_all %>%
+  filter(multiple_r01equiv))
+
+plot_totalspend_multir01
+```
+
+---
+
+## Multiple R01s cushion spending impact
+
+```{r}
+plot_totalspend_multir01 + 
+  geom_line(data = spend_all %>% filter(!multiple_r01equiv), 
+            colour = "#E16A86", size = 1.1) + 
+  labs(subtitle = "Multiple R01s + One R01")
+  
+```
+
+---
+
+## Do these patterns look different for different spending components?
+
+Repeat for labor and vendor payments
+
+---
+
+## Labor spending looks similar (One R01)
+
+```{r, read-laborspend-eventstudy}
+
+coefs_laborspend_expiring_eventstudy = read_csv(here::here("results/spendingbycategory/coefs_labor_expiring_eventstudy_by_nr01s.csv"))
+coefs_laborspend_renewed_eventstudy = read_csv(here::here("results/spendingbycategory/coefs_labor_renewed_eventstudy_by_nr01s.csv"))
+
+coefs_laborspend_eventstudy = bind_rows(coefs_laborspend_expiring_eventstudy %>% rename(month = months_from_period_expiry),
+                                        coefs_laborspend_renewed_eventstudy %>% rename(month = months_since_period_start))
+
+```
+
+```{r laborspend-eventstudy}
+
+plot_totalspend_oner01 %+%
+  (coefs_laborspend_eventstudy %>% 
+     filter(!multiple_r01equiv))
+
+```
+
+---
+
+## Labor spending looks similar (Multiple R01s)
+
+```{r}
+plot_totalspend_multir01 %+%
+  (coefs_laborspend_eventstudy %>% 
+     filter(multiple_r01equiv))
+```
+
+
+---
+
+## Vendor spending recovers more slowly (One R01)
+
+
+```{r read-vendor-coefs}
+
+coefs_vendorspend_expiring_eventstudy = read_csv(here::here("results/spendingbycategory/coefs_vendor_expiring_eventstudy_by_nr01s.csv"), 
+                                                 col_types = cols())
+coefs_vendorspend_renewed_eventstudy = read_csv(here::here("results/spendingbycategory/coefs_vendor_renewed_eventstudy_by_nr01s.csv"), 
+                                                col_types = cols())
+
+coefs_vendorspend_eventstudy = bind_rows(coefs_vendorspend_expiring_eventstudy %>% rename(month = months_from_period_expiry),
+                                        coefs_vendorspend_renewed_eventstudy %>% rename(month = months_since_period_start))
+
+
+```
+
+
+```{r}
+plot_totalspend_oner01 %+%
+  (coefs_vendorspend_eventstudy %>% filter(!multiple_r01equiv)) 
+```
+
+---
+
+## Vendor spending recovers more slowly (One R01)
+
+```{r}
+plot_totalspend_oner01 %+%
+  (coefs_vendorspend_eventstudy %>% filter(!multiple_r01equiv)) + 
+  geom_line(data = coefs_laborspend_eventstudy %>% filter(!multiple_r01equiv)) + 
+  labs(subtitle = "One R01, labor coefficients in black")
+```
+
+---
+
+## Vendor spending (multiple R01s)
+
+```{r}
+
+plot_totalspend_multir01 %+%
+  (coefs_vendorspend_eventstudy %>% 
+     filter(multiple_r01equiv)) + 
+  labs(subtitle = "Multiple R01s") 
+
+```
+
+---
+
+## Vendor spending (multiple and one R01)
+
+```{r}
+
+plot_totalspend_multir01 %+%
+  (coefs_vendorspend_eventstudy %>% 
+     filter(multiple_r01equiv)) + 
+  labs(subtitle = "Multiple R01s") + 
+  geom_line(data = filter(coefs_vendorspend_eventstudy, !multiple_r01equiv)) + 
+  labs(subtitle = "Multiple R01s, coefficients for one R01 in black")
+
+```
+
+---
+
+## Number of personnel paid by PI (one R01)
+
+```{r read-laborcount-eventstudy}
+coefs_laborcount_expiring_eventstudy = 
+  read_csv(here::here("results/employee_counts/coefs_expiring_eventstudy_labor.csv"),
+           col_types = cols())
+
+coefs_laborcount_renewed_eventstudy = 
+  read_csv(
+    here::here("results/employee_counts/coefs_renewed_eventstudy_labor.csv"), 
+    col_types = cols())
+
+coefs_laborcount_eventstudy = bind_rows(
+  coefs_laborcount_expiring_eventstudy %>% rename(month = months_from_period_expiry),
+  coefs_laborcount_renewed_eventstudy %>% rename(month = relative_month))
+
+```
+
+
+```{r plot-laborcount-eventstudy}
+plot_laborcount_oner01 = coefs_laborcount_eventstudy %>% 
+  filter(!multiple_r01equiv) %>%  
+    ggplot(aes(month, estimate)) +
+  geom_point(colour = "#E16A86") +
+  geom_line(colour = "#E16A86") +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
+              alpha = 1/2, 
+              colour = "#E16A86", 
+              fill = "#E16A86") +
+  geom_hline(yintercept = 0, linetype = 2) +
+  aes(group = month > 0) + 
+  labs(y = lab.y,
+       x = lab.x, 
+       subtitle = "Multiple R01s"
+       ) +
+  scale_x_continuous(breaks = c(seq(-23, 0, 4), seq(1, 24, 4), 0), 
+                     limits = c(-23, 24)) + 
+  annotate(geom = "label", x = -15.5, y = -0.3,  label = "Expiring", size = 5) +
+  annotate(geom = "label", x = 10, y = -0.3, label = "Renewed", size = 5) +
+  geom_vline(xintercept = 0.5, linetype = 5) +
+  theme(legend.position = "bottom", strip.background = element_rect(fill = "grey85")) +
+  guides(colour = FALSE) 
+
+plot_laborcount_oner01
+
+```
+
+---
+
+## Number of personnel paid by PI (multiple R01s)
+
+```{r}
+
+plot_laborcount_multir01 = coefs_laborcount_eventstudy %>% 
+  filter(multiple_r01equiv) %>%  
+    ggplot(aes(month, estimate)) +
+  geom_point(colour = "#00AD9A") +
+  geom_line(colour = "#00AD9A") +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
+              alpha = 1/2, 
+              colour = "#00AD9A", 
+              fill = "#00AD9A") +
+  geom_hline(yintercept = 0, linetype = 2) +
+  aes(group = month > 0) + 
+  labs(y = lab.y,
+       x = lab.x, 
+       subtitle = "Multiple R01s"
+       ) +
+  scale_x_continuous(breaks = c(seq(-23, 0, 4), seq(1, 24, 4), 0), 
+                     limits = c(-23, 24)) + 
+  annotate(geom = "label", x = -15.5, y = -0.3,  label = "Expiring", size = 5) +
+  annotate(geom = "label", x = 10, y = -0.3, label = "Renewed", size = 5) +
+  geom_vline(xintercept = 0.5, linetype = 5) +
+  theme(legend.position = "bottom", strip.background = element_rect(fill = "grey85")) +
+  guides(colour = FALSE) 
+
+plot_laborcount_multir01
+
+```
+
+
+---
+
+class: inverse, middle
+
+## Results: How are lab personnel affected?
+
+---
+
+## Questions
+
+- How are personnel in interrupted projects affected (e.g. graduate students may have to graduate early)?
+
+- Personnel-PI separations could deplete team-specific capital
+
+---
+
+## Setup
+
+Find all employees paid by a PI from months -23 to -18
+
+Stack employee-R01-PIs
+
+Track from month -17 onwards
+
+Limit to employees on projects that could be observed in the renewal period as well
+
+Outcome variables: 
+
+- Paid by any NIH grants
+- Paid by the same PI
+
+---
+
+## Grad students less likely to be on any NIH grant
+
+```{r, read-turnover-emp}
+means_emp_torenewal = read_csv(here::here("results/employee_expirytorenewal/mean_emp_expiry_to_renewal_by_occupation.csv"))
+
+means_emp_torenewal %<>% 
+  mutate(multir01_label = 
+           if_else(multiple_r01equiv, 
+                   "Multiple R01s", 
+                   "1 R01"), 
+         multir01_label = 
+           fct_reorder(multir01_label, multiple_r01equiv, .fun = max), 
+         occ_squished = factor(occ_squished, 
+                               levels = c("FACULTY", "POST GRADUATE RESEARCH", "GRADUATE STUDENT", "RESEARCH", "RESEARCH FACILITATION", "OTHERS")))
+
+means_emp_torenewal %<>% 
+  mutate(g = str_c(interrupted, relative_month > 0))
+
+means_emp_torenewal %<>% 
+  mutate(interrupted_label = if_else(
+    interrupted, "Interrupted", "Continuous"
+  ))
+
+lab.anynih.y = "Paid by any NIH grant"
+lab.paidbypi.y = "Paid by PI"
+```
+
+
+```{r plot-turnover-emp-gradstudent, out.width='95%', fig.asp=0.5}
+plot_emp_gradstudent = means_emp_torenewal %>% 
+  filter(occ_squished %in% c("GRADUATE STUDENT")) %>% 
+  ggplot(aes(relative_month, estimate)) + 
+  geom_point() + 
+  geom_line(aes(group = g)) + 
+  aes(colour = interrupted_label) + 
+  scale_colour_discrete_diverging(palette = "Tropic") + 
+  facet_wrap(vars(multir01_label), nrow = 1) + 
+  geom_vline(xintercept = 0.5, linetype = 2) + 
+  scale_x_continuous(breaks = c(-11, -5, 1, 6, 12, 18, 24), 
+                     limits = c(-17, 24)) +
+  labs(x = lab.x, 
+       y = lab.anynih.y) + 
+  theme(legend.position = c(0.4, 0.75), 
+        legend.direction = "vertical",
+        legend.title = element_blank(),
+        legend.background = element_rect(fill = "transparent"),
+        strip.background = element_rect(fill = "transparent"))
+
+plot_emp_gradstudent
+
+```
+
+---
+
+## Grad student less likely to stay with PI
+
+```{r read-turnover-empbypi}
+means_empbypi_torenewal = read_csv(here::here("results/employee_expirytorenewal/mean_empbypi_expiry_to_renewal_by_occupation.csv"))
+
+means_empbypi_torenewal %<>% 
+  mutate(multir01_label = 
+           if_else(multiple_r01equiv, 
+                   "Multiple R01s", 
+                   "1 R01"), 
+         multir01_label = 
+           fct_reorder(multir01_label, multiple_r01equiv, .fun = max), 
+         occ_squished = factor(occ_squished, 
+                               levels = c("FACULTY", "POST GRADUATE RESEARCH", "GRADUATE STUDENT", "RESEARCH", "RESEARCH FACILITATION", "OTHERS")))
+
+means_empbypi_torenewal %<>% 
+  mutate(g = str_c(interrupted, relative_month > 0))
+
+means_empbypi_torenewal %<>% 
+  mutate(interrupted_label = if_else(
+    interrupted, "Interrupted", "Continuous"
+  ))
+```
+
+
+```{r plot-turnover-empbypi-gradstudent, out.width='95%', fig.asp=0.5}
+plot_emp_gradstudent %+%
+  (means_empbypi_torenewal %>% 
+  filter(occ_squished %in% c("GRADUATE STUDENT"))) + 
+  labs(y = lab.paidbypi.y)
+
+```
+
+---
+## Post graduate researchers seem less affected
+
+```{r, out.width='95%', fig.asp=0.5}
+plot_emp_gradstudent %+%
+  (means_emp_torenewal %>% 
+  filter(occ_squished %in% c("POST GRADUATE RESEARCH"))) + 
+  labs(y = lab.anynih.y)
+```
+
+---
+## Post graduate researchers seem less affected
+
+```{r, out.width='95%', fig.asp=0.5}
+plot_emp_gradstudent %+%
+  (means_empbypi_torenewal %>% 
+  filter(occ_squished %in% c("POST GRADUATE RESEARCH"))) + 
+  labs(y = lab.paidbypi.y)
+```
+
+---
+
+## Non-faculty research
+
+```{r, out.width='95%', fig.asp=0.5}
+plot_emp_gradstudent %+%
+  (means_empbypi_torenewal %>% 
+  filter(occ_squished %in% c("RESEARCH"))) + 
+  labs(y = lab.paidbypi.y)
+```
+
+---
+
+## Faculty
+
+```{r, out.width='95%', fig.asp=0.5}
+plot_emp_gradstudent %+%
+  (means_empbypi_torenewal %>% 
+  filter(occ_squished %in% c("FACULTY"))) + 
+  labs(y = lab.paidbypi.y)
+```
+
+---
+
+class: inverse, middle
+
+## Results: Research productivity
+
+---
+
+## Setup
+
+Renewed R01-PI year panel, 5 years before and after renewal
+
+Estimate a variant of the two-way FE estimator
+
+---
+
+## Problem with Two-way Fixed Effects
+
+Traditional two-way FE would have R01-PI and year FE
+
+.pull-left[
+### Problem
+
+- Uses variation across "treatment cohorts"]
+
+.pull-right[
+### Solution
+
+- Year-by-treatment cohort FE 
+- I.e. give each treatment cohort its own set of year FE
+- We know the "treatment" date for the control group
+]
+
+---
+## Publications
+
+```{r, out.width='90%', fig.asp=0.5}
+coefs_pubs_dd_eventstudy = 
+  read_csv(here::here("results/coefs_piyearfe_meanpubs.csv"), 
+           col_types = cols())
+
+coefs_pubs_dd_eventstudy %<>% 
+  mutate(multir01_label = 
+           if_else(multir01, 
+                   ">1 R01-equivalent", 
+                   "1 R01"), 
+         multir01_label = 
+           fct_reorder(multir01_label, multir01, .fun = max))
+
+plot_pubs_eventstudy = coefs_pubs_dd_eventstudy %>% 
+  ggplot(aes(years_since_expiry, estimate)) + 
+  geom_point() + 
+  geom_line() + 
+  aes(colour = multir01_label, 
+      shape = multir01_label, 
+      fill = multir01_label) + 
+  scale_x_continuous(breaks = c(seq(-5, 5, by = 2)),
+                     minor_breaks = NULL) + 
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 1/2) + 
+  facet_wrap(~multir01_label) + 
+  geom_hline(yintercept = 0, linetype = 2) + 
+  labs(x = lab.x.year, 
+       y = lab.y, 
+       subtitle = "Event study") + 
+  theme(legend.position = "none")
+
+plot_pubs_eventstudy
+```
+
+---
+
+## PIs with one R01 more affected
+```{r}
+coefs_pubs_dd_static = 
+  read_csv(here::here("results/coefs_piyearfe_static_npubs.csv"),
+           col_types = cols())
+
+coefs_pubs_dd_static %<>% 
+  mutate(multir01_label = 
+           if_else(multir01, 
+                   ">1 R01-equivalent", 
+                   "1 R01"), 
+         multir01_label = 
+           fct_reorder(multir01_label, multir01, .fun = max)) 
+
+plot_pubs_ddstatic = coefs_pubs_dd_static %>% 
+  ggplot(aes(multir01_label, estimate)) + 
+  geom_point(size = 3) + 
+  aes(colour = multir01_label, 
+      shape = multir01_label) + 
+  scale_colour_discrete_qualitative() + 
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), 
+                width = 1/10) + 
+  geom_hline(yintercept = 0, linetype = 2) + 
+  labs(x = "Number of R01-equivalents",
+       y = lab.y, 
+       subtitle = "Static/Pooled", 
+       colour = "Number of R01-equivalents", 
+       shape = "Number of R01-equivalents") + 
+  theme(panel.grid.minor = element_blank(), 
+        legend.position = "bottom") 
+
+plot_pubs_ddstatic 
+
+```
+
+---
+
+## How big is 1.7%?
+
+Loss of a "superstar" collaborator leads to 5-8% decrease in quality-adjusted publiations (Azoulay, Graff-Zivin, Wang 2010)
+
+Not an apples-to-apples comparison - AGW estimate average effect over 15 years
+
+---
+
+class: inverse, middle
+
+# Discussion
+
+---
+## Delayed funding has costs
+
+What this paper doesn't say: optimal level of funding delays
+
+To the extent that at least some interruptions are the result of macro factors (e.g. shutdown, delayed budget due to unrelated policy disputes), current levels are unlikely to be optimal
+
+---
+
+## Interruptions are (to some extent) a policy choice
+
+National Institute for Allergies and Infectious Diseases (NIAID) prioritizes funding projects in time
+
+> *If NIAID is operating under a CR, that won’t necessarily delay your award...we are assiduous about issuing awards* using funds from the CR. For example, by December 21, 2016, NIAID had already issued more than twice as many competing fiscal year 2017 grants as any other institute.
+
+---
+
+## NIAID being assiduous
+
+```{r}
+renewed_r01s %<>%
+  tidyr::extract(r01period_id, 
+                 "ic", 
+                 regex = "^R01([A-Z]{2})", 
+                 remove = FALSE)
+
+gap_by_ic = renewed_r01s %>% 
+  filter(expiry_fy >= 1990, 
+         expiry_fy <= 2014, 
+         renewed_nextperiod_after_nfy == 0, 
+         TRUE) %>% 
+  group_by(expiry_fy, ic) %>% 
+  summarise(n = n(),
+            mean_gap = mean(days2renew_nextperiod, na.rm = TRUE),
+            pct_gap = mean(days2renew_nextperiod > 30, na.rm = TRUE) * 100) 
+
+gap_by_ic %>% 
+  filter(ic %in% c("CA", "AI")) %>% 
+  mutate(ic = if_else(ic == "CA", "NCI", "NIAID")) %>% 
+  ggplot(aes(expiry_fy, pct_gap)) + 
+  aes(colour = ic, shape = ic) + 
+  geom_point(size = 4) + 
+  geom_line() + 
+  geom_vline(xintercept = 1996, linetype = 2) + 
+  annotate(geom = "label", x = 1996, y = 22, label = "Shutdown", size = 5, 
+           alpha = 0) +
+  theme(legend.position = "bottom") + 
+  labs(x = "Fiscal Year", y = "Percent (%)",
+       # subtitle = "Sample - R01s that expired and renewed in the same FY", 
+       caption = "Source: NIH ExPorter", 
+       colour = "NIH Institute and Center", 
+       shape = "NIH Institute and Center") + 
+  scale_colour_discrete_qualitative(palette = "Cold")
+```
+
+---
+# Conclusion
+
+Understanding interaction of uncertainty and innovation is important
+
+With high-frequency data, can observe effects of funding interruptions in "real time" and unpack how scientific production function responds
+
+Transaction data suggests interruptions are disruptive; publication data suggest this can in turn hurt research productivity
+
+
+
