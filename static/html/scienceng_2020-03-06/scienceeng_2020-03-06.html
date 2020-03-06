@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Science, Interrupted: How Scientists Respond to Funding Disruptions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Wei Yang Tham Laboratory for Innovation Sciences at Harvard" />
+    <link href="libs/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, middle, title-slide
+
+# Science, Interrupted: How Scientists Respond to Funding Disruptions
+## Economics of Science &amp; Engineering Seminar
+### Wei Yang Tham<br><span style="font-size: 70%;">Laboratory for Innovation Sciences at Harvard</span>
+### Mar 06, 2020
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class: middle
+
+## What If Congress Doubled R&amp;D Spending on the Physical Sciences? (Freeman and Van Reenen 2009)
+
+--
+
+### Stability of funding matters, not just amount
+
+---
+
+class: middle, left
+
+## How does the research production function respond when there's "instability"?
+
+### One source of instability: U.S. fiscal policy
+
+---
+
+class: middle
+
+### The last time the US Congress passed an entire federal budget before the Fiscal Year began?
+
+--
+
+### 1997
+
+---
+
+class: center
+
+### Hard for funding agencies to plan
+
+&gt; "...it feels strange to be writing in early November to announce preliminary funding lines for the year. **We really, really do have a full-year budget, for the first time in 22 years**" - Dr. Robin Barr, Director, Division of Extramural Activities for NIA
+
+## &lt;p align="center"&gt;&amp;darr;&lt;/p&gt;
+--
+
+### Scientists feel this uncertainty too 
+
+&gt; "The uncertainty that the NIH feels reflects itself in my willingness to hire" - [David Cheresh, UCSD cancer researcher (Jan 2018)](http://www.sandiegouniontribune.com/business/biotech/sd-me-shutdown-research-20180122-story.html)
+
+--
+
+&gt; "Never, ever, ever, nuh-uh, no way, ever trust a Dec 1 start date!" - drugmonkey
+
+---
+
+## Challenges of studying the effect of this uncertainty
+
+1. Measuring uncertainty 
+
+1. Linking a particular "uncertainty shock" to behavior or outcomes
+
+1. Hard to get individual-level variation in uncertainty
+
+---
+
+## What I do
+
+1. Focus on **funding interruptions** - delays in between end of grant and start of grant
+
+1. Transaction-level data - can observe research activity at high frequency and level of detail
+
+---
+
+## Labs that experienced interrupted funding:
+
+1. Reduce spending in anticipation of not having funding
+
+1. Even after funding resumes, take about 3-4 months to catch up
+
+1. Having additional grants cushions impact on spending
+
+1. *Suggestive* evidence of negative productivity effect
+
+---
+
+class: inverse, middle, left
+
+# Background: Scientist perspective
+
+---
+
+# R01 grant mechanism
+
+Needed to sustain an independent lab in biomedical science
+
+Usually last about 4-5 years
+
+--
+
+Apply to renew when R01 ends
+
+---
+
+## Fail to renew
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-2-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewed and funded continuously
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-3-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewed with interrupted funding
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-4-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+## Sample: everyone who eventually gets funding
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-5-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+## Renewal timeline (no hiccups)
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/renewal-timeline-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Renewal timeline
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-6-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, middle, left
+
+## Background: NIH perspective
+
+---
+
+## Budgeting process
+
+NIH budget is determined every fiscal year
+
+Has to be approved by Congress
+
+--
+
+NIH is made up of 27 Institutes and Centers (ICs), organized by disease or body system (e.g. National Cancer Institute, National Heart, Lung, and Blood Institute)
+
+Each IC manages its own budget
+
+---
+
+## Why are there interruptions?
+
+There would be **no interruptions** if an IC knows 
+
+1. Budget 
+
+2. Quantity and "quality" of projects available to be funded   
+
+---
+
+## Interruptions arise because of uncertainty over: 
+
+--
+.pull-left[
+### Budget
+
+Congressional stalemate over federal budget
+]
+
+.pull-right[
+### Quality/quantity of projects
+
+Multiple review cycles throughout the year
+]
+--
+
+Both factors are amplified by IC risk-aversion towards spending too early
+
+---
+
+## Why might interruptions matter?
+
+Funds have to last longer than originally intended 
+
+Uncertainty about whether or when funding will resume
+
+Research may be disrupted even when funding resumes (frictions to acquiring inputs)
+
+---
+
+## Interruptions encompass a few types of "shocks"
+
+Uncertainty about *whether* grant will be renewed
+
+--
+
+Uncertainty about *when* new funding will be available
+
+--
+
+Liquidity shock
+
+---
+
+class: inverse, middle, left
+
+# Data
+
+---
+
+class: middle
+
+# UMETRICS
+
+&lt;img src="https://iris.isr.umich.edu/wp-content/uploads/2019/05/white-circle-01-copy.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Transaction data from UMETRICS
+
+Captures transactions from sponsored projects
+
+31 universities
+
+Coverage from 2001 to 2018 (heaviest from late 2000s onward)
+
+---
+
+## NIH ExPorter
+
+Publicly available data on awards made including project start and end dates, budget size
+
+Each project has at least one Principal Investigator (PI)
+
+---
+
+## Two levels of data
+
+.pull-left[
+### Inputs
+
+- UMETRICS + ExPorter
+- Monthly
+
+]
+
+.pull-right[
+### Outputs 
+
+- ExPorter + PubMed 
+- Yearly
+- How do interruptions affect productivity?
+]
+
+---
+
+## Data setup
+
+Identify all R01s that were renewed within the same fiscal year
+
+Think of renewal as **event** that happens to a "lab" or PI (principal investigator)
+
+Stack all renewal-labs to create balanced panels
+
+In a unit-time panel, unit is a renewal-lab
+
+
+---
+
+class: inverse, middle
+
+# Empirical strategy
+
+---
+
+## Some definitions:
+
+- An R01 is *interrupted* if the time between expiry and renewal was greater than 30 calendar days
+
+--
+
+- Count number of R01-equivalent grants between 1 year before expiry and one year after renewal
+
+- Create two subsets: PIs with one R01 and PIs with multiple R01-equivalents
+
+---
+
+# Event study for inputs
+
+Project's budget could change after being renewed
+
+--
+
+Event study *within* budget `\(\implies\)` Estimate expiring and renewed periods separately
+
+---
+
+class: middle, inverse, left
+
+# Descriptives
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/gap-variation-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/gap-time-series-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-8-1.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-9-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Why are interrupted projects longer?
+
+Possible answer: PIs can ask for a no-cost extensions (extend grant by one year)
+
+---
+
+## Concern: Differential spending trends for awards of different lengths
+
+*Especially* when an award lasts for longer than it was supposed to
+
+--
+
+I.e. Spending patterns of a 5-year project are different than for a "4 + 1"-year project
+
+---
+
+## Expiring sample
+
+&lt;table&gt;
+&lt;caption&gt;R01-PI by month panel&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Focal
+PI's
+R01s &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Interrupted &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; R01-
+PIs &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; R01
+project
+periods &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; PIs &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Institution &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; One &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 236 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 230 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 227 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; One &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Yes &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Multiple &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 450 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 438 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 367 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Multiple &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Yes &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 187 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 181 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 175 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Renewed sample
+
+&lt;table&gt;
+&lt;caption&gt;R01-PI by month panel&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Focal
+PI's
+R01s &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Interrupted &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; R01-
+PIs &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; R01
+project
+periods &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; PIs &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Institution &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; One &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 378 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 370 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 352 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Multiple &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 728 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 711 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 583 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Yes &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; One &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 109 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 108 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 109 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Yes &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Multiple &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 230 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 225 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 213 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+class: middle, inverse, left
+
+# Results: How is total spending affected?
+
+---
+
+
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/axesonly-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/totalpispending-eventstudy-left-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/totalpispending-eventstudy-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/totalpispending-eventstudy-multir01-left-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/totalpispending-eventstudy-multir01-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-13-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-14-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: middle, inverse, left
+
+# Results: Are different types of spending affected differently?
+
+## Repeat analysis for payments to *vendors* and *labor* 
+
+---
+
+
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/laborspend-eventstudy-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/vendor-eventstudy-left-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-15-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, middle, left
+
+# What happens to employees?
+
+---
+
+# Concerns
+
+1. Effect on employees (uncertainty, employment)
+
+1. Loss of team capital (Jaravel, Petkova, and Bell 2018)
+
+---
+
+# Setup 
+
+Identify employees in months -18 to -23
+
+Restrict to employees paid by the lab for at least 4 out of 6 months
+
+Follow them until one year after R01 expiry
+
+---
+
+# Outcomes
+
+.pull-left[
+## Turnover
+
+Did they continue to be paid by the same lab?
+
+`\(1\)` if paid by same PI, `\(0\)` otherwise
+
+Don't observe if PI paid them on a non-NIH grant
+
+]
+
+.pull-right[
+## Employment
+
+Did they continue to be paid by *any* grants?
+
+`\(1\)` if paid at all, `\(0\)` otherwise
+
+Don't observe non-grant payments e.g. from university
+
+]
+
+---
+
+# Defining employee funding "cushion"
+
+Employee had a "cushion" if in months -18 to -23
+
+1. focal PI had `\(&gt;1\)` R01 OR 
+1. paid by another PI with at least one R01
+
+---
+
+
+
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/empbypi-eventstudy-oner01-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/empbypi-eventstudy-multir01-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/empanygrant-eventstudy-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/empanygrant-eventstudy-multir01-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Might this differ by occupation?
+
+For sample size reasons, rerun analysis on 5 largest categories
+
+1. Faculty
+1. Post Graduate Researchers
+1. Graduate Students
+1. Research
+1. Research Facilitation
+
+---
+
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/empbypiocc-eventstudy-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-16-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, middle, left
+
+# Results: Does this affect scientific output?
+
+---
+
+# Setup
+
+Renewed R01-PI year panel, 5 years before and after renewal
+
+Estimate a variant of the two-way FE estimator
+
+---
+
+# Measure output as publications
+
+1. Counts
+1. Weighted by 3-year forward citations
+1. Weighted by 5-year forward citations
+
+---
+
+# Problem with Two-way Fixed Effects
+
+Traditional two-way FE would have R01-PI and year FE
+
+.pull-left[
+## Problem
+
+- Uses variation across "treatment cohorts"]
+
+.pull-right[
+
+## Solution
+
+- Year-by-treatment cohort FE 
+- I.e. give each treatment cohort its own set of year FE
+- We know the "treatment" date for the control group
+]
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-17-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-18-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, middle, left
+
+# What are the policy implications?
+
+---
+
+# Delayed funding has costs
+
+What this paper doesn't say: optimal level of funding delays
+
+Some interruptions are the result of macro factors (e.g. government shutdowns, delayed budget due to unrelated political disputes) `\(\Rightarrow\)` current levels are unlikely to be optimal
+
+---
+
+## Interruptions are (to some extent) a policy choice
+
+National Institute for Allergies and Infectious Diseases (NIAID) prioritizes funding projects in time
+
+&gt; *If NIAID is operating under a CR, that won’t necessarily delay your award...we are assiduous about issuing awards* using funds from the CR. For example, by December 21, 2016, NIAID had already issued more than twice as many competing fiscal year 2017 grants as any other institute.
+
+---
+
+&lt;img src="scienceeng_2020-03-06_files/figure-html/unnamed-chunk-19-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Conclusion
+
+Understanding interaction of uncertainty and innovation is important
+
+With high-frequency data, can observe effects of funding interruptions in "real time" and unpack how scientific production function responds
+
+Researchers respond by reducing expenditure, suggesting disruptive effects on labs and lab employees
+
+---
+
+class: inverse, middle
+
+<i class="fab  fa-twitter "></i> @wytham88
+
+<i class="fas  fa-envelope "></i> wtham@hbs.edu
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
