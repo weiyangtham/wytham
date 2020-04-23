@@ -49,24 +49,22 @@ output:
 <div id="scraping-investigator-names" class="section level1">
 <h1><span class="header-section-number">2</span> Scraping Investigator Names</h1>
 <p>You can find the name of all IRP Principal Investigators (PIs) <a href="https://irp.nih.gov/our-research/principal-investigators/name">here</a>, or see a screenshot of the page below.</p>
-<div class="figure">
-<img src="/img/posts/2018-02-15-scraping-nih-pis-with-rvest/pi_names.png" />
-
-</div>
+<p><img src="/img/posts/2018-02-15-scraping-nih-pis-with-rvest/pi_names.png" /></p>
 <p>I want to collect all these names without having to copy and paste them. This will help make the analysis reproducible and less prone to error. I’m going to do this with the <code>rvest</code> package, following the steps in <a href="https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html">the vignette for SelectorGadget</a>.</p>
 <blockquote>
 <p>Selectorgadget is a javascript bookmarklet that allows you to interactively figure out what css selector you need to extract desired components from a page.</p>
 </blockquote>
 <p>What I need to do is go to <a href="https://irp.nih.gov/our-research/principal-investigators/name">the page I want to scrape data from</a> and use SelectorGadget to select the elements I want (yellow highlight) and don’t want (red highlight). I end up with this:</p>
-<div class="figure">
-<img src="/img/posts/2018-02-15-scraping-nih-pis-with-rvest/selectorgadget.png" />
-
-</div>
+<p><img src="/img/posts/2018-02-15-scraping-nih-pis-with-rvest/selectorgadget.png" /></p>
 <p>At the bottom of the screenshot, SelectorGadget has determined the right CSS selector needed to extract the names. Now we can move to doing everything in R.</p>
 <pre class="r"><code>knitr::opts_chunk$set(warning = F, message = F)
 
 library(tidyverse)</code></pre>
-<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.1</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.2</code></pre>
 <pre class="r"><code>library(magrittr)
 library(rvest)
 
@@ -78,13 +76,11 @@ pi_names_html = html_nodes(html, &quot;.pilist-name a&quot;)
 pi_names = html_text(pi_names_html) 
 
 pi_names[1:5]</code></pre>
-<pre><code>## [1] &quot;Abnet, Christian C., Ph.D., M.P.H.&quot;
-## [2] &quot;Acharya, Jairaj K., MBBS, Ph.D.&quot;   
-## [3] &quot;Adelstein, Robert S., M.D.&quot;        
-## [4] &quot;Adhya, Sankar, Ph.D.&quot;              
-## [5] &quot;Afraz, Arash, Ph.D., M.D.&quot;</code></pre>
+<pre><code>## [1] &quot;Abnet, Christian C., Ph.D., M.P.H.&quot; &quot;Acharya, Jairaj K., MBBS, Ph.D.&quot;   
+## [3] &quot;Adelstein, Robert S., M.D.&quot;         &quot;Adhya, Sankar, Ph.D.&quot;              
+## [5] &quot;Afraz, Arash, M.D., Ph.D.&quot;</code></pre>
 <p>We now have the PI names as a character vector along with their degrees. To keep things simple, I’m going to extract just their first and last names and ignore the other information.</p>
-<pre class="r"><code>df = data_frame(fullname = pi_names)
+<pre class="r"><code>df = tibble(fullname = pi_names)
 
 # separate name into first, middle, last
 df %&lt;&gt;%
@@ -95,20 +91,20 @@ df %&lt;&gt;%
   separate(first_name, into = c(&quot;first_name&quot;, &quot;middle_name&quot;), sep = &quot;\\s&quot;) 
 
 df</code></pre>
-<pre><code>## # A tibble: 1,034 x 4
+<pre><code>## # A tibble: 1,062 x 4
 ##    fullname                           last_name first_name middle_name
 ##    &lt;chr&gt;                              &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;      
 ##  1 Abnet, Christian C., Ph.D., M.P.H. Abnet     Christian  C.         
 ##  2 Acharya, Jairaj K., MBBS, Ph.D.    Acharya   Jairaj     K.         
 ##  3 Adelstein, Robert S., M.D.         Adelstein Robert     S.         
 ##  4 Adhya, Sankar, Ph.D.               Adhya     Sankar     &lt;NA&gt;       
-##  5 Afraz, Arash, Ph.D., M.D.          Afraz     Arash      &lt;NA&gt;       
-##  6 Agarwal, Piyush K., M.D.           Agarwal   Piyush     K.         
+##  5 Afraz, Arash, M.D., Ph.D.          Afraz     Arash      &lt;NA&gt;       
+##  6 Afzali, Behdad (Ben), M.D., Ph.D.  Afzali    Behdad     (Ben)      
 ##  7 Aguilera, Greti, M.D.              Aguilera  Greti      &lt;NA&gt;       
 ##  8 Aladjem, Mirit I., Ph.D.           Aladjem   Mirit      I.         
 ##  9 Albanes, Demetrius, M.D.           Albanes   Demetrius  &lt;NA&gt;       
 ## 10 Albert, Paul S., Ph.D.             Albert    Paul       S.         
-## # ... with 1,024 more rows</code></pre>
+## # … with 1,052 more rows</code></pre>
 <div id="clean-names" class="section level2">
 <h2><span class="header-section-number">2.1</span> Clean names</h2>
 <p>Below is some code for standardizing the names. I do three things:</p>
@@ -168,23 +164,22 @@ opm2017 %&lt;&gt;%
 
 opm2017</code></pre>
 <pre><code>## # A tibble: 1,355,327 x 19
-##    last_name  first_name  file_date agency    subagency   state  age_range
-##    &lt;chr&gt;      &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt;    
-##  1 NAME WITH… NAME WITHH…    201703 TR-DEPAR… TR93-INTER… REDAC… 60-64    
-##  2 NAME WITH… NAME WITHH…    201703 TR-DEPAR… TR93-INTER… REDAC… 60-64    
-##  3 NAME WITH… NAME WITHH…    201703 TR-DEPAR… TR93-INTER… REDAC… 60-64    
-##  4 NAME WITH… NAME WITHH…    201703 TR-DEPAR… TR93-INTER… REDAC… 60-64    
-##  5 NAME WITH… NAME WITHH…    201703 TR-DEPAR… TR93-INTER… 11-DI… 35-39    
-##  6 HESS       KEVIN          201703 VA-DEPAR… VALA-VETER… 41-OR… 50-54    
-##  7 KELLER     STEVEN         201703 VA-DEPAR… VALA-VETER… 47-TE… 50-54    
-##  8 SAPP       JAMES          201703 HE-DEPAR… HE35-AGENC… 13-GE… 50-54    
-##  9 NAME WITH… NAME WITHH…    201703 HS-DEPAR… HSBB-IMMIG… REDAC… 50-54    
-## 10 NAME WITH… NAME WITHH…    201703 HS-DEPAR… HSBB-IMMIG… REDAC… 50-54    
-## # ... with 1,355,317 more rows, and 12 more variables: ysd_range &lt;chr&gt;,
-## #   education_level &lt;chr&gt;, pay_plan &lt;chr&gt;, grade &lt;chr&gt;, los_level &lt;chr&gt;,
-## #   occupation &lt;chr&gt;, patco &lt;chr&gt;, adjusted_basic_pay &lt;dbl&gt;,
-## #   supervisory_status &lt;chr&gt;, toa &lt;chr&gt;, work_schedule &lt;chr&gt;,
-## #   nsftp_indicator &lt;chr&gt;</code></pre>
+##    last_name first_name file_date agency subagency state age_range ysd_range
+##    &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    
+##  1 NAME WIT… NAME WITH…    201703 TR-DE… TR93-INT… REDA… 60-64     30 - 34 …
+##  2 NAME WIT… NAME WITH…    201703 TR-DE… TR93-INT… REDA… 60-64     35 - 39 …
+##  3 NAME WIT… NAME WITH…    201703 TR-DE… TR93-INT… REDA… 60-64     40 - 44 …
+##  4 NAME WIT… NAME WITH…    201703 TR-DE… TR93-INT… REDA… 60-64     25 - 29 …
+##  5 NAME WIT… NAME WITH…    201703 TR-DE… TR93-INT… 11-D… 35-39     10 - 14 …
+##  6 HESS      KEVIN         201703 VA-DE… VALA-VET… 41-O… 50-54     25 - 29 …
+##  7 KELLER    STEVEN        201703 VA-DE… VALA-VET… 47-T… 50-54     5 - 9 ye…
+##  8 SAPP      JAMES         201703 HE-DE… HE35-AGE… 13-G… 50-54     25 - 29 …
+##  9 NAME WIT… NAME WITH…    201703 HS-DE… HSBB-IMM… REDA… 50-54     25 - 29 …
+## 10 NAME WIT… NAME WITH…    201703 HS-DE… HSBB-IMM… REDA… 50-54     Unspecif…
+## # … with 1,355,317 more rows, and 11 more variables: education_level &lt;chr&gt;,
+## #   pay_plan &lt;chr&gt;, grade &lt;chr&gt;, los_level &lt;chr&gt;, occupation &lt;chr&gt;,
+## #   patco &lt;chr&gt;, adjusted_basic_pay &lt;dbl&gt;, supervisory_status &lt;chr&gt;, toa &lt;chr&gt;,
+## #   work_schedule &lt;chr&gt;, nsftp_indicator &lt;chr&gt;</code></pre>
 <p>I perform the same operations for cleaning names. I also <code>filter</code> the employees belonging to the NIH using the <code>subagency</code> code “HE38”.</p>
 <pre class="r"><code># NIH employees only
 opm2017 %&lt;&gt;% filter(str_detect(subagency, &quot;HE38&quot;))
@@ -224,7 +219,7 @@ pi_opm %&lt;&gt;%
   mutate(y = n() &gt; 1) %&gt;% # duplicate from OPM data
   ungroup() %&gt;% 
   filter(!x, !y)</code></pre>
-<p>We had 1034 names and managed to match 890 of them. We could maybe do better but for such a simple “algorithm” I’m happy enough.</p>
+<p>We had 1062 names and managed to match 887 of them. We could maybe do better but for such a simple “algorithm” I’m happy enough.</p>
 </div>
 </div>
 <div id="what-can-we-learn-about-the-intramural-program" class="section level1">
@@ -269,7 +264,7 @@ pi_opm %&gt;%
 </div>
 <div id="gender-representation-in-the-intramural-program" class="section level2">
 <h2><span class="header-section-number">4.3</span> Gender representation in the intramural program</h2>
-<p>The actual demographics of the intramural program are available <a href="https://oir.nih.gov/sourcebook/personnel/irp-demographics/intramural-research-program-personnel-demographics-end-fy17">online</a>. The number of female tenured researchers (Senior Investigators) is low at 23%, and increases somewhat as you go to more junior appointments.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>The actual demographics of the intramural program are available <a href="https://oir.nih.gov/sourcebook/personnel/irp-demographics/intramural-research-program-personnel-demographics-end-fy17">online</a>. The number of female tenured researchers (Senior Investigators) is low at 23%, and increases somewhat as you go to more junior appointments.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <p>Since gender isn’t available in the OPM data, I’ll use <a href="http://abel.lis.illinois.edu/cgi-bin/genni/search.cgi">Genni</a> to predict gender based on first name and birth year.</p>
 <pre class="r"><code>genni = read_tsv(here::here(&quot;../Genni/ssnnamesdata.out&quot;), 
                  col_types = cols_only(name = &quot;c&quot;, `2008` = &quot;c&quot;))
@@ -286,7 +281,7 @@ genni %&lt;&gt;%
 pi_opm %&lt;&gt;% left_join(genni, by = c(&quot;first_name&quot; = &quot;name&quot;)) 
 
 nafem = pi_opm %&gt;% filter(is.na(pfem)) %&gt;% nrow() # number names without prediction</code></pre>
-<p>There are 90 persons whose first names do not appear in Genni. I’ll impose an arbitrary threshold that we have to be at least 75% sure to classify someone as female or male.</p>
+<p>There are 92 persons whose first names do not appear in Genni. I’ll impose an arbitrary threshold that we have to be at least 75% sure to classify someone as female or male.</p>
 <pre class="r"><code>pi_opm_fem = pi_opm %&gt;% 
   filter(pfem &gt;= 0.75 | pfem &lt;= 0.25) %&gt;% 
   mutate(female = pfem &gt;= 0.75)
@@ -297,8 +292,8 @@ pi_opm_fem %&gt;%
 <pre><code>## # A tibble: 2 x 3
 ##   female     n percent
 ##   &lt;lgl&gt;  &lt;int&gt;   &lt;dbl&gt;
-## 1 FALSE    580    74.8
-## 2 TRUE     195    25.2</code></pre>
+## 1 FALSE    560    73.0
+## 2 TRUE     207    27.0</code></pre>
 <div id="gender-salary-differences" class="section level3">
 <h3><span class="header-section-number">4.3.1</span> Gender salary differences</h3>
 <pre class="r"><code>pi_opm_fem %&gt;% 
@@ -348,6 +343,6 @@ Google, translated: If you control for all the ways we discriminate against wome
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p><a href="https://oir.nih.gov/sourcebook/personnel/ipds-appointment-mechanisms">Appointment definitions here</a><a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p><a href="https://oir.nih.gov/sourcebook/personnel/ipds-appointment-mechanisms">Appointment definitions here</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
 </div>

@@ -66,7 +66,7 @@ pi_names[1:5]
 We now have the PI names as a character vector along with their degrees. To keep things simple, I'm going to extract just their first and last names and ignore the other information. 
 
 ```{r}
-df = data_frame(fullname = pi_names)
+df = tibble(fullname = pi_names)
 
 # separate name into first, middle, last
 df %<>%
