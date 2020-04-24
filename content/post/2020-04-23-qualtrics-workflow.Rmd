@@ -1,0 +1,34 @@
+---
+title: Qualtrics Workflow
+author: ''
+date: '2020-04-23'
+slug: qualtrics-workflow
+draft: true
+categories:
+  - R
+  - Survey
+tags:
+  - r
+  - workflow
+  - qualtrics
+header:
+  caption: ''
+  image: ''
+---
+
+Recently I've been working a lot with Qualtrics for a survey project. This post sums up a few thoughts about how you can make working with Qualtrics data a little bit easier for yourself. I'm pretty new to the survey and Qualtrics worlds, so I'm sure I'll have missed useful shortcuts and the like. Feel free to let me know what I've missed out!
+
+# Get data through the Qualtrics API
+
+If you're doing this in R, this is made relatively painless with the excellent [`qualtRics`](https://github.com/ropensci/qualtRics) package. It's possible to export the data from within Qualtrics. It's not as risky as opening up the data in an Excel spreadsheet, but generally I think keeping the data at an arm's length is a good idea. Besides, if you're going to retrieve the data more than once, it's way easier to just build it into your data pipeline. 
+
+# Give informative names to your questions
+
+By default, your questions are going to be given names like `Q2.1` and these will also be the name of the variables when you retrieve the data i.e. these are not very informative variable names. To avoid that, simply edit the names in Qualtrics. We found the naming convention of `block_question` worked for us. 
+
+For example, say you're running a survey about ice cream and have a question block about *flavors*. In that block, you have two questions, one about whether the respondent prefers milk or dark, and another about the respondent's favorite fruit flavor. Then you would title the first question `flavors_choc` and the second `flavors_fruit`.
+
+# Dealing with multiple responses within the same question
+
+
+
