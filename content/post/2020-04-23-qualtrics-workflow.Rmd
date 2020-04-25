@@ -26,9 +26,36 @@ If you're doing this in R, this is made relatively painless with the excellent [
 
 By default, your questions are going to be given names like `Q2.1` and these will also be the name of the variables when you retrieve the data i.e. these are not very informative variable names. To avoid that, simply edit the names in Qualtrics. We found the naming convention of `block_question` worked for us. 
 
-For example, say you're running a survey about ice cream and have a question block about *flavors*. In that block, you have two questions, one about whether the respondent prefers milk or dark, and another about the respondent's favorite fruit flavor. Then you would title the first question `flavors_choc` and the second `flavors_fruit`.
+For example, say you're running a survey about frozen desserts. Let's say you have a question block about ice cream and a different question block about froyo. In each block you have two questions, one about whether the respondent prefers milk or dark chocolate and another about the respondent's favorite fruit flavor. Then you would title the first question `flavors_choc` and the second `flavors_fruit`.
 
 # Dealing with multiple responses within the same question
+
+Sometimes a single question may actually nest multiple responses or questions. For example, the question may be "Rate each of the following ice cream flavors on a scale of 1 to 5", and then you present the respondent with three different flavors to rate: chocolate, vanilla, and strawberry. Let's call this question `flavors_rate`. 
+
+What you will see in the data is three different variables, `flavors_rate_1`, `flavors_rate_2`,`flavors_rate_3`. You'll notice these variable names aren't very informative. We could just rename each of them "manually", but if your survey is long enough that could be a lot of work and leaves a decent amount of room for error. Ideally, we'd like to find a way to automate this process as much as possible. 
+
+Here's what I settled on. 
+
+```{r}
+
+library(tidyverse)
+library(sjlabelled)
+
+df <- tibble(flavor_rate_1 = c(1, 2, 3), 
+             flavor_rate_2 = c(2, 3, 4))
+
+df <- df %>% 
+  mutate(response_id = letters[1:3], 
+         flavor_rate_1 = set_label(flavor_rate_1, label = "chocolate"), 
+         flavor_rate_2 = set_label(flavor_rate_2, label = "vanilla"))
+
+df
+
+```
+
+
+
+Now, you could manually rename each of these variables to `flavors_rate_choc`, `flavors_rate_vanilla` and so on so that as you're analyzing the data you don't have to remember which number corresponds to which flavor. The problem is that 1) hand-coding potentially leads to mistakes and 2) the numbers don't always correspond to the order in which they appear. 
 
 
 
