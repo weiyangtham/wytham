@@ -1,0 +1,1532 @@
+---
+title: Qualtrics Workflow
+author: ''
+date: '2020-04-23'
+slug: qualtrics-workflow
+draft: false
+categories:
+  - R
+  - Survey
+tags:
+  - r
+  - workflow
+  - qualtrics
+header:
+  caption: ''
+  image: ''
+output:
+  blogdown::html_page:
+    toc: true
+summary: 'Notes to make working with Qualtrics data easier'
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#get-your-data-through-the-qualtrics-api">Get your data through the Qualtrics API</a></li>
+<li><a href="#give-informative-names-to-your-questions">Give informative names to your questions</a></li>
+<li><a href="#multiple-responses-within-the-same-question">Multiple responses within the same question</a></li>
+</ul>
+</div>
+
+<p>Recently I’ve been working a lot with Qualtrics for a survey project. This post sums up a few thoughts about how you can make working with Qualtrics data a little bit easier for yourself. I’m pretty new to the survey and Qualtrics worlds, so I’m sure I’ll have missed useful shortcuts and the like. Feel free to let me know what I’ve missed out!</p>
+<div id="get-your-data-through-the-qualtrics-api" class="section level1">
+<h1>Get your data through the Qualtrics API</h1>
+<p>If you’re doing this in R, this is made relatively painless with the excellent <a href="https://github.com/ropensci/qualtRics"><code>qualtRics</code></a> package. It’s possible to export the data from within Qualtrics. It’s not as risky as opening up the data in an Excel spreadsheet, but generally I think keeping the data at an arm’s length is a good idea. Besides, if you’re going to retrieve the data more than once, it’s way easier to build it into your data pipeline if you use the API.</p>
+</div>
+<div id="give-informative-names-to-your-questions" class="section level1">
+<h1>Give informative names to your questions</h1>
+<p>By default, your questions are going to be given names like <code>Q2.1</code> and these will also be the name of the variables when you retrieve the data i.e. these are not very informative variable names. To avoid that, simply edit the names in Qualtrics. We found the naming convention of <code>block_question</code> worked for us.</p>
+<p>For example, say you’re running a survey about frozen desserts. Let’s say you have a question block about ice cream and a different question block about froyo. In each block you have two questions, one about whether the respondent prefers milk or dark chocolate and another about the respondent’s favorite fruit flavor. Then in the ice cream block you would title the first question <code>icecream_choc</code> and the second <code>icecream_fruit</code>.</p>
+</div>
+<div id="multiple-responses-within-the-same-question" class="section level1">
+<h1>Multiple responses within the same question</h1>
+<p>Sometimes a single question may actually nest multiple responses. For example, the question may be “Rate each of the following ice cream flavors on a scale of 1 to 5”, and then you present the respondent with three different flavors to rate: chocolate, vanilla, and strawberry. Let’s call this question <code>flavors_rate</code>.</p>
+<p>What you will see in the data is three different variables, <code>flavors_rate_1</code>, <code>flavors_rate_2</code>,<code>flavors_rate_3</code>. You’ll notice these variable names aren’t very informative. We could just rename each of them “manually”, but if your survey is long enough that could be a lot of work and leaves a decent amount of room for error.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Ideally, we’d like to find a way to automate this process as much as possible.</p>
+<p>Here’s what I settled on. When you pull the data from Qualtrics, the variables will come with <em>labels</em>, which are additional text that provide more information about a variable. I’ve created an example dataset. First, I’ll print in the console and it looks like a normal dataframe.</p>
+<pre class="r"><code>library(tidyverse)
+library(sjlabelled) # package to work with labels
+
+df &lt;- tibble(response_id = letters[1:3],
+             flavor_rate_1 = c(1, 2, 3), 
+             flavor_rate_2 = c(2, 3, 4), 
+             flavor_rate_3 = c(3, 4, 5))
+
+df &lt;- df %&gt;% 
+  mutate(flavor_rate_1 = set_label(flavor_rate_1, label = &quot;chocolate&quot;), 
+         flavor_rate_2 = set_label(flavor_rate_2, label = &quot;vanilla&quot;), 
+         flavor_rate_3 = set_label(flavor_rate_3, label = &quot;strawberry&quot;))
+
+df %&gt;% 
+  gt::gt() %&gt;% 
+  gt::tab_header(title = &quot;Survey responses with uninformative variable names&quot;)</code></pre>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#qliseukvie .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  /* table.margin.left */
+  margin-right: auto;
+  /* table.margin.right */
+  color: #333333;
+  font-size: 16px;
+  /* table.font.size */
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+  border-bottom-style: solid;
+  /* table.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table.border.bottom.color */
+}
+
+#qliseukvie .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-left-style: hidden;
+  /* heading.border.lr.style */
+  border-left-width: 1px;
+  /* heading.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* heading.border.lr.color */
+  border-right-style: hidden;
+  /* heading.border.lr.style */
+  border-right-width: 1px;
+  /* heading.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* heading.border.lr.color */
+}
+
+#qliseukvie .gt_title {
+  color: #333333;
+  font-size: 125%;
+  /* heading.title.font.size */
+  font-weight: initial;
+  /* heading.title.font.weight */
+  padding-top: 4px;
+  /* heading.top.padding - not yet used */
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-bottom-width: 0;
+}
+
+#qliseukvie .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  font-weight: initial;
+  /* heading.subtitle.font.weight */
+  padding-top: 0;
+  padding-bottom: 4px;
+  /* heading.bottom.padding - not yet used */
+  border-top-color: #FFFFFF;
+  /* table.background.color */
+  border-top-width: 0;
+}
+
+#qliseukvie .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* heading.border.bottom.color */
+}
+
+#qliseukvie .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qliseukvie .gt_col_headings {
+  border-top-style: solid;
+  /* column_labels.border.top.style */
+  border-top-width: 2px;
+  /* column_labels.border.top.width */
+  border-top-color: #D3D3D3;
+  /* column_labels.border.top.color */
+  border-bottom-style: solid;
+  /* column_labels.border.bottom.style */
+  border-bottom-width: 2px;
+  /* column_labels.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* column_labels.border.bottom.color */
+  border-left-style: none;
+  /* column_labels.border.lr.style */
+  border-left-width: 1px;
+  /* column_labels.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+  border-right-style: none;
+  /* column_labels.border.lr.style */
+  border-right-width: 1px;
+  /* column_labels.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+}
+
+#qliseukvie .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 100%;
+  /* column_labels.font.size */
+  font-weight: initial;
+  /* column_labels.font.weight */
+  text-transform: inherit;
+  /* column_labels.text_transform */
+  vertical-align: middle;
+  padding: 5px;
+  margin: 10px;
+  overflow-x: hidden;
+}
+
+#qliseukvie .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#qliseukvie .gt_group_heading {
+  padding: 8px;
+  /* row_group.padding */
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  text-transform: inherit;
+  /* row_group.text_transform */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  border-left-style: none;
+  /* row_group.border.left.style */
+  border-left-width: 1px;
+  /* row_group.border.left.width */
+  border-left-color: #D3D3D3;
+  /* row_group.border.left.color */
+  border-right-style: none;
+  /* row_group.border.right.style */
+  border-right-width: 1px;
+  /* row_group.border.right.width */
+  border-right-color: #D3D3D3;
+  /* row_group.border.right.color */
+  vertical-align: middle;
+}
+
+#qliseukvie .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#qliseukvie .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+  /* row.striping.background_color */
+}
+
+#qliseukvie .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qliseukvie .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qliseukvie .gt_row {
+  padding-top: 8px;
+  /* data_row.padding */
+  padding-bottom: 8px;
+  /* data_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  /* table_body.hlines.style */
+  border-top-width: 1px;
+  /* table_body.hlines.width */
+  border-top-color: #D3D3D3;
+  /* table_body.hlines.color */
+  border-left-style: none;
+  /* table_body.vlines.style */
+  border-left-width: 1px;
+  /* table_body.vlines.width */
+  border-left-color: #D3D3D3;
+  /* table_body.vlines.color */
+  border-right-style: none;
+  /* table_body.vlines.style */
+  border-right-width: 1px;
+  /* table_body.vlines.width */
+  border-right-color: #D3D3D3;
+  /* table_body.vlines.color */
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qliseukvie .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* stub.background.color */
+  font-weight: initial;
+  /* stub.font.weight */
+  text-transform: inherit;
+  /* stub.text_transform */
+  border-right-style: solid;
+  /* stub.border.style */
+  border-right-width: 2px;
+  /* stub.border.width */
+  border-right-color: #D3D3D3;
+  /* stub.border.color */
+  padding-left: 12px;
+}
+
+#qliseukvie .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qliseukvie .gt_first_summary_row {
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  /* summary_row.border.style */
+  border-top-width: 2px;
+  /* summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* summary_row.border.color */
+}
+
+#qliseukvie .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qliseukvie .gt_first_grand_summary_row {
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  /* grand_summary_row.border.style */
+  border-top-width: 6px;
+  /* grand_summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* grand_summary_row.border.color */
+}
+
+#qliseukvie .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #D3D3D3;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* table_body.border.bottom.color */
+}
+
+#qliseukvie .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* footnotes.background.color */
+  border-bottom-style: none;
+  /* footnotes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* footnotes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* footnotes.border.bottom.color */
+  border-left-style: none;
+  /* footnotes.border.lr.color */
+  border-left-width: 2px;
+  /* footnotes.border.lr.color */
+  border-left-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+  border-right-style: none;
+  /* footnotes.border.lr.color */
+  border-right-width: 2px;
+  /* footnotes.border.lr.color */
+  border-right-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+}
+
+#qliseukvie .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  /* footnotes.font.size */
+  padding: 4px;
+  /* footnotes.padding */
+}
+
+#qliseukvie .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* source_notes.background.color */
+  border-bottom-style: none;
+  /* source_notes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* source_notes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* source_notes.border.bottom.color */
+  border-left-style: none;
+  /* source_notes.border.lr.style */
+  border-left-width: 2px;
+  /* source_notes.border.lr.style */
+  border-left-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+  border-right-style: none;
+  /* source_notes.border.lr.style */
+  border-right-width: 2px;
+  /* source_notes.border.lr.style */
+  border-right-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+}
+
+#qliseukvie .gt_sourcenote {
+  font-size: 90%;
+  /* source_notes.font.size */
+  padding: 4px;
+  /* source_notes.padding */
+}
+
+#qliseukvie .gt_left {
+  text-align: left;
+}
+
+#qliseukvie .gt_center {
+  text-align: center;
+}
+
+#qliseukvie .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qliseukvie .gt_font_normal {
+  font-weight: normal;
+}
+
+#qliseukvie .gt_font_bold {
+  font-weight: bold;
+}
+
+#qliseukvie .gt_font_italic {
+  font-style: italic;
+}
+
+#qliseukvie .gt_super {
+  font-size: 65%;
+}
+
+#qliseukvie .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="qliseukvie" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="4" class="gt_heading gt_title gt_font_normal gt_center" style>Survey responses with uninformative variable names</th>
+    </tr>
+    <tr>
+      <th colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_center gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">response_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">flavor_rate_1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">flavor_rate_2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">flavor_rate_3</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">a</td>
+      <td class="gt_row gt_right">1</td>
+      <td class="gt_row gt_right">2</td>
+      <td class="gt_row gt_right">3</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">b</td>
+      <td class="gt_row gt_right gt_striped">2</td>
+      <td class="gt_row gt_right gt_striped">3</td>
+      <td class="gt_row gt_right gt_striped">4</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">c</td>
+      <td class="gt_row gt_right">3</td>
+      <td class="gt_row gt_right">4</td>
+      <td class="gt_row gt_right">5</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<p>Now if you look at it with the <code>View()</code> function, you can see the text just below the variable names.</p>
+<pre class="r"><code>View(df)</code></pre>
+<p><img src="/img/posts/2020-04-23-qualtrics-workflow/flavor_label.png" /></p>
+<p>My suggestion is to extract the label (e.g. “chocolate”) and use it replace the numbers at the end of the variable names (e.g. <code>flavor_rate_1</code> becomes <code>flavor_rate_chocolate</code>). I won’t walk through how to do this step-by-step but a couple of key steps are to (1) use the <code>get_label</code> function from the <code>sjlabelled</code> package and (2) use <code>word</code> from the <code>stringr</code> package to extract meaningful words from the labels.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> From there you can get a dataframe of variable names and labels and create new variable names through some string manipulation.</p>
+<p>Below is some code to execute this idea:</p>
+<pre class="r"><code>label_shorten &lt;- function(data, start = 1, end = start){
+  var_option_df &lt;- data %&gt;% 
+    sjlabelled::get_label() %&gt;% 
+    enframe(name = &quot;var&quot;, value = &quot;option_long&quot;) %&gt;% 
+    mutate(option_long = str_squish(str_to_lower(option_long)), 
+           option = word(option_long, start = start, end = end), 
+           option = str_replace_all(option, &quot;[^[:alnum:]]&quot;, &quot;&quot;), 
+           option = str_squish(option)) 
+  
+  var_option_df
+}
+
+replace_num_with_word &lt;- function(vardf){
+  vardf %&gt;% 
+    tidyr::extract(var, into = c(&quot;var_prefix&quot;, &quot;optionnum&quot;), 
+                   regex = &quot;(.+)_([0-9]{1,2})&quot;, remove = FALSE) %&gt;% 
+    mutate(newvar = str_c(var_prefix, option, sep = &quot;_&quot;))
+}
+
+labels &lt;- label_shorten(df %&gt;% select(-response_id))
+
+labels = replace_num_with_word(labels) 
+
+gt::gt(labels %&gt;% select(var, newvar)) %&gt;% 
+  gt::tab_header(title = &quot;Dataframe of old and new variable names&quot;)</code></pre>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#wanuhlufqq .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  /* table.margin.left */
+  margin-right: auto;
+  /* table.margin.right */
+  color: #333333;
+  font-size: 16px;
+  /* table.font.size */
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+  border-bottom-style: solid;
+  /* table.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table.border.bottom.color */
+}
+
+#wanuhlufqq .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-left-style: hidden;
+  /* heading.border.lr.style */
+  border-left-width: 1px;
+  /* heading.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* heading.border.lr.color */
+  border-right-style: hidden;
+  /* heading.border.lr.style */
+  border-right-width: 1px;
+  /* heading.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* heading.border.lr.color */
+}
+
+#wanuhlufqq .gt_title {
+  color: #333333;
+  font-size: 125%;
+  /* heading.title.font.size */
+  font-weight: initial;
+  /* heading.title.font.weight */
+  padding-top: 4px;
+  /* heading.top.padding - not yet used */
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-bottom-width: 0;
+}
+
+#wanuhlufqq .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  font-weight: initial;
+  /* heading.subtitle.font.weight */
+  padding-top: 0;
+  padding-bottom: 4px;
+  /* heading.bottom.padding - not yet used */
+  border-top-color: #FFFFFF;
+  /* table.background.color */
+  border-top-width: 0;
+}
+
+#wanuhlufqq .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* heading.border.bottom.color */
+}
+
+#wanuhlufqq .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#wanuhlufqq .gt_col_headings {
+  border-top-style: solid;
+  /* column_labels.border.top.style */
+  border-top-width: 2px;
+  /* column_labels.border.top.width */
+  border-top-color: #D3D3D3;
+  /* column_labels.border.top.color */
+  border-bottom-style: solid;
+  /* column_labels.border.bottom.style */
+  border-bottom-width: 2px;
+  /* column_labels.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* column_labels.border.bottom.color */
+  border-left-style: none;
+  /* column_labels.border.lr.style */
+  border-left-width: 1px;
+  /* column_labels.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+  border-right-style: none;
+  /* column_labels.border.lr.style */
+  border-right-width: 1px;
+  /* column_labels.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+}
+
+#wanuhlufqq .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 100%;
+  /* column_labels.font.size */
+  font-weight: initial;
+  /* column_labels.font.weight */
+  text-transform: inherit;
+  /* column_labels.text_transform */
+  vertical-align: middle;
+  padding: 5px;
+  margin: 10px;
+  overflow-x: hidden;
+}
+
+#wanuhlufqq .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#wanuhlufqq .gt_group_heading {
+  padding: 8px;
+  /* row_group.padding */
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  text-transform: inherit;
+  /* row_group.text_transform */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  border-left-style: none;
+  /* row_group.border.left.style */
+  border-left-width: 1px;
+  /* row_group.border.left.width */
+  border-left-color: #D3D3D3;
+  /* row_group.border.left.color */
+  border-right-style: none;
+  /* row_group.border.right.style */
+  border-right-width: 1px;
+  /* row_group.border.right.width */
+  border-right-color: #D3D3D3;
+  /* row_group.border.right.color */
+  vertical-align: middle;
+}
+
+#wanuhlufqq .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#wanuhlufqq .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+  /* row.striping.background_color */
+}
+
+#wanuhlufqq .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#wanuhlufqq .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#wanuhlufqq .gt_row {
+  padding-top: 8px;
+  /* data_row.padding */
+  padding-bottom: 8px;
+  /* data_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  /* table_body.hlines.style */
+  border-top-width: 1px;
+  /* table_body.hlines.width */
+  border-top-color: #D3D3D3;
+  /* table_body.hlines.color */
+  border-left-style: none;
+  /* table_body.vlines.style */
+  border-left-width: 1px;
+  /* table_body.vlines.width */
+  border-left-color: #D3D3D3;
+  /* table_body.vlines.color */
+  border-right-style: none;
+  /* table_body.vlines.style */
+  border-right-width: 1px;
+  /* table_body.vlines.width */
+  border-right-color: #D3D3D3;
+  /* table_body.vlines.color */
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wanuhlufqq .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* stub.background.color */
+  font-weight: initial;
+  /* stub.font.weight */
+  text-transform: inherit;
+  /* stub.text_transform */
+  border-right-style: solid;
+  /* stub.border.style */
+  border-right-width: 2px;
+  /* stub.border.width */
+  border-right-color: #D3D3D3;
+  /* stub.border.color */
+  padding-left: 12px;
+}
+
+#wanuhlufqq .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wanuhlufqq .gt_first_summary_row {
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  /* summary_row.border.style */
+  border-top-width: 2px;
+  /* summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* summary_row.border.color */
+}
+
+#wanuhlufqq .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wanuhlufqq .gt_first_grand_summary_row {
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  /* grand_summary_row.border.style */
+  border-top-width: 6px;
+  /* grand_summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* grand_summary_row.border.color */
+}
+
+#wanuhlufqq .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #D3D3D3;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* table_body.border.bottom.color */
+}
+
+#wanuhlufqq .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* footnotes.background.color */
+  border-bottom-style: none;
+  /* footnotes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* footnotes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* footnotes.border.bottom.color */
+  border-left-style: none;
+  /* footnotes.border.lr.color */
+  border-left-width: 2px;
+  /* footnotes.border.lr.color */
+  border-left-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+  border-right-style: none;
+  /* footnotes.border.lr.color */
+  border-right-width: 2px;
+  /* footnotes.border.lr.color */
+  border-right-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+}
+
+#wanuhlufqq .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  /* footnotes.font.size */
+  padding: 4px;
+  /* footnotes.padding */
+}
+
+#wanuhlufqq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* source_notes.background.color */
+  border-bottom-style: none;
+  /* source_notes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* source_notes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* source_notes.border.bottom.color */
+  border-left-style: none;
+  /* source_notes.border.lr.style */
+  border-left-width: 2px;
+  /* source_notes.border.lr.style */
+  border-left-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+  border-right-style: none;
+  /* source_notes.border.lr.style */
+  border-right-width: 2px;
+  /* source_notes.border.lr.style */
+  border-right-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+}
+
+#wanuhlufqq .gt_sourcenote {
+  font-size: 90%;
+  /* source_notes.font.size */
+  padding: 4px;
+  /* source_notes.padding */
+}
+
+#wanuhlufqq .gt_left {
+  text-align: left;
+}
+
+#wanuhlufqq .gt_center {
+  text-align: center;
+}
+
+#wanuhlufqq .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wanuhlufqq .gt_font_normal {
+  font-weight: normal;
+}
+
+#wanuhlufqq .gt_font_bold {
+  font-weight: bold;
+}
+
+#wanuhlufqq .gt_font_italic {
+  font-style: italic;
+}
+
+#wanuhlufqq .gt_super {
+  font-size: 65%;
+}
+
+#wanuhlufqq .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="wanuhlufqq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="2" class="gt_heading gt_title gt_font_normal gt_center" style>Dataframe of old and new variable names</th>
+    </tr>
+    <tr>
+      <th colspan="2" class="gt_heading gt_subtitle gt_font_normal gt_center gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">var</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">newvar</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">flavor_rate_1</td>
+      <td class="gt_row gt_left">flavor_rate_chocolate</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">flavor_rate_2</td>
+      <td class="gt_row gt_left gt_striped">flavor_rate_vanilla</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">flavor_rate_3</td>
+      <td class="gt_row gt_left">flavor_rate_strawberry</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<pre class="r"><code>df %&gt;% 
+  rename_at(labels$var, ~ labels$newvar) %&gt;% 
+  gt::gt() %&gt;% 
+  gt::tab_header(title = &quot;Survey responses with informative variable names&quot;)</code></pre>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#bkypzzvtlx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  /* table.margin.left */
+  margin-right: auto;
+  /* table.margin.right */
+  color: #333333;
+  font-size: 16px;
+  /* table.font.size */
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+  border-bottom-style: solid;
+  /* table.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table.border.bottom.color */
+}
+
+#bkypzzvtlx .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-left-style: hidden;
+  /* heading.border.lr.style */
+  border-left-width: 1px;
+  /* heading.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* heading.border.lr.color */
+  border-right-style: hidden;
+  /* heading.border.lr.style */
+  border-right-width: 1px;
+  /* heading.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* heading.border.lr.color */
+}
+
+#bkypzzvtlx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  /* heading.title.font.size */
+  font-weight: initial;
+  /* heading.title.font.weight */
+  padding-top: 4px;
+  /* heading.top.padding - not yet used */
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-bottom-width: 0;
+}
+
+#bkypzzvtlx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  font-weight: initial;
+  /* heading.subtitle.font.weight */
+  padding-top: 0;
+  padding-bottom: 4px;
+  /* heading.bottom.padding - not yet used */
+  border-top-color: #FFFFFF;
+  /* table.background.color */
+  border-top-width: 0;
+}
+
+#bkypzzvtlx .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* heading.border.bottom.color */
+}
+
+#bkypzzvtlx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#bkypzzvtlx .gt_col_headings {
+  border-top-style: solid;
+  /* column_labels.border.top.style */
+  border-top-width: 2px;
+  /* column_labels.border.top.width */
+  border-top-color: #D3D3D3;
+  /* column_labels.border.top.color */
+  border-bottom-style: solid;
+  /* column_labels.border.bottom.style */
+  border-bottom-width: 2px;
+  /* column_labels.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* column_labels.border.bottom.color */
+  border-left-style: none;
+  /* column_labels.border.lr.style */
+  border-left-width: 1px;
+  /* column_labels.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+  border-right-style: none;
+  /* column_labels.border.lr.style */
+  border-right-width: 1px;
+  /* column_labels.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+}
+
+#bkypzzvtlx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 100%;
+  /* column_labels.font.size */
+  font-weight: initial;
+  /* column_labels.font.weight */
+  text-transform: inherit;
+  /* column_labels.text_transform */
+  vertical-align: middle;
+  padding: 5px;
+  margin: 10px;
+  overflow-x: hidden;
+}
+
+#bkypzzvtlx .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#bkypzzvtlx .gt_group_heading {
+  padding: 8px;
+  /* row_group.padding */
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  text-transform: inherit;
+  /* row_group.text_transform */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  border-left-style: none;
+  /* row_group.border.left.style */
+  border-left-width: 1px;
+  /* row_group.border.left.width */
+  border-left-color: #D3D3D3;
+  /* row_group.border.left.color */
+  border-right-style: none;
+  /* row_group.border.right.style */
+  border-right-width: 1px;
+  /* row_group.border.right.width */
+  border-right-color: #D3D3D3;
+  /* row_group.border.right.color */
+  vertical-align: middle;
+}
+
+#bkypzzvtlx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#bkypzzvtlx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+  /* row.striping.background_color */
+}
+
+#bkypzzvtlx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#bkypzzvtlx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#bkypzzvtlx .gt_row {
+  padding-top: 8px;
+  /* data_row.padding */
+  padding-bottom: 8px;
+  /* data_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  /* table_body.hlines.style */
+  border-top-width: 1px;
+  /* table_body.hlines.width */
+  border-top-color: #D3D3D3;
+  /* table_body.hlines.color */
+  border-left-style: none;
+  /* table_body.vlines.style */
+  border-left-width: 1px;
+  /* table_body.vlines.width */
+  border-left-color: #D3D3D3;
+  /* table_body.vlines.color */
+  border-right-style: none;
+  /* table_body.vlines.style */
+  border-right-width: 1px;
+  /* table_body.vlines.width */
+  border-right-color: #D3D3D3;
+  /* table_body.vlines.color */
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#bkypzzvtlx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* stub.background.color */
+  font-weight: initial;
+  /* stub.font.weight */
+  text-transform: inherit;
+  /* stub.text_transform */
+  border-right-style: solid;
+  /* stub.border.style */
+  border-right-width: 2px;
+  /* stub.border.width */
+  border-right-color: #D3D3D3;
+  /* stub.border.color */
+  padding-left: 12px;
+}
+
+#bkypzzvtlx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bkypzzvtlx .gt_first_summary_row {
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  /* summary_row.border.style */
+  border-top-width: 2px;
+  /* summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* summary_row.border.color */
+}
+
+#bkypzzvtlx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bkypzzvtlx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  /* grand_summary_row.border.style */
+  border-top-width: 6px;
+  /* grand_summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* grand_summary_row.border.color */
+}
+
+#bkypzzvtlx .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #D3D3D3;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* table_body.border.bottom.color */
+}
+
+#bkypzzvtlx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* footnotes.background.color */
+  border-bottom-style: none;
+  /* footnotes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* footnotes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* footnotes.border.bottom.color */
+  border-left-style: none;
+  /* footnotes.border.lr.color */
+  border-left-width: 2px;
+  /* footnotes.border.lr.color */
+  border-left-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+  border-right-style: none;
+  /* footnotes.border.lr.color */
+  border-right-width: 2px;
+  /* footnotes.border.lr.color */
+  border-right-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+}
+
+#bkypzzvtlx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  /* footnotes.font.size */
+  padding: 4px;
+  /* footnotes.padding */
+}
+
+#bkypzzvtlx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* source_notes.background.color */
+  border-bottom-style: none;
+  /* source_notes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* source_notes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* source_notes.border.bottom.color */
+  border-left-style: none;
+  /* source_notes.border.lr.style */
+  border-left-width: 2px;
+  /* source_notes.border.lr.style */
+  border-left-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+  border-right-style: none;
+  /* source_notes.border.lr.style */
+  border-right-width: 2px;
+  /* source_notes.border.lr.style */
+  border-right-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+}
+
+#bkypzzvtlx .gt_sourcenote {
+  font-size: 90%;
+  /* source_notes.font.size */
+  padding: 4px;
+  /* source_notes.padding */
+}
+
+#bkypzzvtlx .gt_left {
+  text-align: left;
+}
+
+#bkypzzvtlx .gt_center {
+  text-align: center;
+}
+
+#bkypzzvtlx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#bkypzzvtlx .gt_font_normal {
+  font-weight: normal;
+}
+
+#bkypzzvtlx .gt_font_bold {
+  font-weight: bold;
+}
+
+#bkypzzvtlx .gt_font_italic {
+  font-style: italic;
+}
+
+#bkypzzvtlx .gt_super {
+  font-size: 65%;
+}
+
+#bkypzzvtlx .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="bkypzzvtlx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="4" class="gt_heading gt_title gt_font_normal gt_center" style>Survey responses with informative variable names</th>
+    </tr>
+    <tr>
+      <th colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_center gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">response_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">flavor_rate_chocolate</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">flavor_rate_vanilla</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">flavor_rate_strawberry</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">a</td>
+      <td class="gt_row gt_right">1</td>
+      <td class="gt_row gt_right">2</td>
+      <td class="gt_row gt_right">3</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">b</td>
+      <td class="gt_row gt_right gt_striped">2</td>
+      <td class="gt_row gt_right gt_striped">3</td>
+      <td class="gt_row gt_right gt_striped">4</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">c</td>
+      <td class="gt_row gt_right">3</td>
+      <td class="gt_row gt_right">4</td>
+      <td class="gt_row gt_right">5</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<p>You won’t always be able to automate this process. Maybe the options you provide are reasonably complex sentences, so it isn’t straightforward to extract a one-word descriptor from the label. In this case, after you construct the variable-label data frame (aka <code>labels</code>), you will still have to do some hard-coding, but it will be easier to do it in a transparent way.</p>
+<p>For example, suppose you ask the question “Why didn’t you eat ice cream today?” and ask the respondent to choose from a number of different options: “I wasn’t hungry”; “The weather was too cold”; “I just had ice cream yesterday”. When the labels are in a dataframe, you can now write a series of conditions such as:</p>
+<pre class="r"><code>labels %&gt;% 
+  mutate(newvar_suffix = case_when(
+    str_detect(label, &quot;hungry&quot;) ~ &quot;nothungry&quot;, 
+    str_detect(label, &quot;too cold&quot;) ~ &quot;toocold&quot;,
+    str_detect(label, &quot;yesterday&quot;) ~ &quot;ateyday&quot;))</code></pre>
+<p>Although this isn’t fully automated, it feels a bit safer to me since the renaming is reliant on the content of the question.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>An added complication is that the numbering may not appear as you expect if the flavors are shifted around and/or added and removed as you edit the survey.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>You could do something more sophisticated certainly, but <code>word</code> will probably be good enough for 80% of cases, and the added complexity may not be worth it.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
