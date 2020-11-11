@@ -3,10 +3,10 @@
 date = "2018-11-14"
 
 # Project title.
-title = "Science, Interrupted: Budget Uncertainty and Its Effects on Innovation"
+title = "Science, Interrupted: Funding Delays Reduce Research Activity but Having More Grants Helps"
 
 # Project summary to display on homepage.
-summary = "I study how uncertainty affects economic activity by focusing on a particular sector with uniquely rich transaction-level data - federally-sponsored research."
+summary = "(*Under review*) I study how funding delays affect researchers"
 
 # Optional image to display on homepage (relative to `static/img/` folder).
 # image_preview = "bubbles.jpg"
