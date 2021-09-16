@@ -28,4 +28,4 @@ math = false
 
 +++
 
-Building on previous work that shows funding delays lead to a decrease in research spending, we use a difference-in-differences design to study how the same delays affect the career outcomes of research personnel.  We use W2 tax records that have been linked to university transaction records (UMETRICS database), allowing us to observe outcome variables such as wages and industry of employment. 
+Building on work that shows funding delays lead to a decrease in research spending, we use a difference-in-differences design to study how the same delays affect the career outcomes of research personnel.  We use W2 tax records that have been linked to university transaction records (UMETRICS database), allowing us to observe outcome variables such as wages and industry of employment. 
