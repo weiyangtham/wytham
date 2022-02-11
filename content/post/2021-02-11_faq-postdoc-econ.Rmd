@@ -1,0 +1,20 @@
+---
+title: "FAQ on Postdocs in Econ/Management"
+author: ''
+date: '2021-02-11'
+slug: postdoc-faq
+draft: false
+categories:
+  - Economics
+tags:
+  - postdocs
+  - faq
+header:
+  caption: ''
+  image: ''
+output:
+  blogdown::html_page:
+    toc: true
+summary: 'FAQ about what to expect from an Econ Postdoc'
+---
+
