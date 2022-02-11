@@ -18,3 +18,23 @@ output:
 summary: 'FAQ about what to expect from an Econ Postdoc'
 ---
 
+Hi! We wrote this post to help prospective postdocs, current postdocs, or even people who want to hire postdocs understand what it's like doing a postdoc in economics (and similar fields like management) is like. Please treat it as a *living document* that will evolve as we get feedback and better information.^[Original authors of this post are [Valerie Bostwick](https://vkbostwick.weebly.com/), [Sarah Bana](http://www.sarahbana.com/), and [Wei Yang Tham](https://wytham.rbind.io/).] 
+
+
+## What is a postdoc?
+
+The NSF and NIH define a postdoc as “an individual who has received a doctoral degree (or equivalent) and is engaged in a temporary and defined period of mentored advanced training to enhance the professional skills and research independence needed to pursue his or her chosen career path.”
+
+In economics, what this basically means is you work for 2-3 years with a mentor with the expectation that this prepares you to go on the market for your next job.^[For the rest of the document, we're gonna use "economics" to refer to economics and econ-adjacent fields, rather than saying "economics/management/..." over and over again.] 
+
+
+Here's a rough taxonomy of econ postdocs: 
+
+1. "Standard" postdoc: hired to work on a specific project or at least projects in a certain domain (and will have to go on the market again!)
+1. Postdocs that are more like fellowships: for people who already have jobs lined up and basically get an extra year or so to work on their own on whatever they want.
+1. "Standard" but you have a job: you're hired to work on specific areas but you also have a job lined up once the postdoc is over
+
+## What do postdocs in economics earn?
+
+
+
