@@ -23,9 +23,9 @@ Hi! We wrote this post to help prospective postdocs, current postdocs, or even p
 
 ## What is a postdoc?
 
-The NSF and NIH define a postdoc as "an individual who has received a doctoral degree (or equivalent) and is engaged in a temporary and defined period of mentored advanced training to enhance the professional skills and research independence needed to pursue his or her chosen career path." This is not a bad definition but still kinda vague, so let's get more specific.
+The NSF and NIH define a postdoc as "an individual who has received a doctoral degree (or equivalent) and is engaged in a temporary and defined period of mentored advanced training to enhance the professional skills and research independence needed to pursue his or her chosen career path." This is not a bad definition but still kinda vague, so let's try to get more specific.
 
-In economics, what this generally means is you work for 2-3 years with a mentor with the expectation that this prepares you to go on the market for your next job.^[For the rest of the document, we're gonna use "economics" to refer to economics and econ-adjacent fields, rather than saying "economics/management/..." over and over again.] 
+In economics, what this basically means is you work for 2-3 years with a mentor with the expectation that this prepares you to go on the market for your next job.^[For the rest of the document, we're gonna use "economics" to refer to economics and econ-adjacent fields, rather than saying "economics/management/..." over and over again.] 
 
 Here's a rough taxonomy of econ postdocs: 
 
@@ -45,7 +45,7 @@ Based on the SDR and informal knowledge, *our current best guess is that a typic
 
 ## What benefits do postdocs get?
 
-This is even trickier than salaries. Benefits are gonna depend on how your specific university classifies postdocs. If postdocs are classified as staff, then you'll have staff benefits and pay the same insurance premiums and get 401(k) matching. If postdocs are classified as a student or "student-adjacent", you might receive different benefits like student loan deferment and not having to pay health insurance premiums, but you may also miss out on other perks that staff get. 
+This is even trickier than salaries. Benefits are gonna depend on how your specific university classifies postdocs. If postdocs are classified as staff, then you'll have staff benefits and pay the same insurance premiums and get 401(k) matching. If postdocs are classified as a student or "student-adjacent", you might receive different benefits like student loan deferment and not having to pay health insurance premiums, but you might also miss out on other perks that staff get. 
 
 In short, you should ask about this. 
 
@@ -59,14 +59,14 @@ If you're already in the US on an F1 visa, the most straightforward route is pro
 
 Yes. 
 
-We don't have much to say about how to do it, but as with any job offer, it's your prerogative to negotiate. Even if you don't think you have much bargaining power, just asking is surprisingly effective.^[This also applies to getting a better deal on your internet package.] 
+We don't have much to say about how to do it, but as with any job offer, it's your prerogative to negotiate. Even if you don't think you have much bargaining power, sometimes just asking is surprisingly effective.^[This also applies to getting a better deal on your internet package.] 
 
 ## I'm thinking of taking a postdoc. What factors should I consider or negotiate over?
 
 Here's a list of some things to consider asking your prospective supervisor about. A guiding principle here is to think about what you'll need to be a stronger candidate when you go on the market at the end of your postdoc. 
 
 ### Extending the postdoc
-Ideally, you'll finish your postdoc and go off to your fancy new job in no time! But sometimes stuff goes wrong (maybe a project doesn't work out or there's a pandemic) so it's worth asking early on what the possibilites of extending the postdoc are. There's a decent chance your supervisor can't give a definitive answer, but you might still gain valuable information (e.g. are they even thinking of applying for more funding?)
+Ideally, you'll finish your postdoc and go off to your fancy new job in no time! But sometimes stuff goes wrong (maybe a project doesn't work out or there's a pandemic) so it's worth asking early on what the possibilites of extending the postdoc are. There's a decent chance your supervisor can't give a definitive answer, but you might still gain valuable information (e.g. are they thinking of applying for more funding?)
 
 ### Responsibilities 
 Some postdocs are set up such that you’re working on a specific project. What percentage of your time are you expected to devote to that project versus your own projects? Does that project have a fixed timeline? If something happens to that project, will you still be funded?
@@ -75,7 +75,7 @@ Some postdocs are set up such that you’re working on a specific project. What 
 How will authorship be decided? Will there be opportunities to carve out your own "slice" of the project (especially if the main project you're working on will have many authors)? 
 
 ### Teaching
-This could work either way. Some postdocs involve teaching, so you'll want to find out if that is so and how much work it will involve. Or you might want to do some teaching, perhaps because you didn't have much teaching experience in grad school. If so, it's worth asking if there are opportunies to do that.
+This could work either way. Some postdocs involve teaching, so you'll want to find out if that is so and how much work it will involve. Or you might want to do some teaching, perhaps because you didn't have much teaching experience in grad school. If so, it's worth asking if there might be opportunies to do that.
 
 ### Research Support
 What kind of financial support can you get to do research and build your network? Items you might want to ask about include:
@@ -101,7 +101,7 @@ Postdocs are in a bit of a weird position. You don't enter with a cohort of clas
 
 ### What's the "lab" like?
 
-If you're being hired as part of a lab or research group, what is the culture of the lab like? How do members of the lab support each other in their research? Ask to speak to current grad students or postdocs at the lab about their experience.
+If you're being hired as part of a lab or research group, what is the culture of the lab like? How do members of the lab support each other in their research? Ask to speak to a current grad student or postdoc at the lab about their experience.
 
 ### Moving costs
 Can your supervisor or department help with moving costs in any way? Even if they can't cover all your moving expenses, there may be little things they can do to ease the transition like flying you out in advance to look for housing.
